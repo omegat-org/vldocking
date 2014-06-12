@@ -7,11 +7,11 @@
 	</parent>
 
 	<!-- groupId>com.vldocking</groupId -->
-	<groupId>dk.navicon</groupId>
+	<groupId>org.bidib.jbidib.com.vldocking</groupId>
 	<artifactId>vldocking</artifactId>
 	<version>3.0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<url>https://github.com/cmadsen/vldocking</url>
+	<url>https://github.com/akuhtz/vldocking.git</url>
 
 	<name>vldocking</name>
 
@@ -49,9 +49,9 @@
 
 
 	<scm>
-		<connection>scm:git:git@github.com:cmadsen/vldocking.git</connection>
-		<url>scm:git:git@github.com:cmadsen/vldocking.git</url>
-		<developerConnection>scm:git:git@github.com:cmadsen/vldocking.git</developerConnection>
+		<connection>scm:git:https://github.com/akuhtz/vldocking.git</connection>
+		<url>scm:git:https://github.com/akuhtz/vldocking.git</url>
+		<developerConnection>scm:git:https://github.com/akuhtz/vldocking.git</developerConnection>
 	</scm>
 
 	<properties>
