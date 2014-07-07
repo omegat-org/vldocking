@@ -9,7 +9,7 @@
 	<!-- groupId>com.vldocking</groupId -->
 	<groupId>org.bidib.jbidib.com.vldocking</groupId>
 	<artifactId>vldocking</artifactId>
-	<version>3.0.4-SNAPSHOT</version>
+	<version>3.0.4</version>
 	<packaging>jar</packaging>
 	<url>https://github.com/akuhtz/vldocking.git</url>
 
@@ -52,6 +52,7 @@
 		<connection>scm:git:https://github.com/akuhtz/vldocking.git</connection>
 		<url>scm:git:https://github.com/akuhtz/vldocking.git</url>
 		<developerConnection>scm:git:https://github.com/akuhtz/vldocking.git</developerConnection>
+    <tag>bidib-3.0.4</tag>
   </scm>
 
 	<properties>
