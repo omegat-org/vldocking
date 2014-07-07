@@ -152,7 +152,7 @@
                     <!--arguments>-Psonatype-oss-release</arguments-->
                     <arguments>-Prelease-sign-artifacts -Dgpg.passphrase=${gpg.passphrase}</arguments>
                     <tagFormatName>bidib-@{project.version}</tagFormatName>
-				<configuration>
+				</configuration>
 			</plugin>
 		</plugins>
 
