@@ -148,10 +148,7 @@
 				<artifactId>maven-release-plugin</artifactId>
                 <version>2.5</version>
 				<configuration>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <!--arguments>-Psonatype-oss-release</arguments-->
-                    <arguments>-Prelease-sign-artifacts -Dgpg.passphrase=${gpg.passphrase}</arguments>
-                    <tagFormatName>bidib-@{project.version}</tagFormatName>
+                    <tagNameFormat>bidib-@{project.version}</tagNameFormat>
 				</configuration>
 			</plugin>
 		</plugins>
