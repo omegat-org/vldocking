@@ -59,7 +59,7 @@
 		<logback.version>1.0.13</logback.version>
 		<slf4j.version>1.7.5</slf4j.version>
 		<junit.version>4.8</junit.version>
-		<gpg.useagent>true</gpg.useagent>
+		<gpg.useagent>false</gpg.useagent>
 	</properties>
 
 	<build>
