@@ -49,9 +49,9 @@
 
 
 	<scm>
-		<connection>scm:git:https://github.com/akuhtz/vldocking.git</connection>
-		<url>scm:git:https://github.com/akuhtz/vldocking.git</url>
-		<developerConnection>scm:git:https://github.com/akuhtz/vldocking.git</developerConnection>
+		<connection>scm:git:git@github.com:akuhtz/vldocking.git</connection>
+		<url>scm:git:git@github.com:akuhtz/vldocking.git</url>
+		<developerConnection>scm:git:git@github.com:akuhtz/vldocking.git</developerConnection>
 	</scm>
 
 	<properties>
@@ -142,6 +142,17 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+                <version>2.5</version>
+				<configuration>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <!--arguments>-Psonatype-oss-release</arguments-->
+                    <arguments>-Prelease-sign-artifacts -Dgpg.passphrase=${gpg.passphrase}</arguments>
+                    <tagFormatName>bidib-@{project.version}</tagFormatName>
+				<configuration>
 			</plugin>
 		</plugins>
 
