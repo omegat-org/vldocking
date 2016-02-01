@@ -129,12 +129,12 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
         addWindowListener(new WindowAdapter() {
 
             public void windowActivated(WindowEvent e) {
-                getRootPane().setBorder(activeBorder);
+				getRootPane().setBorder(getActiveBorder());
                 repaint();
             }
 
             public void windowDeactivated(WindowEvent e) {
-                getRootPane().setBorder(inactiveBorder);
+				getRootPane().setBorder(getInactiveBorder());
                 repaint();
             }
         });
@@ -458,4 +458,13 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
             g.fillRect(0, 0, getWidth(), getHeight());
         }
     }
+
+	public Border getInactiveBorder() {
+		return inactiveBorder;
+	}
+
+	public Border getActiveBorder() {
+		return activeBorder;
+	}
+
 }
