@@ -4582,6 +4582,5 @@ public class DockingDesktop extends JLayeredPane {
 			context.fireDockableStateChange(dse);
 		}
 	}
->>>>>>> omegat-org/master
 
 }
