@@ -342,6 +342,7 @@ public class DockingUtilities {
 		} catch(NoSuchMethodException ignore) {
 		} catch(IllegalAccessException e) {
 		} catch(InvocationTargetException ignore) {
+        } catch(NullPointerException ignore) {
 		}
 		return null;
 	}
