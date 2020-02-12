@@ -202,7 +202,9 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		Graphics2D g2 = (Graphics2D) g;
 		getRenderingHints(g2, defaultHints, originalHints);
-		g2.addRenderingHints(defaultHints);
+		if (defaultHints != null) {
+			g2.addRenderingHints(defaultHints);
+		}
 		
 		if(icon != null) {
 			icon.paintIcon(c, g, x, y);
@@ -251,7 +253,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
 	     } else {
 	         savedHints.clear();
 	     }
-	     if (hintsToSave.size() == 0) {
+	     if (hintsToSave == null || hintsToSave.size() == 0) {
 	         return savedHints;
 	     }
 	     /* RenderingHints.keySet() returns Set */
@@ -414,5 +416,4 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
 
 		return shouldRepaint;
 	}
-
 }
