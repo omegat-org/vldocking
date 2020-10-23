@@ -31,10 +31,20 @@ Changes introduced by cmadsen/vldocking:
 
 ### Maven
 
+```
+<dependency>
+	<groupId>org.bidib.jbidib.com.vldocking</groupId>
+	<artifactId>vldocking</artifactId>
+	<version>3.0.5</version>
+</dependency>
+```
+
+### Gradle
+
 Just add this to your `build.gradle` file's `dependencies` block:
 
 ```
-compile 'org.omegat:vldocking:3.0.5'
+compile 'org.bidib.jbidib.com.vldocking:vldocking:3.0.5'
 ```
 
 VLDocking, the swing docking framework
