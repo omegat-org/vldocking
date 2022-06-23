@@ -1,12 +1,12 @@
 # vldocking
 
-This is a fork of https://github.com/cmadsen/vldocking, a fork of https://bitbucket.org/akuhtz/vldocking
+This is a fork of https://bitbucket.org/akuhtz/vldocking
 
 ## Why?
 
 Because upstream appears to have been abandoned, but bug fixes and new features were desired for [OmegaT](http://www.omegat.org/).
 
-See https://code.google.com/p/vldocking/ for more information, tutorials etc.
+See https://github.com/akuhtz/vldocking/ for more information, tutorials etc.
 
 ## So what's new?
 
@@ -35,7 +35,7 @@ Changes introduced by cmadsen/vldocking:
 <dependency>
 	<groupId>org.bidib.jbidib.com.vldocking</groupId>
 	<artifactId>vldocking</artifactId>
-	<version>3.0.6</version>
+	<version>3.0.7</version>
 </dependency>
 ```
 
@@ -44,7 +44,7 @@ Changes introduced by cmadsen/vldocking:
 Just add this to your `build.gradle` file's `dependencies` block:
 
 ```
-compile 'org.bidib.jbidib.com.vldocking:vldocking:3.0.6'
+compile 'org.bidib.jbidib.com.vldocking:vldocking:3.0.7'
 ```
 
 VLDocking, the swing docking framework
@@ -55,7 +55,7 @@ VLDocking was created in 2004, and is licensed under the LGPL-3.0.
 
 VLDocking is used by companies worldwide and open source projects.
 
-![](http://vldocking.googlecode.com/svn/wiki/vldocking3.jpg)
+![](https://github.com/akuhtz/vldocking/wiki/vldocking3.jpg)
 
 License
 =======
@@ -76,7 +76,7 @@ https://groups.google.com/forum/#!forum/vldocking
 Documentation
 ============
 
-The VLDocking tutorial can be found here https://code.google.com/p/vldocking/wiki/tutorial1
+The VLDocking tutorial can be found here https://github.com/akuhtz/vldocking/wiki/tutorial1
 
 ## I found a bug; what can I do?
 
