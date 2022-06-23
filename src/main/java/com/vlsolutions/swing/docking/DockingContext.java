@@ -18,15 +18,6 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import com.vlsolutions.swing.docking.event.DockableSelectionEvent;
-import com.vlsolutions.swing.docking.event.DockableSelectionListener;
-import com.vlsolutions.swing.docking.event.DockableStateChangeEvent;
-import com.vlsolutions.swing.docking.event.DockableStateChangeListener;
-import com.vlsolutions.swing.docking.event.DockableStateWillChangeEvent;
-import com.vlsolutions.swing.docking.event.DockableStateWillChangeListener;
-import com.vlsolutions.swing.docking.event.DockingActionEvent;
-import com.vlsolutions.swing.docking.event.DockingActionListener;
-
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -37,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -47,6 +39,15 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.vlsolutions.swing.docking.event.DockableSelectionEvent;
+import com.vlsolutions.swing.docking.event.DockableSelectionListener;
+import com.vlsolutions.swing.docking.event.DockableStateChangeEvent;
+import com.vlsolutions.swing.docking.event.DockableStateChangeListener;
+import com.vlsolutions.swing.docking.event.DockableStateWillChangeEvent;
+import com.vlsolutions.swing.docking.event.DockableStateWillChangeListener;
+import com.vlsolutions.swing.docking.event.DockingActionEvent;
+import com.vlsolutions.swing.docking.event.DockingActionListener;
 
 /** A context that can be shared by multiple docking desktops.
  *<p>
@@ -372,8 +373,11 @@ public class DockingContext {
 
 	/*package protected */void fireDockableStateChange(DockableStateChangeEvent e) {
 
-		for(int i = 0; i < dockableStateChangeListeners.size(); i++) {
-			DockableStateChangeListener listener = dockableStateChangeListeners.get(i);
+		// create a copy of the listeners
+		final List<DockableStateChangeListener> safeListeners = new ArrayList<>(dockableStateChangeListeners);
+
+		for(int i = 0; i < safeListeners.size(); i++) {
+			DockableStateChangeListener listener = safeListeners.get(i);
 			listener.dockableStateChanged(e);
 		}
 	}
