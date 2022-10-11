@@ -1,23 +1,31 @@
 plugins {
-  id 'com.jfrog.bintray' version '1.6'
+    id 'java-library'
+    id 'maven-publish'
+    id 'signing'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'com.github.spotbugs' version '4.7.10'
+    id 'com.diffplug.spotless' version '6.0.0'
+    id "io.github.gradle-nexus.publish-plugin"  version "1.1.0"
 }
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
-
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 version = '3.0.5'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.5'
-    testCompile 'ch.qos.logback:logback-classic:1.0.13'
-    testCompile 'junit:junit:4.8'
+    compileOnly 'org.slf4j:slf4j-api:1.7.32'
+    testImplementation 'ch.qos.logback:logback-classic:1.0.13'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+checkstyle {
+    toolVersion = '8.8'
 }
 
 task sourceJar(type: Jar) {
@@ -50,19 +58,52 @@ publishing {
     }
 }
 
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    pkg {
-        repo = 'maven'
-        name = 'vldocking'
-        licenses = ['LGPL-3.0']
-        userOrg = 'omegat-org'
-        websiteUrl = 'https://github.com/omegat-org/vldocking'
-        vcsUrl = 'https://github.com/omegat-org/vldocking.git'
-        version {
-            name = project.version
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from(components["java"])
+            pom {
+                name.set("vldocking")
+                description.set("vldocking")
+                url.set("https://github.com/omegat-org/vldocking")
+                licenses {
+                    license {
+                        name.set("The GNU Lesser General Public License, Version 3")
+                        url.set("https://www.gnu.org/licenses/licenses/lgpl-3.html")
+                        distribution.set("repo")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("miurahr")
+                        name.set("Hiroshi Miura")
+                        email.set("miurahr@linux.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/omegat-org/vldocking.git")
+                    developerConnection.set("scm:git:git://github.com/omegat-org/vldocking.git")
+                    url.set("https://github.com/omegat-org/vldocking")
+                }
+            }
         }
     }
-    publications = ['MyPublication']
+}
+
+signing {
+    if (!project.hasProperty("signingKey")) {
+        useGpgCmd()
+    }
+    sign(publishing.publications["mavenJava"])
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username.set(System.getenv("SONATYPE_USER"))
+            password.set(System.getenv("SONATYPE_PASS"))
+        }
+    }
 }
