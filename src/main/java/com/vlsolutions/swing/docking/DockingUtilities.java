@@ -19,7 +19,6 @@ You can read the complete license here :
 package com.vlsolutions.swing.docking;
 
 import java.awt.*;
-import java.awt.peer.LightweightPeer;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -291,9 +290,7 @@ public class DockingUtilities {
 	public static boolean isHeavyWeightComponent(Component comp) {
 		if(comp instanceof Container) {
 			// short cut
-			@SuppressWarnings("deprecation")
-			Object peer = comp.getPeer();
-			if(! (peer == null || peer instanceof LightweightPeer)) {
+			if (!comp.isLightweight()) {
 				// it's not a lightweight
 				return true;
 			} else {
@@ -308,9 +305,7 @@ public class DockingUtilities {
 				return false;
 			}
 		} else {
-			@SuppressWarnings("deprecation")
-			Object peer = comp.getPeer();
-			return ! (peer == null || peer instanceof LightweightPeer);
+			return !comp.isLightweight();
 		}
 	}
 
