@@ -35,7 +35,7 @@ Changes introduced by cmadsen/vldocking:
 <dependency>
 	<groupId>org.bidib.jbidib.com.vldocking</groupId>
 	<artifactId>vldocking</artifactId>
-	<version>3.0.7</version>
+	<version>3.0.8</version>
 </dependency>
 ```
 
@@ -44,7 +44,7 @@ Changes introduced by cmadsen/vldocking:
 Just add this to your `build.gradle` file's `dependencies` block:
 
 ```
-compile 'org.bidib.jbidib.com.vldocking:vldocking:3.0.7'
+compile 'org.bidib.jbidib.com.vldocking:vldocking:3.0.8'
 ```
 
 VLDocking, the swing docking framework
