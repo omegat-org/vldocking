@@ -1,23 +1,22 @@
 # vldocking
 
-This is a fork of https://bitbucket.org/akuhtz/vldocking
-
-## Why?
-
-Because upstream appears to have been abandoned, but bug fixes and new features were desired for [OmegaT](http://www.omegat.org/).
-
-See https://github.com/akuhtz/vldocking/ for more information, tutorials etc.
+This is a fork of https://github.com/cmadsen/vldocking
 
 ## So what's new?
 
-* Switched to Gradle
+**3.0.9**
+* #2: Flash the TitleBar is broken
+
+**3.0.8**
+* #1: Add an Automatic-Module-Name to MANIFEST.MF
+
+**3.0.5**
 * Made an important fix for Linux (see https://github.com/cmadsen/vldocking/pull/9)
 * Additional customization:
   * The background of `AutoHideButton`s is now customizable via the `AutoHideButton.background` key for `UIManager` (`Color` value)
   * The background of `AutoHideButtonPanel` is now customizable via the `AutoHideButtonPanel.background` key for `UIManager` (`Color` value)
   * Disable the gradient on `DockViewTitleBar` via the `DockViewTitleBar.disableCustomPaint` key for `UIManager` (`Boolean` value)
   * The border of the main `DockingDesktop` component can be set via the `DockingDesktop.border` key for `UIManager` (`Border` value)
-* Released version 3.0.5 with the above changes
 
 Changes introduced by cmadsen/vldocking:
 
@@ -35,7 +34,7 @@ Changes introduced by cmadsen/vldocking:
 <dependency>
 	<groupId>org.bidib.jbidib.com.vldocking</groupId>
 	<artifactId>vldocking</artifactId>
-	<version>3.0.8</version>
+	<version>3.0.9</version>
 </dependency>
 ```
 
@@ -44,7 +43,7 @@ Changes introduced by cmadsen/vldocking:
 Just add this to your `build.gradle` file's `dependencies` block:
 
 ```
-compile 'org.bidib.jbidib.com.vldocking:vldocking:3.0.8'
+compile 'org.bidib.jbidib.com.vldocking:vldocking:3.0.9'
 ```
 
 VLDocking, the swing docking framework
