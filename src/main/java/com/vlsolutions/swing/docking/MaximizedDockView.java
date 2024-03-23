@@ -34,6 +34,7 @@ public class MaximizedDockView extends DockView {
 
     public MaximizedDockView(Dockable dockable) {
         super(dockable, true);
+        setName("MaximizedDockView");
     }
 
     /** maximized dockable don't support drag and drop */

@@ -130,6 +130,7 @@ public class DockingSelectorDialog extends JDialog {
         super(owner, true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle(TITLE);
+        setName("DockingSelectorDialog");
         init();
     }
 

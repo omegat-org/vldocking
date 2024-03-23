@@ -133,7 +133,7 @@ public class AutoHideButton extends JLabel {
         DockKey key = dockable.getDockKey();
         this.dockable = dockable;
         this.key = key;
-
+        setName("AutoHideButton");
         int oldZone = this.zone;
         this.zone = zone;
         firePropertyChange("autohide.zone", oldZone, zone);

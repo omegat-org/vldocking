@@ -166,7 +166,7 @@ public class DockTabbedPane extends JTabbedPane
         int tabPlacement = UIManager.getInt("TabbedDockableContainer.tabPlacement");
         setTabLayoutPolicy(WRAP_TAB_LAYOUT);
         setTabPlacement(tabPlacement);
-
+        setName("DockTabbedPane");
         addMouseListener(new MouseAdapter() {
 
             // depending on the platform, pop-up is triggered either by mousePressed or mouseReleased
@@ -1104,4 +1104,5 @@ public class DockTabbedPane extends JTabbedPane
     public void endDragComponent(boolean dropped) {
         // nothing more to do
     }
+
 }

@@ -38,13 +38,13 @@ public class AutoHideButtonPanel extends JPanel {
     public static final String uiClassID = "AutoHideButtonPanelUI";
 
     /** <=> Zone */
-    private int border;
+    private final int border;
 
     /** highlight effect (rollover) on the contained buttons */
-    private ButtonHighlighter buttonHighlighter = new ButtonHighlighter();
+    private final ButtonHighlighter buttonHighlighter = new ButtonHighlighter();
 
     /** expansion management */
-    private AutoHideExpandPanel expandPanel;
+    private final AutoHideExpandPanel expandPanel;
 
     /**
      * Constructs a new AutoHideButtonPanel, with a shared expandPanel, and for a specified border zone.
@@ -59,6 +59,7 @@ public class AutoHideButtonPanel extends JPanel {
         boolean isHorizontal = (border == DockingConstants.INT_HIDE_TOP)
                 || (border == DockingConstants.INT_HIDE_BOTTOM);
         setLayout(new AutoHideBorderLayout(isHorizontal));
+    	setName("AutoHideButtonPanel");
 
         firePropertyChange("borderzone", -1, border);
     }

@@ -45,9 +45,10 @@ public class DockablePanel extends JPanel implements Dockable {
         setLayout(new BorderLayout());
         add(contained, BorderLayout.CENTER);
         this.key = key;
+        setName("DockablePanel");
     }
 
-    public DockKey getDockKey() {
+   public DockKey getDockKey() {
         return key;
     }
 

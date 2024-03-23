@@ -96,6 +96,7 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
     public FloatingDialog(Frame parent) {
         super(parent);
         // setIconImage(parent.getIconImage());
+        setName("FloatingDialog");
         init();
     }
 

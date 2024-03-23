@@ -48,6 +48,7 @@ public class CompoundDockingPanel extends JPanel implements DockDropReceiver {
     public CompoundDockingPanel(CompoundDockable dockable) {
         setLayout(new BorderLayout());
         this.dockable = dockable;
+        setName("CompoundDockingPanel");
     }
 
     /** act the same as a splitContainer : allow drop on the borders */
