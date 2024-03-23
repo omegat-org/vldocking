@@ -66,7 +66,6 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
 	private boolean isRollover, isPressed, isEnabled, isVisible;
 
 	/** Constructs a new button with an action.
-	 *
 	 * The button is enabled and visible.
 	 */
 	public SmartIconJButton(Action action) {
@@ -94,6 +93,7 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
 	}
 
 	/** Returns the rollover icon */
+	@SuppressWarnings("unused")
 	public Icon getRolloverIcon() {
 		return rolloverIcon;
 	}
@@ -104,16 +104,19 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
 	}
 
 	/** Returns the pressed icon */
+	@SuppressWarnings("unused")
 	public Icon getPressedIcon() {
 		return pressedIcon;
 	}
 
 	/** Update the disabled icon property */
+	@SuppressWarnings("unused")
 	public void setDisabledIcon(Icon icon) {
 		this.disabledIcon = icon;
 	}
 
 	/** Returns the disabled icon */
+	@SuppressWarnings("unused")
 	public Icon getDisabledIcon() {
 		return disabledIcon;
 	}
@@ -161,33 +164,33 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
 	/** paints the appropriate icon according to its internal state (pressed, rollover...)
 	 */
 	public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-		if(! isVisible) {
-			return;
-		} else if(isEnabled) {
-			if(isPressed) {
-				if(pressedIcon != null) {
-					pressedIcon.paintIcon(c, g, x, y);
-				} else {
-					defaultIcon.paintIcon(c, g, x + 1, y + 1);
-				}
-			} else if(isRollover) {
-				if(rolloverIcon != null) {
-					rolloverIcon.paintIcon(c, g, x, y);
-				} else {
-					defaultIcon.paintIcon(c, g, x - 1, y - 1); // "push" effect
-				}
-			} else { // just the default
-				if(defaultIcon != null) {
-					defaultIcon.paintIcon(c, g, x, y);
-				}
-			}
-		} else { // disabled
-			if(disabledIcon == null) {
-				disabledIcon = createDisabledIcon();
-			}
-			disabledIcon.paintIcon(c, g, x, y);
-		}
-	}
+        if (isVisible) {
+            if(isEnabled) {
+                if(isPressed) {
+                    if(pressedIcon != null) {
+                        pressedIcon.paintIcon(c, g, x, y);
+                    } else {
+                        defaultIcon.paintIcon(c, g, x + 1, y + 1);
+                    }
+                } else if(isRollover) {
+                    if(rolloverIcon != null) {
+                        rolloverIcon.paintIcon(c, g, x, y);
+                    } else {
+                        defaultIcon.paintIcon(c, g, x - 1, y - 1); // "push" effect
+                    }
+                } else { // just the default
+                    if(defaultIcon != null) {
+                        defaultIcon.paintIcon(c, g, x, y);
+                    }
+                }
+            } else { // disabled
+                if(disabledIcon == null) {
+                    disabledIcon = createDisabledIcon();
+                }
+                disabledIcon.paintIcon(c, g, x, y);
+            }
+        }
+    }
 
 	private Icon createDisabledIcon() {
 		if(defaultIcon instanceof ImageIcon) {
@@ -235,7 +238,9 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
 
 	/** triggers the associated action */
 	public void fireAction(ActionEvent e) {
-		action.actionPerformed(e);
+		if (action != null) {
+			action.actionPerformed(e);
+		}
 	}
 
 	public String getTooltipText() {
@@ -251,13 +256,19 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		// track changes in the Action 
 		String prop = evt.getPropertyName();
-		if(prop.equals(AbstractAction.SHORT_DESCRIPTION)) {
+        switch (prop) {
+		case AbstractAction.SHORT_DESCRIPTION:
 			setTooltipText((String) evt.getNewValue());
-		} else if(prop.equals(AbstractAction.SMALL_ICON)) {
+			break;
+		case AbstractAction.SMALL_ICON:
 			setIcon((Icon) evt.getNewValue());
-		} else if(prop.equals("enabled")) {
-			setEnabled(((Boolean) evt.getNewValue()).booleanValue());
-		}
+			break;
+		case "enabled":
+			setEnabled((Boolean) evt.getNewValue());
+			break;
+		default:
+			// do nothing.
+        }
 	}
 
 }
