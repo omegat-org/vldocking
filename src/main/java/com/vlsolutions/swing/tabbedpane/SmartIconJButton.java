@@ -239,7 +239,9 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
 
     /** triggers the associated action */
     public void fireAction(ActionEvent e) {
-        action.actionPerformed(e);
+        if (action != null) {
+            action.actionPerformed(e);
+        }
     }
 
     public String getTooltipText() {
@@ -261,7 +263,7 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
         } else if (prop.equals(AbstractAction.SMALL_ICON)) {
             setIcon((Icon) evt.getNewValue());
         } else if (prop.equals("enabled")) {
-            setEnabled(((Boolean) evt.getNewValue()).booleanValue());
+            setEnabled((Boolean) evt.getNewValue());
         }
     }
 }

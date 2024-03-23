@@ -117,11 +117,15 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         this.inBetweenOtherIconsGap = UIManager.getInt("TabbedPane.inBetweenOtherIconsGap");
         invalidateSize();
         originalHints = new RenderingHints(null);
+        Map hints = null;
         try {
-            defaultHints = (Map) Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
-        } catch (AWTError ignore) {
-            defaultHints = new RenderingHints(null);
+            hints = (Map) Toolkit.getDefaultToolkit().getDesktopProperty("awt.font.desktophints");
+        } catch (AWTError ignored) {
         }
+        if (hints == null) {
+            hints = new RenderingHints(null);
+        }
+        defaultHints = hints;
     }
 
     public SmartIconJButton getSmartButton(int index) {
@@ -142,8 +146,8 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     public Object clone() {
         try {
             return super.clone();
-        } catch (CloneNotSupportedException ignore) {
-            ignore.printStackTrace();
+        } catch (CloneNotSupportedException ignored) {
+            // ignored.printStackTrace();
             return null;
         }
     }
@@ -202,7 +206,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     /** paints the icon (and the associated label and sub-icons) */
     public void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
-        getRenderingHints(g2, defaultHints, originalHints);
+        getRenderingHints(g2);
         g2.addRenderingHints(defaultHints);
 
         if (icon != null) {
@@ -244,22 +248,17 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
      *
      * From: http://docs.oracle.com/javase/7/docs/api/java/awt/doc-files/DesktopProperties.html
      */
-    private Map getRenderingHints(Graphics2D g2d, Map hintsToSave, Map savedHints) {
-        if (savedHints == null) {
-            savedHints = new RenderingHints(null);
-        } else {
-            savedHints.clear();
-        }
-        if (hintsToSave.size() == 0) {
-            return savedHints;
+    private void getRenderingHints(Graphics2D g2d) {
+        originalHints.clear();
+        if (defaultHints.isEmpty()) {
+            return;
         }
         /* RenderingHints.keySet() returns Set */
-        for (Object o : hintsToSave.keySet()) {
+        for (Object o : defaultHints.keySet()) {
             RenderingHints.Key key = (RenderingHints.Key) o;
             Object value = g2d.getRenderingHint(key);
-            savedHints.put(key, value);
+            originalHints.put(key, value);
         }
-        return savedHints;
     }
 
     private SmartIconJButton findButtonAt(Point p) {
