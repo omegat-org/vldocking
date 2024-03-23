@@ -175,7 +175,27 @@ public class DockingSelectorDialog extends JDialog {
             }
         });
 
+<<<<<<< HEAD
         Action closeAction = new AbstractAction("Cancel") {
+=======
+			public void actionPerformed(ActionEvent actionEvent) {
+				closingState = CONFIRM;
+				for(int i = 0; i < model.states.length; i++) {
+					DockableState state = model.states[i];
+					boolean newVisible = visibleViews.get(state);
+					boolean oldVisible = state.getLocation() != DockableState.Location.CLOSED;
+					if(oldVisible != newVisible) {
+						if(newVisible) {
+							desktop.addDockable(state.getDockable(), state.getPosition());
+						} else {
+							desktop.close(state.getDockable());
+						}
+					}
+				}
+				DockingSelectorDialog.this.dispose();
+			}
+		});
+>>>>>>> f214f69 (refactor: avoid redundant cast)
 
             private static final long serialVersionUID = 1L;
 
@@ -330,6 +350,7 @@ public class DockingSelectorDialog extends JDialog {
             return null;
         }
 
+<<<<<<< HEAD
         public Object getValueAt(int row, int col) {
             DockableState state = states[row];
             switch (col) {
@@ -342,6 +363,51 @@ public class DockingSelectorDialog extends JDialog {
             }
             return null;
         }
+=======
+		public boolean isCellEditable(int row, int col) {
+			if(col != 2)
+				return false;
+			Dockable dockable = states[row].getDockable();
+			if(dockable.getDockKey().isCloseEnabled()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public Class getColumnClass(int col) {
+			switch(col) {
+				case 0:
+					return Icon.class;
+				case 1:
+					return String.class;
+				case 2:
+					return Boolean.class;
+			}
+			return null;
+		}
+
+		public Object getValueAt(int row, int col) {
+			DockableState state = states[row];
+			switch(col) {
+				case 0:
+					return state.getDockable().getDockKey().getIcon();
+				case 1:
+					return state.getDockable().getDockKey().getName();
+				case 2:
+					return visibleViews.get(state);
+			}
+			return null;
+		}
+
+		public void setValueAt(Object v, int row, int col) {
+			DockableState state = states[row];
+			visibleViews.put(state, (Boolean) v);
+
+		}
+
+	}
+>>>>>>> f214f69 (refactor: avoid redundant cast)
 
         public void setValueAt(Object v, int row, int col) {
             DockableState state = states[row];

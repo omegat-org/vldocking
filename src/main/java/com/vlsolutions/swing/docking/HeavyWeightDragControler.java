@@ -261,10 +261,9 @@ class HeavyWeightDragControler extends AbstractDragControler {
             // jdk1.5 only
             try {
                 // desktop.setComponentZOrder(this, -1); // on top
-                Method m = Container.class.getMethod("setComponentZOrder",
-                        new Class[] { Component.class, int.class });
-                m.invoke(getParent(), new Object[] { this, new Integer(0) });
-            } catch (Exception ignore) {
+                Method m = Container.class.getMethod("setComponentZOrder", Component.class, int.class);
+                m.invoke(getParent(), this, 0);
+            } catch (Exception ignored) {
             }
             label.setZOrder();
         }
@@ -377,9 +376,9 @@ class HeavyWeightDragControler extends AbstractDragControler {
                 // desktop.setComponentZOrder(this, -2); // on top of heavy panel
                 Method m = Container.class.getMethod("setComponentZOrder",
                         new Class[] { Component.class, int.class });
-                m.invoke(getParent(), new Object[] { this, new Integer(0) });
-            } catch (Exception ignore) {
-                ignore.printStackTrace();
+                m.invoke(getParent(), this, 0);
+            } catch (Exception ignored) {
+                ignored.printStackTrace();
             }
         }
 
