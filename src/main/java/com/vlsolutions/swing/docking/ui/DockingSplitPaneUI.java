@@ -55,6 +55,7 @@ public class DockingSplitPaneUI extends BasicSplitPaneUI {
      * 
      * @deprecated use UIManager.put("SplitContainer.drawDotsDelimitors", Boolean) instead
      */
+    @Deprecated
     public static void setDrawDelimitors(boolean draw) {
         drawDelimitors = draw;
     }
