@@ -374,7 +374,7 @@ public class DockTabbedPane extends JTabbedPane implements DockDropReceiver, Doc
 			//addTab(key.getName(), key.getIcon(), (Component)dc, key.getTooltip());
 			addTab("", smartIcon, (Component) dc, key.getTooltip());
 			//addTab(key.getName(),smartIcon, (Component) dc, key.getTooltip());
-			tab = getTabCount() - 1;
+			// tab = getTabCount() - 1;
 		} else {
 			//insertTab(key.getName(), key.getIcon(), (Component)dc, key.getTooltip(), tab);
 			insertTab("", smartIcon, (Component) dc, key.getTooltip(), tab);

@@ -49,7 +49,7 @@ import javax.swing.plaf.basic.BasicPanelUI;
  */
 public class AutoHideButtonPanelUI extends BasicPanelUI implements PropertyChangeListener {
 
-	private static AutoHideButtonPanelUI instance = new AutoHideButtonPanelUI();
+	private static final AutoHideButtonPanelUI instance = new AutoHideButtonPanelUI();
 
 	public static ComponentUI createUI(JComponent c) {
 		return instance;
