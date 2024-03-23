@@ -21,10 +21,8 @@ package com.vlsolutions.swing.toolbars;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -55,14 +53,14 @@ public class ToolBarIO {
 	 *
 	 * @see #readXML(InputStream)
 	 * */
-	public void writeXML(OutputStream stream) throws IOException {
-		PrintWriter out = new PrintWriter(stream);
-		out.println("<?xml version=\"1.0\"?>");
-		out.println("<VLToolBars version=\"1.0\">");
-		xmlWriteContainer(out);
-
-		out.println("</VLToolBars>");
-		out.flush();
+	public void writeXML(OutputStream stream) {
+		try (PrintWriter out = new PrintWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
+			out.println("<?xml version=\"1.0\"?>");
+			out.println("<VLToolBars version=\"1.0\">");
+			xmlWriteContainer(out);
+			out.println("</VLToolBars>");
+			out.flush();
+		}
 	}
 
 	private void xmlWriteContainer(PrintWriter out) {

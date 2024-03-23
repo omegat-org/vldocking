@@ -20,12 +20,8 @@ package com.vlsolutions.swing.docking.ws;
 
 import com.vlsolutions.swing.docking.DockingContext;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -55,7 +51,7 @@ import org.xml.sax.SAXException;
  */
 public class Workspace {
 
-	private ArrayList<WSDesktop> desktops = new ArrayList<WSDesktop>();
+	private final ArrayList<WSDesktop> desktops = new ArrayList<>();
 
 	/** Creates a workspace with a single default WSDesktop */
 	public Workspace() {
@@ -79,16 +75,16 @@ public class Workspace {
 
 	/** Returns the index-th desktop contained */
 	public WSDesktop getDesktop(int index) {
-		return (WSDesktop) desktops.get(index);
+		return desktops.get(index);
 	}
 
 	/** Returns a desktop identified by its name or null if not found */
 	public WSDesktop getDesktop(String desktopName) {
 		if(desktops.size() == 1) {
-			return (WSDesktop) desktops.get(0);
+			return desktops.get(0);
 		}
 		for(int i = 0; i < desktops.size(); i++) {
-			WSDesktop d = (WSDesktop) desktops.get(i);
+			WSDesktop d = desktops.get(i);
 			if(d.getDesktopName().equals(desktopName)) {
 				return d;
 			}
@@ -102,30 +98,26 @@ public class Workspace {
 	 * by this workspace layout.
 	 */
 	public void apply(DockingContext dockingContext) throws WorkspaceException {
-		ByteArrayOutputStream outb = new ByteArrayOutputStream();
-		PrintWriter out = new PrintWriter(outb);
-		out.println("<?xml version=\"1.0\"?>");
-		out.println("<VLDocking version=\"2.1\">");
-		for(int i = 0; i < desktops.size(); i++) {
-			WSDesktop desktop = (WSDesktop) desktops.get(i);
-			desktop.writeDesktopNode(out);
-		}
-		out.println("</VLDocking>");
-		out.close();
-		byte[] bytes = outb.toByteArray();
-		//System.out.println(new String(bytes));
-		ByteArrayInputStream is = new ByteArrayInputStream(bytes);
-		try {
-			dockingContext.readXML(is);
-		} catch(Exception ex) {
-			throw new WorkspaceException(ex);
-		} finally {
-			try {
-				is.close();
-			} catch(Exception ignore) {
+        try (ByteArrayOutputStream outb = new ByteArrayOutputStream()) {
+            try (PrintWriter out = new PrintWriter(new OutputStreamWriter(outb, StandardCharsets.UTF_8))) {
+                out.println("<?xml version=\"1.0\"?>");
+                out.println("<VLDocking version=\"2.1\">");
+                for (WSDesktop desktop : desktops) {
+                    desktop.writeDesktopNode(out);
+                }
+                out.println("</VLDocking>");
+            }
+			byte[] bytes = outb.toByteArray();
+			//System.out.println(new String(bytes));
+			try (ByteArrayInputStream is = new ByteArrayInputStream(bytes)) {
+				dockingContext.readXML(is);
+			} catch (Exception ex) {
+				throw new WorkspaceException(ex);
 			}
-		}
-	}
+		} catch (IOException ex) {
+			throw new WorkspaceException(ex);
+        }
+    }
 
 	/** Loads and configures this workspace from a given docking context.
 	 *<p>
@@ -158,17 +150,16 @@ public class Workspace {
 	 *
 	 * @see #readXML(InputStream)
 	 * */
-	public void writeXML(OutputStream stream) throws IOException {
-		PrintWriter out = new PrintWriter(stream);
-		out.println("<?xml version=\"1.0\"?>");
-		out.println("<VLDocking version=\"2.1\">");
-		for(int i = 0; i < desktops.size(); i++) {
-			WSDesktop desktop = (WSDesktop) desktops.get(i);
-			desktop.writeDesktopNode(out);
+	public void writeXML(OutputStream stream) {
+		try (PrintWriter out = new PrintWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
+			out.println("<?xml version=\"1.0\"?>");
+			out.println("<VLDocking version=\"2.1\">");
+            for (WSDesktop desktop : desktops) {
+                desktop.writeDesktopNode(out);
+            }
+			out.println("</VLDocking>");
+			out.flush();
 		}
-		out.println("</VLDocking>");
-
-		out.flush();
 	}
 
 	public void readXML(InputStream in) throws ParserConfigurationException, IOException, SAXException {
@@ -176,7 +167,7 @@ public class Workspace {
 		// remove all dockable states
 
 		for(int i = 0; i < desktops.size(); i++) {
-			WSDesktop desk = (WSDesktop) desktops.get(i);
+			WSDesktop desk = desktops.get(i);
 			desk.clear();
 		}
 

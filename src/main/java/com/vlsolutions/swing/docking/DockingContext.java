@@ -29,10 +29,8 @@ import com.vlsolutions.swing.docking.event.DockingActionListener;
 
 import java.awt.Window;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -243,16 +241,15 @@ public class DockingContext {
 	 * @see #readXML(InputStream)
 	 * */
 	public void writeXML(OutputStream stream) throws IOException {
-		PrintWriter out = new PrintWriter(stream);
-		out.println("<?xml version=\"1.0\"?>");
-		out.println("<VLDocking version=\"2.1\">");
-		for(int i = 0; i < desktops.size(); i++) {
-			DockingDesktop desktop = (DockingDesktop) desktops.get(i);
-			desktop.writeDesktopNode(out);
+		try (PrintWriter out = new PrintWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
+			out.println("<?xml version=\"1.0\"?>");
+			out.println("<VLDocking version=\"2.1\">");
+            for (DockingDesktop dockingDesktop : desktops) {
+                dockingDesktop.writeDesktopNode(out);
+            }
+			out.println("</VLDocking>");
+			out.flush();
 		}
-		out.println("</VLDocking>");
-
-		out.flush();
 	}
 
 	/** Reads an XML encoded stream as the new desktop configuration.

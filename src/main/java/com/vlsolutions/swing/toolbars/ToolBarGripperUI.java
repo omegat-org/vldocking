@@ -34,10 +34,10 @@ import javax.swing.plaf.ComponentUI;
 public class ToolBarGripperUI extends ComponentUI {
 
 	/** the "grip" (an alpha blended dot image, 3*3 pixels, hightlighted underneath ) */
-	protected static Image gripImage = new ImageIcon(ToolBarGripperUI.class.getResource("gripper.png")).getImage();
+	protected static final Image gripImage = new ImageIcon(ToolBarGripperUI.class.getResource("gripper.png")).getImage();
 
-	protected static Image gripExpandHImage = new ImageIcon(ToolBarGripperUI.class.getResource("grip_expand_h.png")).getImage();
-	protected static Image gripExpandVImage = new ImageIcon(ToolBarGripperUI.class.getResource("grip_expand_v.png")).getImage();
+	protected static final Image gripExpandHImage = new ImageIcon(ToolBarGripperUI.class.getResource("grip_expand_h.png")).getImage();
+	protected static final Image gripExpandVImage = new ImageIcon(ToolBarGripperUI.class.getResource("grip_expand_v.png")).getImage();
 
 	/** Constructs a new gripper UI */
 	public ToolBarGripperUI() {}

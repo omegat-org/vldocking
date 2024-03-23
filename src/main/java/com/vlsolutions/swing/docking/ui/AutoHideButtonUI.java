@@ -53,7 +53,7 @@ import javax.swing.plaf.basic.BasicLabelUI;
  */
 public class AutoHideButtonUI extends BasicLabelUI implements PropertyChangeListener {
 
-	protected static AutoHideButtonUI instance = new AutoHideButtonUI();
+	protected static final AutoHideButtonUI instance = new AutoHideButtonUI();
 
 	public AutoHideButtonUI() {}
 

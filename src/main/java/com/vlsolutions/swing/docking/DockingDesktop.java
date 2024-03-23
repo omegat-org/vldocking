@@ -44,10 +44,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1315,31 +1312,29 @@ public class DockingDesktop extends JLayeredPane {
 			DockingConstants.Split position) {
 		// should be used only when drag and dropping
 
-		if (base == null)
+		if (base == null) {
 			throw new NullPointerException("base");
-		Dockable firstDockable = tdc.getDockableAt(0);
-		DockableState currentState = getDockableState(firstDockable);
-		boolean stateChange = false;
-		if (currentState.isFloating()) {
-			removePreviousFloatingStates(tdc); // clear reference of the
-												// previous state
-			stateChange = true;
 		}
 
-		Container oldContainer = (Container) tdc;
-		int oldWidth = 0;
-		int oldHeight = 0;
-		if (oldContainer != null) {
+		int oldWidth;
+		int oldHeight;
+		boolean stateChange = false;
+		if (tdc instanceof Container) {
+			Container oldContainer = (Container) tdc;
 			oldWidth = oldContainer.getWidth();
 			oldHeight = oldContainer.getHeight();
+            DockableState currentState = getDockableState(tdc.getDockableAt(0));
+			if (currentState.isFloating()) {
+				removePreviousFloatingStates(tdc); // clear reference of the
+				// previous state
+				stateChange = true;
+			}
 		} else {
-			oldWidth = base.getWidth() / 2;
+            oldWidth = base.getWidth() / 2;
 			oldHeight = base.getHeight() / 2;
 		}
 
-		DockableContainer dockableContainer = tdc;
-
-		// create a new splitcontainer that will replace baseDockable's
+        // create a new splitcontainer that will replace baseDockable's
 		// container
 		SplitContainer split;
 		if (position == DockingConstants.SPLIT_TOP
@@ -1358,10 +1353,10 @@ public class DockingDesktop extends JLayeredPane {
 
 			if (position == DockingConstants.SPLIT_TOP
 					|| position == DockingConstants.SPLIT_LEFT) {
-				split.setLeftComponent((Component) dockableContainer);
+				split.setLeftComponent((Component) tdc);
 				split.setRightComponent(base);
 			} else {
-				split.setRightComponent((Component) dockableContainer);
+				split.setRightComponent((Component) tdc);
 				split.setLeftComponent(base);
 			}
 		} else {
@@ -1372,14 +1367,14 @@ public class DockingDesktop extends JLayeredPane {
 						split);
 				if (position == DockingConstants.SPLIT_TOP
 						|| position == DockingConstants.SPLIT_LEFT) {
-					split.setLeftComponent((Component) dockableContainer);
+					split.setLeftComponent((Component) tdc);
 					split.setRightComponent(dockingPanelChild);
 				} else {
-					split.setRightComponent((Component) dockableContainer);
+					split.setRightComponent((Component) tdc);
 					split.setLeftComponent(dockingPanelChild);
 				}
 			} else { // dockingpanel is empty
-				dockingPanel.add((Component) dockableContainer);
+				dockingPanel.add((Component) tdc);
 			}
 
 		}
@@ -1832,8 +1827,12 @@ public class DockingDesktop extends JLayeredPane {
 
 		DockableState currentState = getDockableState(dockable);
 		@SuppressWarnings("null")
-		boolean stateChange = currentState != null
-				|| currentState.isMaximized();
+		boolean stateChange;
+		if (currentState == null) {
+			stateChange = false;
+		} else {
+            stateChange = currentState.isMaximized();
+		}
 		DockableState newState = new DockableState(this, dockable,
 				DockableState.Location.DOCKED);
 		DockableState.Location currentLocation = getLocation(currentState);
@@ -3011,17 +3010,26 @@ public class DockingDesktop extends JLayeredPane {
 
 		Window desktopWindow = SwingUtilities.getWindowAncestor(this);
 		Point windowLocation;
-		if (desktopWindow != null) {
-			windowLocation = desktopWindow.getLocation();
-		} else {
-			windowLocation = new Point(); // fail safe
-		}
+		long x;
+		long y;
+		int width;
+		int height;
+        if (desktopWindow == null) {
+			x = 0;
+			y = 0;
+			width = 0;
+			height = 0;
+        } else {
+            windowLocation = desktopWindow.getLocation();
+			x = Math.round(windowLocation.getX());
+			y = Math.round(windowLocation.getY());
+			width = desktopWindow.getWidth();
+			height = desktopWindow.getHeight();
+        }
 
-		out.println("<DockingDesktop name=\"" + desktopName + "\">");
-		out.println("<DockingPanel x=\"" + (int) windowLocation.getX()
-				+ "\" y=\"" + (int) windowLocation.getY() + "\" width=\""
-				+ desktopWindow.getWidth() + "\" height=\""
-				+ desktopWindow.getHeight() + "\"" + ">");
+        out.println("<DockingDesktop name=\"" + desktopName + "\">");
+		out.println("<DockingPanel x=\"" + x + "\" y=\"" + y
+				+ "\" width=\"" + width + "\" height=\"" + height + "\"" + ">");
 		if (dockingPanel.getComponentCount() > 0) {
 			// only one top component (DockableContainer or SplitContainer)
 			xmlWriteComponent(dockingPanel.getComponent(0), out);
@@ -3037,9 +3045,9 @@ public class DockingDesktop extends JLayeredPane {
 
 		out.println("</DockingPanel>");
 
-		for (int i = 0; i < borderPanes.length; i++) {
-			xmlWriteBorder(borderPanes[i], out);
-		}
+        for (AutoHideButtonPanel borderPane : borderPanes) {
+            xmlWriteBorder(borderPane, out);
+        }
 
 		// finish with the floating dockables
 		xmlWriteFloating(out);
@@ -3072,11 +3080,12 @@ public class DockingDesktop extends JLayeredPane {
 
 		Window desktopWindow = SwingUtilities.getWindowAncestor(this);
 		Point windowLocation;
+		/*
 		if (desktopWindow != null) {
 			windowLocation = desktopWindow.getLocation();
 		} else {
 			windowLocation = new Point(); // fail safe
-		}
+		}*/
 
 		ArrayList<Dockable> floatingDockables = context.getDockablesByState(
 				this, DockableState.Location.FLOATING);

@@ -292,9 +292,6 @@ public class VLToolBar extends JPanel {
 	}
 
 	private void gripperDragged(MouseEvent e) {
-		// where are we ?
-		@SuppressWarnings("unused")
-		Component gripper = e.getComponent();
 		ToolBarPanel panel = (ToolBarPanel) this.getParent();
 		if(! (panel.getParent() instanceof ToolBarContainer)) { //2006/12/01
 			// this is a safety for users willing to include toolbar panels outside
