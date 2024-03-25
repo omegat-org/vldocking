@@ -25,18 +25,19 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
-/** A Helper class providing information about the visibility of user components.
+/**
+ * A Helper class providing information about the visibility of user components.
  * <p>
- * This dialog shows which user components are docked, auto-hidden,
- * not visible, and is capable of dynamicaly altering the dockingpanel layout
- * on user selection (for example, to show an unvisible component).
+ * This dialog shows which user components are docked, auto-hidden, not visible, and is capable of dynamicaly
+ * altering the dockingpanel layout on user selection (for example, to show an unvisible component).
  *
  * <p>
- * User components shown are those which are already docked and those
- * which have been registered with the registerDockableComponent() method of DockingPanel.
+ * User components shown are those which are already docked and those which have been registered with the
+ * registerDockableComponent() method of DockingPanel.
  *
  * <p>
  * Example of usage :
+ * 
  * <pre>
  * Frame f = ...  // frame containing the docking panel
  * DockingPanel dockingPanel = ...
@@ -57,17 +58,23 @@ import javax.swing.table.*;
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class DockingSelectorDialog extends JDialog {
 
     private static final long serialVersionUID = 1L;
 
-    /** Closing state of the dialog when the user has selected the <b>confirm</b> option
-     * @see #getClosingState() */
+    /**
+     * Closing state of the dialog when the user has selected the <b>confirm</b> option
+     * 
+     * @see #getClosingState()
+     */
     public static final int CONFIRM = 0;
 
-    /** Closing state of the dialog when the user has selected the <b>cancel</b> option
-     * @see #getClosingState() */
+    /**
+     * Closing state of the dialog when the user has selected the <b>cancel</b> option
+     * 
+     * @see #getClosingState()
+     */
     public static final int CANCEL = 1;
 
     private DockablesTableModel model;
@@ -90,21 +97,23 @@ public class DockingSelectorDialog extends JDialog {
             super.paintComponent(g);
         }
     };
-    private String wizardLabelText =
-            "<HTML><BODY><P>This window helps you to manage the " + " views composing your application workspace.</P>"
-                    + "<P><P>By clicking on the table checkboxes below, you can select if "
-                    + "a view will be diplayed or not </P>"
-                    + " <P><P> Click on the <b>Ok</b> button to apply your changes or on "
-                    + "the <b>Cancel</b> button if you do not want to save your changes." + " </BODY></HTML>";
+    private String wizardLabelText = "<HTML><BODY><P>This window helps you to manage the "
+            + " views composing your application workspace.</P>"
+            + "<P><P>By clicking on the table checkboxes below, you can select if "
+            + "a view will be diplayed or not </P>"
+            + " <P><P> Click on the <b>Ok</b> button to apply your changes or on "
+            + "the <b>Cancel</b> button if you do not want to save your changes." + " </BODY></HTML>";
 
     private int closingState = CANCEL;
 
-    private HashMap<DockableState, Boolean> visibleViews = new HashMap(); // DockableState / Boolean (visible?)
+    private HashMap<DockableState, Boolean> visibleViews = new HashMap(); // DockableState / Boolean
+                                                                          // (visible?)
 
-    /** Default constructor.
-     * <P> modal dialog with DISPOSE_ON_CLOSE option,
-     * needs a pack() and setVisible(true) after creation
-     * */
+    /**
+     * Default constructor.
+     * <P>
+     * modal dialog with DISPOSE_ON_CLOSE option, needs a pack() and setVisible(true) after creation
+     */
     public DockingSelectorDialog() {
         setModal(true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -112,9 +121,10 @@ public class DockingSelectorDialog extends JDialog {
         init();
     }
 
-    /** Constructor for Dialog parent window.
-     * <P> modal dialog with DISPOSE_ON_CLOSE option,
-     * needs a pack() and setVisible(true) after creation.
+    /**
+     * Constructor for Dialog parent window.
+     * <P>
+     * modal dialog with DISPOSE_ON_CLOSE option, needs a pack() and setVisible(true) after creation.
      */
     public DockingSelectorDialog(Dialog owner) {
         super(owner, true);
@@ -123,10 +133,11 @@ public class DockingSelectorDialog extends JDialog {
         init();
     }
 
-    /** Constructor for Frame parent window.
-     * <P> modal dialog with DISPOSE_ON_CLOSE option,
-     * needs a pack() and setVisible(true) after creation.
-     * */
+    /**
+     * Constructor for Frame parent window.
+     * <P>
+     * modal dialog with DISPOSE_ON_CLOSE option, needs a pack() and setVisible(true) after creation.
+     */
     public DockingSelectorDialog(Frame owner) {
         super(owner, true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -137,7 +148,8 @@ public class DockingSelectorDialog extends JDialog {
     private void init() {
         getContentPane().setLayout(new BorderLayout(5, 5));
         JScrollPane jsp = new JScrollPane(table);
-        jsp.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5), jsp.getBorder()));
+        jsp.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5),
+                jsp.getBorder()));
         getContentPane().add(jsp, BorderLayout.CENTER);
 
         confirmButton.setToolTipText("Close this window and update the views");
@@ -205,37 +217,41 @@ public class DockingSelectorDialog extends JDialog {
         });
     }
 
-    /** Change the confirm button text (hook for i18n)*/
+    /** Change the confirm button text (hook for i18n) */
     public void setConfirmButtonText(String text) {
         confirmButton.setText(text);
     }
 
-    /** Change the cancel button text (hook for i18n)*/
+    /** Change the cancel button text (hook for i18n) */
     public void setCancelButtonText(String text) {
         cancelButton.setText(text);
     }
 
-    /** Change the confirm button tooltip text (hook for i18n)*/
+    /** Change the confirm button tooltip text (hook for i18n) */
     public void setConfirmButtonTooltipText(String text) {
         confirmButton.setToolTipText(text);
     }
 
-    /** Change the cancel button tootip text (hook for i18n)*/
+    /** Change the cancel button tootip text (hook for i18n) */
     public void setCancelButtonTooltipText(String text) {
         cancelButton.setToolTipText(text);
     }
 
-    /** Change the wizard label text (an explanation of the behaviour of this dialog).
-     * <P>HTML format is supported like in any JLabel.
-     * */
+    /**
+     * Change the wizard label text (an explanation of the behaviour of this dialog).
+     * <P>
+     * HTML format is supported like in any JLabel.
+     */
     public void setWizardLabelText(String wizardLabelText) {
         this.wizardLabel.setText(wizardLabelText);
     }
 
-    /** Requiered to initialize this dialog.
-     * <P> Invoke this method before packing the dialog.
+    /**
+     * Requiered to initialize this dialog.
+     * <P>
+     * Invoke this method before packing the dialog.
      *
-     * */
+     */
     public void setDockingDesktop(DockingDesktop desktop) {
         this.desktop = desktop;
 
@@ -252,10 +268,11 @@ public class DockingSelectorDialog extends JDialog {
         table.setRowHeight(20);
     }
 
-    /** Returns the users close choice as CONFIRM or CANCEL (remember this dialog is modal).
-     * <P> Use this method if you need to know how is was closed.
-     * If the used has confirmed, the docking panel is automaticaly updated
-     * by the confirm button action.
+    /**
+     * Returns the users close choice as CONFIRM or CANCEL (remember this dialog is modal).
+     * <P>
+     * Use this method if you need to know how is was closed. If the used has confirmed, the docking panel is
+     * automaticaly updated by the confirm button action.
      */
     public int getClosingState() {
         return closingState;
@@ -265,16 +282,16 @@ public class DockingSelectorDialog extends JDialog {
 
         private static final long serialVersionUID = 1L;
 
-        String[] colNames = {" ", "Name", "Visible"};
+        String[] colNames = { " ", "Name", "Visible" };
 
         private DockableState[] states;
 
         DockablesTableModel(DockableState[] states) {
             this.states = states;
             for (int i = 0; i < states.length; i++) {
-                visibleViews.put(
-                        states[i],
-                        states[i].getLocation() == DockableState.Location.CLOSED ? Boolean.FALSE : Boolean.TRUE);
+                visibleViews.put(states[i],
+                        states[i].getLocation() == DockableState.Location.CLOSED ? Boolean.FALSE
+                                : Boolean.TRUE);
             }
         }
 
@@ -291,7 +308,8 @@ public class DockingSelectorDialog extends JDialog {
         }
 
         public boolean isCellEditable(int row, int col) {
-            if (col != 2) return false;
+            if (col != 2)
+                return false;
             Dockable dockable = states[row].getDockable();
             if (dockable.getDockKey().isCloseEnabled()) {
                 return true;
@@ -302,12 +320,12 @@ public class DockingSelectorDialog extends JDialog {
 
         public Class getColumnClass(int col) {
             switch (col) {
-                case 0:
-                    return Icon.class;
-                case 1:
-                    return String.class;
-                case 2:
-                    return Boolean.class;
+            case 0:
+                return Icon.class;
+            case 1:
+                return String.class;
+            case 2:
+                return Boolean.class;
             }
             return null;
         }
@@ -315,12 +333,12 @@ public class DockingSelectorDialog extends JDialog {
         public Object getValueAt(int row, int col) {
             DockableState state = states[row];
             switch (col) {
-                case 0:
-                    return state.getDockable().getDockKey().getIcon();
-                case 1:
-                    return state.getDockable().getDockKey().getName();
-                case 2:
-                    return (Boolean) visibleViews.get(state);
+            case 0:
+                return state.getDockable().getDockKey().getIcon();
+            case 1:
+                return state.getDockable().getDockKey().getName();
+            case 2:
+                return (Boolean) visibleViews.get(state);
             }
             return null;
         }

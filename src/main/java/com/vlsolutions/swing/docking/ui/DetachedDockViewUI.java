@@ -25,7 +25,8 @@ import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPanelUI;
 
-/** The UI of the "detached" (floating) dockview.
+/**
+ * The UI of the "detached" (floating) dockview.
  *
  * @see com.vlsolutions.swing.docking.DockView
  * @see com.vlsolutions.swing.docking.DetachedDockView
@@ -34,16 +35,20 @@ import javax.swing.plaf.basic.BasicPanelUI;
  */
 public class DetachedDockViewUI extends BasicPanelUI {
 
-    /* Note that this is not a subclass of DockViewUI, (to avoid border management problems due to ancestor listener) */
+    /*
+     * Note that this is not a subclass of DockViewUI, (to avoid border management problems due to ancestor
+     * listener)
+     */
 
     private static DetachedDockViewUI instance = new DetachedDockViewUI();
 
     @SuppressWarnings("unused")
     private Color highlight = UIManager.getColor("VLDocking.highlight");
 
-    public DetachedDockViewUI() {}
+    public DetachedDockViewUI() {
+    }
 
-    /**  Creates a UI for the given component (shared instance) */
+    /** Creates a UI for the given component (shared instance) */
     public static ComponentUI createUI(JComponent c) {
         return instance;
     }
@@ -52,10 +57,10 @@ public class DetachedDockViewUI extends BasicPanelUI {
     public void installUI(JComponent c) {
         super.installUI(c);
         c.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        /*    //BorderFactory.createCompoundBorder(
-           //BorderFactory.createEmptyBorder(1,0,0,0),
-           BorderFactory.createMatteBorder(0, 1,1,1, Color.GRAY));
-        */
+        /*
+         * //BorderFactory.createCompoundBorder( //BorderFactory.createEmptyBorder(1,0,0,0),
+         * BorderFactory.createMatteBorder(0, 1,1,1, Color.GRAY));
+         */
     }
 
     /** Uninstalls the component's UI */

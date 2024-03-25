@@ -18,7 +18,8 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-/** A constraint used to specify how a dockable is tied (anchored) to its containing parent .
+/**
+ * A constraint used to specify how a dockable is tied (anchored) to its containing parent .
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.1
@@ -39,18 +40,21 @@ public class AnchorConstraints {
 
     private int anchor;
 
-    /** Constructor for an immutable contraints
+    /**
+     * Constructor for an immutable contraints
      *
-     *@param anchor    value expressed as a bitwise OR between ANCHOR_ fields (for example ANCHOR_TOP|ANCHOR_LEFT)
+     * @param anchor
+     *            value expressed as a bitwise OR between ANCHOR_ fields (for example ANCHOR_TOP|ANCHOR_LEFT)
      *
      */
     public AnchorConstraints(int anchor) {
         this.anchor = anchor;
     }
 
-    /** Returns the anchor value of this contraints object.
+    /**
+     * Returns the anchor value of this contraints object.
      * <p>
-     *  Anchor is expressed as a bitwise OR between ANCHOR_ fields (for example ANCHOR_TOP|ANCHOR_LEFT)
+     * Anchor is expressed as a bitwise OR between ANCHOR_ fields (for example ANCHOR_TOP|ANCHOR_LEFT)
      */
     public int getAnchor() {
         return anchor;

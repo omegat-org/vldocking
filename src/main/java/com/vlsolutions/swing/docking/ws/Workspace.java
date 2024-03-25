@@ -31,16 +31,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-/** A logical organization of dockables. Used to define and save desktop layouts (xml loading in not supported yet).
- *<p>
+/**
+ * A logical organization of dockables. Used to define and save desktop layouts (xml loading in not supported
+ * yet).
+ * <p>
  * A Workspace is composed of WSDesktop elements (one per involved desktop).
  * <p>
  * Each WSDesktop supports an API similar to the DockingDesktop (addDockable, split, createTab), where
  * arguments are simple DockKeys (and not Dockables).
  *
- * <p> Currently this version doesn't support dockable removal : you can create a workspace, but shouldn't alter its
- * layout by moving already positionned dockables elsewhere (e.g. workspace will fail if you install a dockable
- * on an auto-hide border, then add is as a docked tab later).
+ * <p>
+ * Currently this version doesn't support dockable removal : you can create a workspace, but shouldn't alter
+ * its layout by moving already positionned dockables elsewhere (e.g. workspace will fail if you install a
+ * dockable on an auto-hide border, then add is as a docked tab later).
  *
  *
  * @author Lilian Chamontin, VLSolutions
@@ -89,10 +92,10 @@ public class Workspace {
         return null;
     }
 
-    /** Applies this workspace to the given docking context (this is equivalent as loading a
-     * workspace file from DockingContext.readXML() : it removes every dockable from the context and
-     * associated desktops, and clears their dockable states, then it reloads the dockables as specified
-     * by this workspace layout.
+    /**
+     * Applies this workspace to the given docking context (this is equivalent as loading a workspace file
+     * from DockingContext.readXML() : it removes every dockable from the context and associated desktops, and
+     * clears their dockable states, then it reloads the dockables as specified by this workspace layout.
      */
     public void apply(DockingContext dockingContext) throws WorkspaceException {
         try (ByteArrayOutputStream outb = new ByteArrayOutputStream()) {
@@ -116,9 +119,11 @@ public class Workspace {
         }
     }
 
-    /** Loads and configures this workspace from a given docking context.
-     *<p>
+    /**
+     * Loads and configures this workspace from a given docking context.
+     * <p>
      * The workspace is then ready to be applied or saved as a stream.
+     * 
      * @since 2.1.3
      * @see #apply(DockingContext)
      */
@@ -137,16 +142,17 @@ public class Workspace {
         }
     }
 
-    /** Saves the workspace layout into an XML stream.
+    /**
+     * Saves the workspace layout into an XML stream.
      * <p>
-     * The workspace is composed of every desktop layouts associated
-     * with this workspace (desktops are identified by their 'desktopName' property).
+     * The workspace is composed of every desktop layouts associated with this workspace (desktops are
+     * identified by their 'desktopName' property).
      *
      * <p>
      * The stream is not closed at the end of the operation.
      *
      * @see #readXML(InputStream)
-     * */
+     */
     public void writeXML(OutputStream stream) {
         try (PrintWriter out = new PrintWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
             out.println("<?xml version=\"1.0\"?>");

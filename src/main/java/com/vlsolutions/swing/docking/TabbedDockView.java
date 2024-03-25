@@ -25,7 +25,8 @@ import java.awt.Component;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-/** A DockView that can be nested into a TabbedDockableContainer
+/**
+ * A DockView that can be nested into a TabbedDockableContainer
  *
  * @author Lilian Chamontin, VLSolutions
  */

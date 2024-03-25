@@ -34,25 +34,28 @@ import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
-/** An Icon allowing the use of closeable tabs by simulating the entire tabpane tab-painting.
+/**
+ * An Icon allowing the use of closeable tabs by simulating the entire tabpane tab-painting.
  *
- *<p>
- * As JTabbedPanes cannot use any JComponents as tab selectors (the access if protected and we just have
- * a label, an icon and a tooltip), we have to rely on tricks to bypass them.
+ * <p>
+ * As JTabbedPanes cannot use any JComponents as tab selectors (the access if protected and we just have a
+ * label, an icon and a tooltip), we have to rely on tricks to bypass them.
  *
  *
  *
  * @author Lilian Chamontin, VLSolutions
  * @update 2005/11/01 Lilian Chamontin : fixed NPE when otherIcons == null (tabs without smart icons)
- * @update 2005/11/08 Lilian Chamontin : fixed bug related to event management when multiple other-icons are used
- * (big thanks to Emmanuel GAUVRIT).
+ * @update 2005/11/08 Lilian Chamontin : fixed bug related to event management when multiple other-icons are
+ *         used (big thanks to Emmanuel GAUVRIT).
  * @update 2005/11/21 Lilian Chamontin : enhanced width calculation of the icon size.
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class JTabbedPaneSmartIcon implements Icon, Cloneable {
 
-    /* Implementation : This icon is larger than standard icons : it also paints the tab title and optional buttons.
-     * Inner Event management (with JTabbedPaneSmartIconManager) allows simulation of action on the buttons.
+    /*
+     * Implementation : This icon is larger than standard icons : it also paints the tab title and optional
+     * buttons. Inner Event management (with JTabbedPaneSmartIconManager) allows simulation of action on the
+     * buttons.
      *
      */
 
@@ -62,7 +65,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     /** calculated used width (icon + label + other icons) + gaps */
     private int width;
 
-    /** x location where the other icons are drawn*/
+    /** x location where the other icons are drawn */
     private int otherIconsOffset;
 
     /** tab height */
@@ -71,11 +74,12 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     /** the traditional tab selector label */
     private String label;
 
-    /** the traditional tab selector tooltip text*/
+    /** the traditional tab selector tooltip text */
     private String tooltipText;
 
-    /** local tooltip text : the one to use during mouse movements (depends on the mouse position,
-     * and can be either the tab selector tooltip text or one of the smart buttons included into this icon).
+    /**
+     * local tooltip text : the one to use during mouse movements (depends on the mouse position, and can be
+     * either the tab selector tooltip text or one of the smart buttons included into this icon).
      */
     private String localTooltipText;
 
@@ -88,10 +92,10 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     /** currently rolled-over inner button */
     private SmartIconJButton rolloverButton;
 
-    /** gap between the icon and the text*/
+    /** gap between the icon and the text */
     private int textIconGap;
 
-    /** gap between the text and the following icons*/
+    /** gap between the text and the following icons */
     private int otherIconsGap;
 
     private Map defaultHints;
@@ -154,7 +158,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         return this.tooltipText;
     }
 
-    /** Return the local tooltip of this icon (the one associated with inner mouse movements)*/
+    /** Return the local tooltip of this icon (the one associated with inner mouse movements) */
     public String getLocalTooltipText() {
         return this.localTooltipText;
     }
@@ -185,9 +189,11 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         this.width = this.height = -1;
     }
 
-    /** Specify which container will use this icon.
-     * <p> If the icon is shared between containers, please provide at least one as
-     * this allows the icon to properly estimate its dimension.
+    /**
+     * Specify which container will use this icon.
+     * <p>
+     * If the icon is shared between containers, please provide at least one as this allows the icon to
+     * properly estimate its dimension.
      */
     public void setIconForTabbedPane(JTabbedPane container) {
         this.container = container;
@@ -219,7 +225,8 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         }
         if (otherIcons != null) { // 2005/11/01
             for (int i = 0; i < otherIcons.length; i++) {
-                otherIcons[i].paintIcon(c, g, x + iconsOffset, y + height / 2 - otherIcons[i].getIconHeight() / 2);
+                otherIcons[i].paintIcon(c, g, x + iconsOffset,
+                        y + height / 2 - otherIcons[i].getIconHeight() / 2);
                 iconsOffset += otherIcons[i].getIconWidth();
                 if (i < otherIcons.length - 1) {
                     iconsOffset += inBetweenOtherIconsGap;
@@ -231,11 +238,9 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     }
 
     /**
-     * Get rendering hints from a Graphics instance.
-     * "hintsToSave" is a Map of RenderingHint key-values.
-     * For each hint key present in that map, the value of that
-     * hint is obtained from the Graphics and stored as the value
-     * for the key in savedHints.
+     * Get rendering hints from a Graphics instance. "hintsToSave" is a Map of RenderingHint key-values. For
+     * each hint key present in that map, the value of that hint is obtained from the Graphics and stored as
+     * the value for the key in savedHints.
      *
      * From: http://docs.oracle.com/javase/7/docs/api/java/awt/doc-files/DesktopProperties.html
      */
@@ -263,7 +268,8 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
             for (int i = 0; i < otherIcons.length; i++) {
                 SmartIconJButton btn = otherIcons[i];
                 if (p.x >= start && p.x < start + btn.getIconWidth()) {
-                    if (p.y >= height / 2 - btn.getIconHeight() / 2 && p.y < height / 2 + btn.getIconHeight() / 2) {
+                    if (p.y >= height / 2 - btn.getIconHeight() / 2
+                            && p.y < height / 2 + btn.getIconHeight() / 2) {
                         return btn;
                     } else {
                         return null;
@@ -316,14 +322,16 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
             if (icon != null) {
                 height = icon.getIconHeight();
             } else {
-                height = 16; // standard height (as if there was an icon) : should be calculated instead of fixed
+                height = 16; // standard height (as if there was an icon) : should be calculated instead of
+                             // fixed
             }
         }
         return height;
     }
 
-    /** Process the mouse pressed event.
-     *<p>
+    /**
+     * Process the mouse pressed event.
+     * <p>
      * Mouse coordinates are given relative to this icon
      */
     public boolean onMousePressed(MouseEvent e) {
@@ -337,8 +345,9 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         return false;
     }
 
-    /** Process the mouse released event.
-     *<p>
+    /**
+     * Process the mouse released event.
+     * <p>
      * Mouse coordinates are given relative to this icon
      */
     public boolean onMouseReleased(final MouseEvent e) {
@@ -353,8 +362,9 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         return false;
     }
 
-    /** Process the mouse exited event.
-     *<p>
+    /**
+     * Process the mouse exited event.
+     * <p>
      * Mouse coordinates are given relative to this icon
      */
     public boolean onMouseExited(MouseEvent e) {
@@ -369,8 +379,9 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         return false;
     }
 
-    /** Process the mouse moved event.
-     *<p>
+    /**
+     * Process the mouse moved event.
+     * <p>
      * Mouse coordinates are given relative to this icon
      */
     public boolean onMouseMoved(MouseEvent e) {

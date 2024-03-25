@@ -18,8 +18,8 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-/** A Basic factory providing a lightweight and heavyweight implementation of the
- * DragControler interface
+/**
+ * A Basic factory providing a lightweight and heavyweight implementation of the DragControler interface
  *
  * @author Lilian Chamontin, vlsolutions.
  */

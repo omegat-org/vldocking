@@ -20,11 +20,11 @@ package com.vlsolutions.swing.docking;
 
 import java.awt.*;
 
-/** A layout adapted to autohide panels.
+/**
+ * A layout adapted to autohide panels.
  * <p>
- * This layout is like a BorderLayout but corners are always empty
- * (for example, the TOP component starts with an x coordinate equal to the
- * width of the LEFT component).
+ * This layout is like a BorderLayout but corners are always empty (for example, the TOP component starts with
+ * an x coordinate equal to the width of the LEFT component).
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
@@ -33,7 +33,8 @@ public class DockingBorderLayout implements LayoutManager2 {
 
     Component topComp, leftComp, bottomComp, rightComp, centerComp;
 
-    public DockingBorderLayout() {}
+    public DockingBorderLayout() {
+    }
 
     public float getLayoutAlignmentX(Container target) {
         return 0.5F;
@@ -43,7 +44,8 @@ public class DockingBorderLayout implements LayoutManager2 {
         return 0.5F;
     }
 
-    public void invalidateLayout(Container target) {}
+    public void invalidateLayout(Container target) {
+    }
 
     public Dimension maximumLayoutSize(Container target) {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -53,7 +55,8 @@ public class DockingBorderLayout implements LayoutManager2 {
         addLayoutComponent((String) constraints, comp);
     }
 
-    public void removeLayoutComponent(Component comp) {}
+    public void removeLayoutComponent(Component comp) {
+    }
 
     public void addLayoutComponent(String name, Component comp) {
         if (name.equals(BorderLayout.NORTH)) {
@@ -148,18 +151,23 @@ public class DockingBorderLayout implements LayoutManager2 {
     }
 
     private int getSideWidth(Component comp) {
-        if (comp == null) return 0;
-        if (comp.isVisible()) return comp.getPreferredSize().width;
+        if (comp == null)
+            return 0;
+        if (comp.isVisible())
+            return comp.getPreferredSize().width;
         return 0;
     }
 
     private int getSideHeight(Component comp) {
-        if (comp == null) return 0;
-        if (comp.isVisible()) return comp.getPreferredSize().height;
+        if (comp == null)
+            return 0;
+        if (comp.isVisible())
+            return comp.getPreferredSize().height;
         return 0;
     }
 
-    /** overridden to adjust position (x(top) = width(left), y(left) = height(top)
+    /**
+     * overridden to adjust position (x(top) = width(left), y(left) = height(top)
      */
     public void layoutContainer(Container target) {
         synchronized (target.getTreeLock()) {

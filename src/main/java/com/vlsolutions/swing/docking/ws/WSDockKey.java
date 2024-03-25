@@ -20,18 +20,18 @@ package com.vlsolutions.swing.docking.ws;
 
 import com.vlsolutions.swing.docking.DockingConstants;
 
-/** Defines a key associated to a dockable in a workspace.
+/**
+ * Defines a key associated to a dockable in a workspace.
  *
- * The internal "key" will have to match the one of a DockKey when the
- * worspace is applied to a DockingContext.
+ * The internal "key" will have to match the one of a DockKey when the worspace is applied to a
+ * DockingContext.
  *
- * <p> example :
- * if your application uses a dockable with DockKey k = new DockKey("testDockable"); <br>
+ * <p>
+ * example : if your application uses a dockable with DockKey k = new DockKey("testDockable"); <br>
  * than your corresponding WSDockKey will be wsdk = new WSDockKey("testDockable");
  * <p>
- *  Design note : We use this class insted of DockKey because sometimes dockkeys are lazily
- *  created (at dockable creation) and thus aren't already available when specifying a
- *  workspace.
+ * Design note : We use this class insted of DockKey because sometimes dockkeys are lazily created (at
+ * dockable creation) and thus aren't already available when specifying a workspace.
  *
  * @author Lilian Chamontin, VLSolutions
  */
@@ -66,7 +66,7 @@ public class WSDockKey {
         return key;
     }
 
-    /** Returns the autohide border of this dockable, or null if not set*/
+    /** Returns the autohide border of this dockable, or null if not set */
     public DockingConstants.Hide getAutoHideBorder() {
         return autoHideBorder;
     }

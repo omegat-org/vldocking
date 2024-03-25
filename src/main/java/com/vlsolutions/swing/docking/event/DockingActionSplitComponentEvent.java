@@ -24,7 +24,8 @@ import com.vlsolutions.swing.docking.DockingConstants;
 import com.vlsolutions.swing.docking.DockingDesktop;
 import java.awt.Component;
 
-/** A DockingActionEvent describing a split action (from a base component (splitcontainer, tab...)).
+/**
+ * A DockingActionEvent describing a split action (from a base component (splitcontainer, tab...)).
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.1
@@ -38,14 +39,9 @@ public class DockingActionSplitComponentEvent extends DockingActionDockableEvent
     private DockingConstants.Split splitPosition;
 
     /** Constructs a new event */
-    public DockingActionSplitComponentEvent(
-            DockingDesktop desktop,
-            Dockable dockable,
-            DockableState.Location initialLocation,
-            DockableState.Location nextLocation,
-            Component base,
-            DockingConstants.Split splitPosition,
-            float dividorLocation) {
+    public DockingActionSplitComponentEvent(DockingDesktop desktop, Dockable dockable,
+            DockableState.Location initialLocation, DockableState.Location nextLocation, Component base,
+            DockingConstants.Split splitPosition, float dividorLocation) {
         super(desktop, dockable, initialLocation, nextLocation, ACTION_SPLIT_COMPONENT);
         this.base = base;
         this.dividorLocation = dividorLocation;
@@ -53,20 +49,15 @@ public class DockingActionSplitComponentEvent extends DockingActionDockableEvent
         this.splitPosition = splitPosition;
     }
 
-    /** Constructs a new event.
-     *<p>
-     * This version of the constructor also contains resizing information for the parent of
-     * thhe splitted component.
+    /**
+     * Constructs a new event.
+     * <p>
+     * This version of the constructor also contains resizing information for the parent of thhe splitted
+     * component.
      */
-    public DockingActionSplitComponentEvent(
-            DockingDesktop desktop,
-            Dockable dockable,
-            DockableState.Location initialLocation,
-            DockableState.Location nextLocation,
-            Component base,
-            DockingConstants.Split splitPosition,
-            float dividorLocation,
-            float parentDividorLocation) {
+    public DockingActionSplitComponentEvent(DockingDesktop desktop, Dockable dockable,
+            DockableState.Location initialLocation, DockableState.Location nextLocation, Component base,
+            DockingConstants.Split splitPosition, float dividorLocation, float parentDividorLocation) {
         super(desktop, dockable, initialLocation, nextLocation, ACTION_SPLIT_COMPONENT);
         this.base = base;
         this.dividorLocation = dividorLocation;
@@ -83,11 +74,11 @@ public class DockingActionSplitComponentEvent extends DockingActionDockableEvent
         return dividorLocation;
     }
 
-    /** returns a dividor location value for the parent split container, or -1 if not needed
-     *<p>
-     * This value is used to express inserting a component with same orientation of the
-     * parent split container (like : transform A|B into [A|child]|B : we need to adjust
-     * A|child dividor, and also [] | B dividor).
+    /**
+     * returns a dividor location value for the parent split container, or -1 if not needed
+     * <p>
+     * This value is used to express inserting a component with same orientation of the parent split container
+     * (like : transform A|B into [A|child]|B : we need to adjust A|child dividor, and also [] | B dividor).
      */
     public float getParentDividorLocation() {
         return parentDividorLocation;

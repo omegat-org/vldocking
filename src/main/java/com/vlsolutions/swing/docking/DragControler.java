@@ -22,7 +22,8 @@ import java.awt.Shape;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-/** This interface defines the features required for a drag controler.
+/**
+ * This interface defines the features required for a drag controler.
  *
  * @since 3.0
  * @author Lilian Chamontin, vlsolutions.

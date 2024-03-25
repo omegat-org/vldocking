@@ -34,8 +34,8 @@ import javax.swing.plaf.PanelUI;
  * This is the UI delegate for the DockView class.
  *
  * <p>
- * Default behaviour in to install a shadow border on the dockview, but this can
- * be replaced by overriding the 3 install<i>XXX</i>DockableBorder methods.
+ * Default behaviour in to install a shadow border on the dockview, but this can be replaced by overriding the
+ * 3 install<i>XXX</i>DockableBorder methods.
  *
  * @author Lilian Chamontin, VLSolutions
  *
@@ -44,14 +44,15 @@ import javax.swing.plaf.PanelUI;
 public class DockViewUI extends PanelUI {
 
     /**
-     * Ancestor listener used to install different borders depending on the
-     * usage of the dock view (docked, maximized, tabbed).
+     * Ancestor listener used to install different borders depending on the usage of the dock view (docked,
+     * maximized, tabbed).
      */
     protected ViewAncestorListener ancestorListener = new ViewAncestorListener();
 
     private static DockViewUI instance = new DockViewUI();
 
-    public DockViewUI() {}
+    public DockViewUI() {
+    }
 
     public static ComponentUI createUI(JComponent c) {
         return instance;
@@ -77,8 +78,8 @@ public class DockViewUI extends PanelUI {
     }
 
     /**
-     * Installs a border when the DockView target is a SingleDockableContainer
-     * (not nested in a tabbed container )
+     * Installs a border when the DockView target is a SingleDockableContainer (not nested in a tabbed
+     * container )
      *
      * <p>
      * default is a shadowed border.
@@ -89,8 +90,7 @@ public class DockViewUI extends PanelUI {
     }
 
     /**
-     * Installs a border when the DockView target is included in a
-     * TabbedDockableContainer.
+     * Installs a border when the DockView target is included in a TabbedDockableContainer.
      *
      * <p>
      * Default is a shadow border without top and left shadows
@@ -102,8 +102,7 @@ public class DockViewUI extends PanelUI {
     }
 
     /**
-     * Installs a border when the DockView target is unique on the desktop
-     * (mamimized, or alone)
+     * Installs a border when the DockView target is unique on the desktop (mamimized, or alone)
      *
      * <p>
      * Default is a shadow border without top and left shadows
@@ -128,8 +127,10 @@ public class DockViewUI extends PanelUI {
             }
         }
 
-        public void ancestorMoved(AncestorEvent ancestorEvent) {}
+        public void ancestorMoved(AncestorEvent ancestorEvent) {
+        }
 
-        public void ancestorRemoved(AncestorEvent ancestorEvent) {}
+        public void ancestorRemoved(AncestorEvent ancestorEvent) {
+        }
     }
 }

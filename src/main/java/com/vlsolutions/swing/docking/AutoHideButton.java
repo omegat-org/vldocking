@@ -26,10 +26,11 @@ import java.awt.event.ActionListener;
 import java.beans.*;
 import javax.swing.*;
 
-/** The button used to show Dockables in auto-hide borders.
+/**
+ * The button used to show Dockables in auto-hide borders.
  * <p>
- * This component displays the label, tooltip and icon properties of a
- * <code>Dockable</code>'s DockKey, with a custom look and feel.
+ * This component displays the label, tooltip and icon properties of a <code>Dockable</code>'s DockKey, with a
+ * custom look and feel.
  *
  *
  * @author Lilian Chamontin, vlsolutions.
@@ -102,7 +103,8 @@ public class AutoHideButton extends JLabel {
         }
     };
 
-    public AutoHideButton() {}
+    public AutoHideButton() {
+    }
 
     /** Sets the background color according to the <code>notification</code> boolean */
     private void setNotification(boolean notification) {
@@ -126,7 +128,7 @@ public class AutoHideButton extends JLabel {
         return key;
     }
 
-    /** Initialize the button for a Dockable and a border zone  */
+    /** Initialize the button for a Dockable and a border zone */
     public void init(Dockable dockable, int zone) {
         DockKey key = dockable.getDockKey();
         this.dockable = dockable;
@@ -159,8 +161,7 @@ public class AutoHideButton extends JLabel {
         } else {
             Dimension d = super.getPreferredSize();
             Insets i = getInsets();
-            return new Dimension(
-                    d.height - i.top - i.bottom + i.left + i.right,
+            return new Dimension(d.height - i.top - i.bottom + i.left + i.right,
                     d.width - i.left - i.right + i.top + i.bottom); // rotate the shape
         }
     }
@@ -171,8 +172,7 @@ public class AutoHideButton extends JLabel {
         } else {
             Insets i = getInsets();
             Dimension d = super.getMaximumSize();
-            return new Dimension(
-                    d.height - i.top - i.bottom + i.left + i.right,
+            return new Dimension(d.height - i.top - i.bottom + i.left + i.right,
                     d.width - i.left - i.right + i.top + i.bottom); // rotate the shape
         }
     }
@@ -183,13 +183,12 @@ public class AutoHideButton extends JLabel {
         } else {
             Insets i = getInsets();
             Dimension d = super.getMinimumSize();
-            return new Dimension(
-                    d.height - i.top - i.bottom + i.left + i.right,
+            return new Dimension(d.height - i.top - i.bottom + i.left + i.right,
                     d.width - i.left - i.right + i.top + i.bottom); // rotate the shape
         }
     }
 
-    /** Returns the border zone of this button*/
+    /** Returns the border zone of this button */
     public int getZone() {
         return zone;
     }

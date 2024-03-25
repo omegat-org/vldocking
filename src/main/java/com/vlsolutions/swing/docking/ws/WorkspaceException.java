@@ -18,8 +18,8 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking.ws;
 
-/** An exception raised when a workspace operation has gone wrong (can encapsulate
- * another exception).
+/**
+ * An exception raised when a workspace operation has gone wrong (can encapsulate another exception).
  *
  * @author Lilian Chamontin, VLSolutions
  */

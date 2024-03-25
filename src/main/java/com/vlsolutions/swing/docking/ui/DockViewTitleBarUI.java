@@ -49,17 +49,19 @@ import javax.swing.event.AncestorListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.PanelUI;
 
-/** A UI for the {@link com.vlsolutions.swing.docking.DockViewTitleBar}.
+/**
+ * A UI for the {@link com.vlsolutions.swing.docking.DockViewTitleBar}.
  *
  * @author Lilian Chamontin, VLSolutions
  * @author Andrew Carlson, HypnoRabbit Studios
  * @since 2.0
- * @update 2006/12/01 Lilian Chamontin : added client property support for dockKey, and react to visibleTitleBar
+ * @update 2006/12/01 Lilian Chamontin : added client property support for dockKey, and react to
+ *         visibleTitleBar
  * @update 2007/01/08 Lilian Chamontin : added support for autohide/dock disabled when hidden
  */
 public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListener {
 
-    /* hack to use custom painting except on mac os (ugly opacity effects)  */
+    /* hack to use custom painting except on mac os (ugly opacity effects) */
     private static boolean useCustomPaint = !System.getProperty("os.name").contains("OS X")
             && !UIManager.getBoolean("DockViewTitleBar.disableCustomPaint");
 
@@ -114,21 +116,25 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
 
     // flags to hide/show buttons in the title bar (they are always visible in the contextual menu, but might
     // take too much space on the titles (for example a minimum set could be hide/float/close
-    //  as maximize is accessed by double click)
+    // as maximize is accessed by double click)
     private boolean isCloseButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isCloseButtonDisplayed");
     private boolean isHideButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isHideButtonDisplayed");
     private boolean isDockButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isDockButtonDisplayed");
-    private boolean isMaximizeButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isMaximizeButtonDisplayed");
-    private boolean isRestoreButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isRestoreButtonDisplayed");
+    private boolean isMaximizeButtonDisplayed = UIManager
+            .getBoolean("DockViewTitleBar.isMaximizeButtonDisplayed");
+    private boolean isRestoreButtonDisplayed = UIManager
+            .getBoolean("DockViewTitleBar.isRestoreButtonDisplayed");
     private boolean isFloatButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isFloatButtonDisplayed");
-    private boolean isAttachButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isAttachButtonDisplayed");
+    private boolean isAttachButtonDisplayed = UIManager
+            .getBoolean("DockViewTitleBar.isAttachButtonDisplayed");
 
     protected DockViewTitleBar titleBar;
 
-    /* This ancestor listener is required as buttons may change according to container hierarchy.
-     * The first example is when a dockable is added to a floating + compund dockable, the attach
-     * button (which usually becomes visible as the dockable is in the floating state) has to be hidden
-     * (tech choice : we don't want to allow attaching a single child of a compound dockable)
+    /*
+     * This ancestor listener is required as buttons may change according to container hierarchy. The first
+     * example is when a dockable is added to a floating + compund dockable, the attach button (which usually
+     * becomes visible as the dockable is in the floating state) has to be hidden (tech choice : we don't want
+     * to allow attaching a single child of a compound dockable)
      *
      */
     private AncestorListener ancestorListener = new AncestorListener() {
@@ -137,9 +143,11 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
             configureButtons(titleBar);
         }
 
-        public void ancestorMoved(AncestorEvent event) {}
+        public void ancestorMoved(AncestorEvent event) {
+        }
 
-        public void ancestorRemoved(AncestorEvent event) {}
+        public void ancestorRemoved(AncestorEvent event) {
+        }
     };
 
     public DockViewTitleBarUI(DockViewTitleBar tb) {
@@ -167,7 +175,8 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
             titleBar.getDockable().getDockKey().addPropertyChangeListener(this);
             configureButtons(titleBar);
         }
-        c.setCursor(Cursor.getDefaultCursor()); // needs this to avoid artifacts with floating dockable borders.
+        c.setCursor(Cursor.getDefaultCursor()); // needs this to avoid artifacts with floating dockable
+                                                // borders.
     }
 
     protected void layoutTitleBar() {
@@ -202,7 +211,7 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
         }
     }
 
-    /**  Installs default on the titlebar label */
+    /** Installs default on the titlebar label */
     protected void installLabel() {
         JLabel titleLabel = titleBar.getTitleLabel();
         Font f = UIManager.getFont("DockViewTitleBar.titleFont");
@@ -262,7 +271,7 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
         floatButton.setContentAreaFilled(false);
     }
 
-    /** Listen to property changes in the DockKey or the title bar  */
+    /** Listen to property changes in the DockKey or the title bar */
     public void propertyChange(PropertyChangeEvent e) {
         String pName = e.getPropertyName();
         // System.out.println("property change " + pName);
@@ -278,7 +287,8 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
             }
         } else if (pName.equals(DockKey.PROPERTY_AUTOHIDEABLE)) {
             boolean isAutoHideable = ((Boolean) e.getNewValue()).booleanValue();
-            boolean isMaximized = titleBar.getDockable().getDockKey().getLocation() == DockableState.Location.MAXIMIZED;
+            boolean isMaximized = titleBar.getDockable().getDockKey()
+                    .getLocation() == DockableState.Location.MAXIMIZED;
             if (isAutoHideable) {
                 if (!isMaximized) {
                     titleBar.getHideOrDockButton().setVisible(true);
@@ -289,7 +299,8 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
             }
         } else if (pName.equals(DockKey.PROPERTY_MAXIMIZABLE)) {
             boolean isMaximizeable = ((Boolean) e.getNewValue()).booleanValue();
-            boolean isHidden = titleBar.getDockable().getDockKey().getLocation() == DockableState.Location.HIDDEN;
+            boolean isHidden = titleBar.getDockable().getDockKey()
+                    .getLocation() == DockableState.Location.HIDDEN;
             if (isMaximizeable) {
                 if (!isHidden) {
                     titleBar.getMaximizeOrRestoreButton().setVisible(true);
@@ -300,7 +311,8 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
             }
         } else if (pName.equals(DockKey.PROPERTY_CLOSEABLE)) {
             boolean isCloseable = ((Boolean) e.getNewValue()).booleanValue();
-            boolean isMaximized = titleBar.getDockable().getDockKey().getLocation() == DockableState.Location.MAXIMIZED;
+            boolean isMaximized = titleBar.getDockable().getDockKey()
+                    .getLocation() == DockableState.Location.MAXIMIZED;
             if (isCloseable) {
                 if (!isMaximized) {
                     titleBar.getCloseButton().setVisible(true);
@@ -311,7 +323,8 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
             }
         } else if (pName.equals(DockKey.PROPERTY_FLOATABLE)) {
             boolean isFloatable = ((Boolean) e.getNewValue()).booleanValue();
-            boolean isMaximized = titleBar.getDockable().getDockKey().getLocation() == DockableState.Location.MAXIMIZED;
+            boolean isMaximized = titleBar.getDockable().getDockKey()
+                    .getLocation() == DockableState.Location.MAXIMIZED;
             if (isFloatable) {
                 if (!isMaximized) {
                     titleBar.getFloatButton().setVisible(true);
@@ -354,8 +367,9 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
         }
     }
 
-    /** Update the buttons to track state changes (for example, the maximize button can become "restore"
-     * when the view is maximized.
+    /**
+     * Update the buttons to track state changes (for example, the maximize button can become "restore" when
+     * the view is maximized.
      */
     protected void configureButtons(DockViewTitleBar tb) {
         layoutTitleBar();
@@ -368,105 +382,105 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
         JButton floatBtn = titleBar.getFloatButton();
 
         switch (location) {
-            case DOCKED:
-                if (key.isCloseEnabled() && isCloseButtonDisplayed) {
-                    closeButton.setVisible(true);
-                    configureCloseButton(closeButton);
-                } else {
-                    closeButton.setVisible(false);
-                }
-                if (key.isMaximizeEnabled() && isMaximizeButtonDisplayed) {
-                    maxBtn.setVisible(true);
-                    configureMaximizeButton(maxBtn);
-                } else {
-                    maxBtn.setVisible(false);
-                }
-
-                boolean isChildOfMaximizedContainer = false;
-                DockingDesktop desk = titleBar.getDesktop();
-                if (desk != null) {
-                    Dockable max = desk.getMaximizedDockable();
-                    if (max != null && max.getComponent().getParent().isAncestorOf(titleBar)) {
-                        isChildOfMaximizedContainer = true;
-                    }
-                }
-
-                if (key.isAutoHideEnabled() && isHideButtonDisplayed && !isChildOfMaximizedContainer) {
-                    hideBtn.setVisible(true);
-                    configureHideButton(hideBtn);
-                } else {
-                    hideBtn.setVisible(false);
-                }
-                if (key.isFloatEnabled() && isFloatButtonDisplayed && !isChildOfMaximizedContainer) {
-                    floatBtn.setVisible(true);
-                    configureFloatButton(floatBtn);
-                } else {
-                    floatBtn.setVisible(false);
-                }
-
-                titleBar.revalidate();
-                break;
-            case HIDDEN:
-                if (key.isCloseEnabled() && isCloseButtonDisplayed) {
-                    closeButton.setVisible(true);
-                    configureCloseButton(closeButton);
-                } else {
-                    closeButton.setVisible(false);
-                }
-                // maximize not allowed when in autohide mode
-                maxBtn.setVisible(false);
-
-                boolean isChildOfCompound = DockingUtilities.isChildOfCompoundDockable(tb.getDockable());
-
-                // idem for float
-                if (key.isFloatEnabled() && isFloatButtonDisplayed && !isChildOfCompound) {
-                    floatBtn.setVisible(true);
-                    configureFloatButton(floatBtn);
-                } else {
-                    floatBtn.setVisible(false);
-                }
-                // hide becomes dock
-                if (isChildOfCompound) {
-                    // tb.getParent().getParent() instanceof AutoHideExpandPanel
-                    // V2.1 : only when not nested
-                    hideBtn.setVisible(false);
-                } else {
-                    if (isDockButtonDisplayed && key.isAutoHideEnabled()) { // 2007/01/08
-                        hideBtn.setVisible(true);
-                        configureDockButton(hideBtn);
-                    } else {
-                        hideBtn.setVisible(false);
-                    }
-                }
-                titleBar.revalidate();
-                break;
-            case MAXIMIZED:
+        case DOCKED:
+            if (key.isCloseEnabled() && isCloseButtonDisplayed) {
+                closeButton.setVisible(true);
+                configureCloseButton(closeButton);
+            } else {
                 closeButton.setVisible(false);
+            }
+            if (key.isMaximizeEnabled() && isMaximizeButtonDisplayed) {
+                maxBtn.setVisible(true);
+                configureMaximizeButton(maxBtn);
+            } else {
+                maxBtn.setVisible(false);
+            }
+
+            boolean isChildOfMaximizedContainer = false;
+            DockingDesktop desk = titleBar.getDesktop();
+            if (desk != null) {
+                Dockable max = desk.getMaximizedDockable();
+                if (max != null && max.getComponent().getParent().isAncestorOf(titleBar)) {
+                    isChildOfMaximizedContainer = true;
+                }
+            }
+
+            if (key.isAutoHideEnabled() && isHideButtonDisplayed && !isChildOfMaximizedContainer) {
+                hideBtn.setVisible(true);
+                configureHideButton(hideBtn);
+            } else {
+                hideBtn.setVisible(false);
+            }
+            if (key.isFloatEnabled() && isFloatButtonDisplayed && !isChildOfMaximizedContainer) {
+                floatBtn.setVisible(true);
+                configureFloatButton(floatBtn);
+            } else {
                 floatBtn.setVisible(false);
-                // maxBtn becomes restore
-                if (isRestoreButtonDisplayed) {
-                    configureRestoreButton(maxBtn);
-                    maxBtn.setVisible(true);
-                } else {
-                    maxBtn.setVisible(false);
-                }
-                hideBtn.setVisible(false);
-                titleBar.revalidate();
-                break;
-            case FLOATING:
+            }
+
+            titleBar.revalidate();
+            break;
+        case HIDDEN:
+            if (key.isCloseEnabled() && isCloseButtonDisplayed) {
+                closeButton.setVisible(true);
+                configureCloseButton(closeButton);
+            } else {
                 closeButton.setVisible(false);
-                maxBtn.setVisible(false);
+            }
+            // maximize not allowed when in autohide mode
+            maxBtn.setVisible(false);
+
+            boolean isChildOfCompound = DockingUtilities.isChildOfCompoundDockable(tb.getDockable());
+
+            // idem for float
+            if (key.isFloatEnabled() && isFloatButtonDisplayed && !isChildOfCompound) {
+                floatBtn.setVisible(true);
+                configureFloatButton(floatBtn);
+            } else {
+                floatBtn.setVisible(false);
+            }
+            // hide becomes dock
+            if (isChildOfCompound) {
+                // tb.getParent().getParent() instanceof AutoHideExpandPanel
+                // V2.1 : only when not nested
                 hideBtn.setVisible(false);
-                if (DockingUtilities.isChildOfCompoundDockable(tb.getDockable())) {
-                    // cannot attach a compound dockable directly
-                    floatBtn.setVisible(false);
+            } else {
+                if (isDockButtonDisplayed && key.isAutoHideEnabled()) { // 2007/01/08
+                    hideBtn.setVisible(true);
+                    configureDockButton(hideBtn);
                 } else {
-                    floatBtn.setVisible(isAttachButtonDisplayed);
-                    configureAttachButton(floatBtn);
+                    hideBtn.setVisible(false);
                 }
-                break;
-            default:
-                // not interesting
+            }
+            titleBar.revalidate();
+            break;
+        case MAXIMIZED:
+            closeButton.setVisible(false);
+            floatBtn.setVisible(false);
+            // maxBtn becomes restore
+            if (isRestoreButtonDisplayed) {
+                configureRestoreButton(maxBtn);
+                maxBtn.setVisible(true);
+            } else {
+                maxBtn.setVisible(false);
+            }
+            hideBtn.setVisible(false);
+            titleBar.revalidate();
+            break;
+        case FLOATING:
+            closeButton.setVisible(false);
+            maxBtn.setVisible(false);
+            hideBtn.setVisible(false);
+            if (DockingUtilities.isChildOfCompoundDockable(tb.getDockable())) {
+                // cannot attach a compound dockable directly
+                floatBtn.setVisible(false);
+            } else {
+                floatBtn.setVisible(isAttachButtonDisplayed);
+                configureAttachButton(floatBtn);
+            }
+            break;
+        default:
+            // not interesting
         }
     }
 
@@ -488,7 +502,8 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
         btn.setToolTipText(MAXIMIZE_TEXT);
     }
 
-    /** installs the icons and tooltip suitable for a restore button.
+    /**
+     * installs the icons and tooltip suitable for a restore button.
      */
     protected void configureRestoreButton(JButton btn) {
         btn.setIcon(restoreIcon);
@@ -545,8 +560,8 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
         c.setBorder(null);
     }
 
-    /**  Custom title bar painting : uses a gradient from the background color
-     * to the control highlight color.
+    /**
+     * Custom title bar painting : uses a gradient from the background color to the control highlight color.
      */
     public void paint(Graphics g, JComponent c) {
 
@@ -573,32 +588,18 @@ public class DockViewTitleBarUI extends PanelUI implements PropertyChangeListene
             // gradient paint after the label text (to ensure readability)
             if (tb.isActive()) {
                 if (UIManager.getLookAndFeel().getName().contains("Substance")) {
-                    g2.setPaint(new GradientPaint(
-                            i.left + w,
-                            0,
-                            UIManager.getColor("controlLtHighlight"),
-                            tb.getWidth(),
-                            0,
-                            UIManager.getColor("controlHighlight"))); // Active substance
+                    g2.setPaint(new GradientPaint(i.left + w, 0, UIManager.getColor("controlLtHighlight"),
+                            tb.getWidth(), 0, UIManager.getColor("controlHighlight"))); // Active substance
                 } else {
-                    g2.setPaint(new GradientPaint(
-                            i.left + w,
-                            0,
-                            UIManager.getColor("controlShadow"),
-                            tb.getWidth(),
-                            0,
-                            UIManager.getColor("controlHighlight"))); // Active other
+                    g2.setPaint(new GradientPaint(i.left + w, 0, UIManager.getColor("controlShadow"),
+                            tb.getWidth(), 0, UIManager.getColor("controlHighlight"))); // Active other
                 }
             } else {
-                g2.setPaint(new GradientPaint(
-                        i.left + w,
-                        0,
-                        UIManager.getColor("Panel.background"),
-                        tb.getWidth(),
-                        0,
-                        UIManager.getColor("controlHighlight"))); // panelColor));
+                g2.setPaint(new GradientPaint(i.left + w, 0, UIManager.getColor("Panel.background"),
+                        tb.getWidth(), 0, UIManager.getColor("controlHighlight"))); // panelColor));
             }
-            g2.fillRect(i.left + w, i.top, tb.getWidth() - w - i.left - i.right, tb.getHeight() - i.top - i.bottom);
+            g2.fillRect(i.left + w, i.top, tb.getWidth() - w - i.left - i.right,
+                    tb.getHeight() - i.top - i.bottom);
 
             g2.dispose();
         }

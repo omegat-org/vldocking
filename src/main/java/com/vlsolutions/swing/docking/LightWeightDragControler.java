@@ -24,14 +24,15 @@ import java.awt.Window;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
-/** A Lightweight (standard) implementation of the drag controler, and its associated classes
+/**
+ * A Lightweight (standard) implementation of the drag controler, and its associated classes
  *
  * @author Lilian Chamontin, vlsolutions.
  * @since 3.0
  */
 class LightWeightDragControler extends AbstractDragControler {
 
-    /** instantiates a controler for a given docking panel*/
+    /** instantiates a controler for a given docking panel */
     LightWeightDragControler(DockingDesktop desktop) {
         super(desktop);
     }
@@ -47,14 +48,16 @@ class LightWeightDragControler extends AbstractDragControler {
         return new LWShapePainterStrategy(w);
     }
 
-    /** This class holds implementation strategies of shapes painting.
-     *<p>
-     * As painting is different when pure Swing is used (glasspane) and
-     * heavyweight components are mixed in (glasspane + canvas).
+    /**
+     * This class holds implementation strategies of shapes painting.
+     * <p>
+     * As painting is different when pure Swing is used (glasspane) and heavyweight components are mixed in
+     * (glasspane + canvas).
      */
     private class LWShapePainterStrategy implements ShapePainterStrategy {
 
-        private DragControlerGlassPane dragGlassPane = new DragControlerGlassPane(LightWeightDragControler.this);
+        private DragControlerGlassPane dragGlassPane = new DragControlerGlassPane(
+                LightWeightDragControler.this);
 
         private Component oldGlassPane = null;
 
@@ -73,24 +76,26 @@ class LightWeightDragControler extends AbstractDragControler {
             dragGlassPane.showDragCursor();
         }
 
-        /** show the stop-drag cursor  (drag not enabled)*/
+        /** show the stop-drag cursor (drag not enabled) */
         public void showStopDragCursor() {
             dragGlassPane.showStopDragCursor();
         }
 
-        /** show the stop-drag cursor  (drag not enabled)*/
+        /** show the stop-drag cursor (drag not enabled) */
         public void showSwapDragCursor() {
             dragGlassPane.showSwapDragCursor();
         }
 
-        /** show the float (detached) cursor  */
+        /** show the float (detached) cursor */
         public void showFloatCursor() {
             dragGlassPane.showFloatCursor();
         }
 
         public void repaint() {
-            /* this is a hack that will be refactored : we post a repaint when there is
-             * a need to show a drag shape */
+            /*
+             * this is a hack that will be refactored : we post a repaint when there is a need to show a drag
+             * shape
+             */
             dragGlassPane.repaint();
         }
 

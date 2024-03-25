@@ -27,8 +27,8 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
 
-/** A UI for toolbar buttons : replaces the look and feel default UI to
- * have a unified toolbar rendering.
+/**
+ * A UI for toolbar buttons : replaces the look and feel default UI to have a unified toolbar rendering.
  *
  * @author Lilian Chamontin, VLSolutions
  */
@@ -36,7 +36,8 @@ public class VLButtonUI extends BasicToggleButtonUI {
 
     private Color highlight = UIManager.getColor("VLDocking.highlight");
 
-    public VLButtonUI() {}
+    public VLButtonUI() {
+    }
 
     public void paint(Graphics g, JComponent comp) {
         AbstractButton btn = (AbstractButton) comp;

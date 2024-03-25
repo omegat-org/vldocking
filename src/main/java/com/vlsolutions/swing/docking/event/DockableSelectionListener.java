@@ -18,10 +18,12 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking.event;
 
-/** This interface describes a listener for dockable selection changes.
+/**
+ * This interface describes a listener for dockable selection changes.
  *
- *<p> The notification is currently based on keyboard focus policy (the event is
- * triggered when a new dockable grabs the keyboard focus).
+ * <p>
+ * The notification is currently based on keyboard focus policy (the event is triggered when a new dockable
+ * grabs the keyboard focus).
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.0

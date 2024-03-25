@@ -31,8 +31,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-/** A helper class used to specify and enforce constraints within a container
- * (DockingPanel or CompoundDockingPanel).
+/**
+ * A helper class used to specify and enforce constraints within a container (DockingPanel or
+ * CompoundDockingPanel).
  * <p>
  * Constraints are currently defined as anchors (AnchorConstraints objects associated to Dockables).
  *
@@ -40,7 +41,7 @@ import java.util.Iterator;
  * @see AnchorConstraints
  * @since 2.1
  */
-@SuppressWarnings({"rawtypes", "unchecked", "unused"})
+@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 public class AnchorManager {
 
     /** Top most ancestor container */
@@ -57,38 +58,42 @@ public class AnchorManager {
 
         public boolean acceptDockingAction(DockingActionEvent event) {
             switch (event.getActionType()) {
-                case DockingActionEvent.ACTION_ADD_DOCKABLE: {
-                    DockingActionAddDockableEvent e = (DockingActionAddDockableEvent) event;
-                    return acceptAddDockable(e);
-                }
-                case DockingActionEvent.ACTION_CREATE_TAB: {
-                    DockingActionCreateTabEvent e = (DockingActionCreateTabEvent) event;
-                    return acceptCreateTab(e);
-                }
-                case DockingActionEvent.ACTION_SPLIT_COMPONENT: {
-                    DockingActionSplitComponentEvent e = (DockingActionSplitComponentEvent) event;
-                    return acceptSplitComponent(e);
-                }
-                case DockingActionEvent.ACTION_SPLIT_DOCKABLE: {
-                    DockingActionSplitDockableEvent e = (DockingActionSplitDockableEvent) event;
-                    return acceptSplitDockable(e);
-                }
-                case DockingActionEvent.ACTION_SPLIT_DOCKABLE_CONTAINER: {
-                    DockingActionSplitDockableContainerEvent e = (DockingActionSplitDockableContainerEvent) event;
-                    return acceptSplitDockableContainer(e);
-                }
-                default:
-                    return true; // accepting everything else
+            case DockingActionEvent.ACTION_ADD_DOCKABLE: {
+                DockingActionAddDockableEvent e = (DockingActionAddDockableEvent) event;
+                return acceptAddDockable(e);
+            }
+            case DockingActionEvent.ACTION_CREATE_TAB: {
+                DockingActionCreateTabEvent e = (DockingActionCreateTabEvent) event;
+                return acceptCreateTab(e);
+            }
+            case DockingActionEvent.ACTION_SPLIT_COMPONENT: {
+                DockingActionSplitComponentEvent e = (DockingActionSplitComponentEvent) event;
+                return acceptSplitComponent(e);
+            }
+            case DockingActionEvent.ACTION_SPLIT_DOCKABLE: {
+                DockingActionSplitDockableEvent e = (DockingActionSplitDockableEvent) event;
+                return acceptSplitDockable(e);
+            }
+            case DockingActionEvent.ACTION_SPLIT_DOCKABLE_CONTAINER: {
+                DockingActionSplitDockableContainerEvent e = (DockingActionSplitDockableContainerEvent) event;
+                return acceptSplitDockableContainer(e);
+            }
+            default:
+                return true; // accepting everything else
             }
         }
 
-        public void dockingActionPerformed(DockingActionEvent event) {}
+        public void dockingActionPerformed(DockingActionEvent event) {
+        }
     };
 
-    /** Constructs a new AnchorManager responsible for a container (desktop or compound)
+    /**
+     * Constructs a new AnchorManager responsible for a container (desktop or compound)
      *
-     * @param context    the context (can be taken from DockingDesktop.getDockingContext() used by this manager
-     * @param container  the "top level" container managed (usually a DockingDesktop or a CompoundDockingPanel)
+     * @param context
+     *            the context (can be taken from DockingDesktop.getDockingContext() used by this manager
+     * @param container
+     *            the "top level" container managed (usually a DockingDesktop or a CompoundDockingPanel)
      */
     public AnchorManager(DockingContext context, Container container) {
         this.context = context;
@@ -102,37 +107,49 @@ public class AnchorManager {
         constraintsByDockable.clear();
     }
 
-    /** Associates an anchor constraints to a given dockable
-     * @param dockable    the dockable to anchor
-     * @param constraints associated anchor constraints
+    /**
+     * Associates an anchor constraints to a given dockable
+     * 
+     * @param dockable
+     *            the dockable to anchor
+     * @param constraints
+     *            associated anchor constraints
      */
     public void putDockableContraints(Dockable dockable, AnchorConstraints constraints) {
         constraintsByDockable.put(dockable, constraints);
     }
 
-    /** Returns the anchor constraints associated to a given dockable
-     * @param dockable    the dockable to anchor
+    /**
+     * Returns the anchor constraints associated to a given dockable
+     * 
+     * @param dockable
+     *            the dockable to anchor
      * @return the constraints for this dockable, or null if no constraints is associated
      */
     public AnchorConstraints getDockableConstraints(Dockable dockable) {
         return constraintsByDockable.get(dockable);
     }
 
-    /** Removes an anchor constraints to a given dockable
-     * @param dockable    the dockable whose anchor is to be removed
+    /**
+     * Removes an anchor constraints to a given dockable
+     * 
+     * @param dockable
+     *            the dockable whose anchor is to be removed
      */
     public AnchorConstraints removeDockableConstraints(Dockable dockable) {
         return constraintsByDockable.remove(dockable);
     }
 
-    /** Look up the spilt hierarchy to find which borders a dockable is touching.
+    /**
+     * Look up the spilt hierarchy to find which borders a dockable is touching.
      *
      */
     private int getContactBorders(Dockable dockable) {
         return RelativeDockingUtilities.findAnchors(dockable.getComponent(), container);
     }
 
-    /** Returns a list of all dockables contained into base
+    /**
+     * Returns a list of all dockables contained into base
      */
     private ArrayList findDockables(Container base) {
         ArrayList dockables = new ArrayList(10);
@@ -150,36 +167,37 @@ public class AnchorManager {
         Component base = event.getBase();
         ArrayList baseDockables = findDockables((Container) base);
 
-        // we suppose that dockables in "base" are ok (respecting their own set of constraints before the split)
+        // we suppose that dockables in "base" are ok (respecting their own set of constraints before the
+        // split)
         // we still have to check is splitting will break a constraint or not
         int contactBorders = RelativeDockingUtilities.findAnchors(base, container);
         switch (event.getSplitPosition().value()) {
-            case DockingConstants.INT_SPLIT_TOP:
-                // as we won't be touching TOP anymore, check if this
-                // constraint is not set in contained dockables
-                if (isConstraintSet(AnchorConstraints.ANCHOR_TOP, baseDockables)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_BOTTOM;
-                break;
-            case DockingConstants.INT_SPLIT_LEFT:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_LEFT, baseDockables)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_RIGHT;
-                break;
-            case DockingConstants.INT_SPLIT_BOTTOM:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_BOTTOM, baseDockables)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_TOP;
-                break;
-            case DockingConstants.INT_SPLIT_RIGHT:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_RIGHT, baseDockables)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_LEFT;
-                break;
+        case DockingConstants.INT_SPLIT_TOP:
+            // as we won't be touching TOP anymore, check if this
+            // constraint is not set in contained dockables
+            if (isConstraintSet(AnchorConstraints.ANCHOR_TOP, baseDockables)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_BOTTOM;
+            break;
+        case DockingConstants.INT_SPLIT_LEFT:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_LEFT, baseDockables)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_RIGHT;
+            break;
+        case DockingConstants.INT_SPLIT_BOTTOM:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_BOTTOM, baseDockables)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_TOP;
+            break;
+        case DockingConstants.INT_SPLIT_RIGHT:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_RIGHT, baseDockables)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_LEFT;
+            break;
         }
 
         // now, we're sure we won't break a 'base' constraint
@@ -205,32 +223,32 @@ public class AnchorManager {
 
         int contactBorders = getContactBorders(base);
         switch (event.getSplitPosition().value()) {
-            case DockingConstants.INT_SPLIT_TOP:
-                // as we won't be touching TOP anymore, check if this
-                // constraint is not set in contained dockables
-                if (isConstraintSet(AnchorConstraints.ANCHOR_TOP, base)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_BOTTOM;
-                break;
-            case DockingConstants.INT_SPLIT_LEFT:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_LEFT, base)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_RIGHT;
-                break;
-            case DockingConstants.INT_SPLIT_BOTTOM:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_BOTTOM, base)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_TOP;
-                break;
-            case DockingConstants.INT_SPLIT_RIGHT:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_RIGHT, base)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_LEFT;
-                break;
+        case DockingConstants.INT_SPLIT_TOP:
+            // as we won't be touching TOP anymore, check if this
+            // constraint is not set in contained dockables
+            if (isConstraintSet(AnchorConstraints.ANCHOR_TOP, base)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_BOTTOM;
+            break;
+        case DockingConstants.INT_SPLIT_LEFT:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_LEFT, base)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_RIGHT;
+            break;
+        case DockingConstants.INT_SPLIT_BOTTOM:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_BOTTOM, base)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_TOP;
+            break;
+        case DockingConstants.INT_SPLIT_RIGHT:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_RIGHT, base)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_LEFT;
+            break;
         }
 
         // now, we're sure we won't break a 'base' constraint
@@ -251,36 +269,37 @@ public class AnchorManager {
         Component base = event.getBase();
         ArrayList baseDockables = findDockables((Container) base);
 
-        // we suppose that dockables in "base" are ok (respecting their own set of constraints before the split)
+        // we suppose that dockables in "base" are ok (respecting their own set of constraints before the
+        // split)
         // we still have to check is splitting will break a constraint or not
         int contactBorders = RelativeDockingUtilities.findAnchors(base, container);
         switch (event.getSplitPosition().value()) {
-            case DockingConstants.INT_SPLIT_TOP:
-                // as we won't be touching TOP anymore, check if this
-                // constraint is not set in contained dockables
-                if (isConstraintSet(AnchorConstraints.ANCHOR_TOP, baseDockables)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_BOTTOM;
-                break;
-            case DockingConstants.INT_SPLIT_LEFT:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_LEFT, baseDockables)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_RIGHT;
-                break;
-            case DockingConstants.INT_SPLIT_BOTTOM:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_BOTTOM, baseDockables)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_TOP;
-                break;
-            case DockingConstants.INT_SPLIT_RIGHT:
-                if (isConstraintSet(AnchorConstraints.ANCHOR_RIGHT, baseDockables)) {
-                    return false;
-                }
-                contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_LEFT;
-                break;
+        case DockingConstants.INT_SPLIT_TOP:
+            // as we won't be touching TOP anymore, check if this
+            // constraint is not set in contained dockables
+            if (isConstraintSet(AnchorConstraints.ANCHOR_TOP, baseDockables)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_BOTTOM;
+            break;
+        case DockingConstants.INT_SPLIT_LEFT:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_LEFT, baseDockables)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_RIGHT;
+            break;
+        case DockingConstants.INT_SPLIT_BOTTOM:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_BOTTOM, baseDockables)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_TOP;
+            break;
+        case DockingConstants.INT_SPLIT_RIGHT:
+            if (isConstraintSet(AnchorConstraints.ANCHOR_RIGHT, baseDockables)) {
+                return false;
+            }
+            contactBorders = contactBorders & ~AnchorConstraints.ANCHOR_LEFT;
+            break;
         }
 
         // now, we're sure we won't break a 'base' constraint
@@ -337,7 +356,7 @@ public class AnchorManager {
         return true;
     }
 
-    /** checks if a given anchor is set into one of the given dockables*/
+    /** checks if a given anchor is set into one of the given dockables */
     private boolean isConstraintSet(int anchor, ArrayList baseDockables) {
         for (int i = 0; i < baseDockables.size(); i++) {
             AnchorConstraints ac = constraintsByDockable.get(baseDockables.get(i));
@@ -350,7 +369,7 @@ public class AnchorManager {
         return false;
     }
 
-    /** checks if a given anchor is set for a dockable*/
+    /** checks if a given anchor is set for a dockable */
     private boolean isConstraintSet(int anchor, Dockable dockable) {
         AnchorConstraints ac = constraintsByDockable.get(dockable);
         if (ac == null) { // 2007/01/08

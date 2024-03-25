@@ -23,7 +23,8 @@ import com.vlsolutions.swing.docking.DockableState;
 import com.vlsolutions.swing.docking.DockingConstants;
 import com.vlsolutions.swing.docking.DockingDesktop;
 
-/** A DockingActionEvent describing a split action (from a base dockable).
+/**
+ * A DockingActionEvent describing a split action (from a base dockable).
  *
  *
  * @author Lilian Chamontin, VLSolutions
@@ -36,15 +37,10 @@ public class DockingActionSplitDockableEvent extends DockingActionDockableEvent 
 
     private DockingConstants.Split splitPosition;
 
-    /** Constructs a new event  */
-    public DockingActionSplitDockableEvent(
-            DockingDesktop desktop,
-            Dockable dockable,
-            DockableState.Location initialLocation,
-            DockableState.Location nextLocation,
-            Dockable base,
-            DockingConstants.Split splitPosition,
-            float dividorLocation) {
+    /** Constructs a new event */
+    public DockingActionSplitDockableEvent(DockingDesktop desktop, Dockable dockable,
+            DockableState.Location initialLocation, DockableState.Location nextLocation, Dockable base,
+            DockingConstants.Split splitPosition, float dividorLocation) {
         super(desktop, dockable, initialLocation, nextLocation, ACTION_SPLIT_DOCKABLE);
         this.base = base;
         this.dividorLocation = dividorLocation;

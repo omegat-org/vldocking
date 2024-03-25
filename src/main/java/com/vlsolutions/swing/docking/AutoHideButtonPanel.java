@@ -22,46 +22,49 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-/** A Swing panel used as a toolbar for autohide buttons.
+/**
+ * A Swing panel used as a toolbar for autohide buttons.
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
- *  */
+ */
 public class AutoHideButtonPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    /** The property name associated with the "border" property  */
+    /** The property name associated with the "border" property */
     public static final String PROPERTY_BORDERZONE = "borderzone";
 
     public static final String uiClassID = "AutoHideButtonPanelUI";
 
-    /** <=> Zone  */
+    /** <=> Zone */
     private int border;
 
     /** highlight effect (rollover) on the contained buttons */
     private ButtonHighlighter buttonHighlighter = new ButtonHighlighter();
 
-    /** expansion management  */
+    /** expansion management */
     private AutoHideExpandPanel expandPanel;
 
-    /** Constructs a new AutoHideButtonPanel, with a shared expandPanel, and for
-     * a specified border zone.
+    /**
+     * Constructs a new AutoHideButtonPanel, with a shared expandPanel, and for a specified border zone.
      *
-     * @param border constant taken from AutoHideButtonPanel.TOP, AutoHideButtonPanel.LEFT,
-     * AutoHideButtonPanel.BOTTOM, AutoHideButtonPanel.RIGHT
-     * */
+     * @param border
+     *            constant taken from AutoHideButtonPanel.TOP, AutoHideButtonPanel.LEFT,
+     *            AutoHideButtonPanel.BOTTOM, AutoHideButtonPanel.RIGHT
+     */
     public AutoHideButtonPanel(AutoHideExpandPanel expandPanel, int border) {
         this.border = border;
         this.expandPanel = expandPanel;
-        boolean isHorizontal =
-                (border == DockingConstants.INT_HIDE_TOP) || (border == DockingConstants.INT_HIDE_BOTTOM);
+        boolean isHorizontal = (border == DockingConstants.INT_HIDE_TOP)
+                || (border == DockingConstants.INT_HIDE_BOTTOM);
         setLayout(new AutoHideBorderLayout(isHorizontal));
 
         firePropertyChange("borderzone", -1, border);
     }
 
-    /** Returns the number of buttons currently displayed by this panel.
+    /**
+     * Returns the number of buttons currently displayed by this panel.
      */
     public int getVisibleButtonCount() {
         Component[] comps = getComponents();
@@ -74,17 +77,19 @@ public class AutoHideButtonPanel extends JPanel {
         return count;
     }
 
-    /** Returns the border this panel is for.
+    /**
+     * Returns the border this panel is for.
      * <p>
-     * Values are : AutoHideButtonPanel.TOP, AutoHideButtonPanel.LEFT,
-     * AutoHideButtonPanel.BOTTOM, AutoHideButtonPanel.RIGHT
+     * Values are : AutoHideButtonPanel.TOP, AutoHideButtonPanel.LEFT, AutoHideButtonPanel.BOTTOM,
+     * AutoHideButtonPanel.RIGHT
      */
     public int getBorderZone() {
         return border;
     }
 
-    /** Adds a new AutoHideButton.
-     * */
+    /**
+     * Adds a new AutoHideButton.
+     */
     public void add(AutoHideButton btn) {
         add((Component) btn);
 

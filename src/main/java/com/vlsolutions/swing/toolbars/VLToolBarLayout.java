@@ -25,20 +25,21 @@ import java.awt.Insets;
 import java.awt.LayoutManager2;
 import java.util.ArrayList;
 
-/** The layout for VLToolBar (supports horizontal and vertical orientation).
- *<p>
- * When used in horizontal orientation, this layout respects the preferred width of
- * the contained components, and forces the height to the maximum of all the preferred heights.
- * (so components are vertically streched to have the same height).
- *<p>
- * When used in vertical orientation, this layout respects the preferred height of
- * the contained components, and forces the width to the maximum of all the preferred widths.
- * (so components are horizontally streched to have the same width).
+/**
+ * The layout for VLToolBar (supports horizontal and vertical orientation).
+ * <p>
+ * When used in horizontal orientation, this layout respects the preferred width of the contained components,
+ * and forces the height to the maximum of all the preferred heights. (so components are vertically streched
+ * to have the same height).
+ * <p>
+ * When used in vertical orientation, this layout respects the preferred height of the contained components,
+ * and forces the width to the maximum of all the preferred widths. (so components are horizontally streched
+ * to have the same width).
  *
  * @author Lilian Chamontin, VLSolutions
  * @update 2006/09/09 Support for LTR and RTL component orientation
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class VLToolBarLayout implements LayoutManager2 {
 
     private ArrayList components = new ArrayList();
@@ -49,19 +50,25 @@ public class VLToolBarLayout implements LayoutManager2 {
         this(true, 0);
     }
 
-    /** Constructs a new Layout.
+    /**
+     * Constructs a new Layout.
      *
-     * @param isHorizontal  indicates if the layout will be horizontal or vertical.
+     * @param isHorizontal
+     *            indicates if the layout will be horizontal or vertical.
      *
-     * */
+     */
     public VLToolBarLayout(boolean isHorizontal) {
         this(isHorizontal, 0);
     }
 
-    /** Constructs a new Layout.
-     * @param isHorizontal  indicates if the layout will be horizontal or vertical.
-     * @param gap gap in pixels between components
-     * */
+    /**
+     * Constructs a new Layout.
+     * 
+     * @param isHorizontal
+     *            indicates if the layout will be horizontal or vertical.
+     * @param gap
+     *            gap in pixels between components
+     */
     public VLToolBarLayout(boolean isHorizontal, int gap) {
         this.isHorizontal = isHorizontal;
         this.gap = gap;
@@ -75,7 +82,8 @@ public class VLToolBarLayout implements LayoutManager2 {
         return 0.5F;
     }
 
-    public void invalidateLayout(Container target) {}
+    public void invalidateLayout(Container target) {
+    }
 
     public Dimension maximumLayoutSize(Container target) {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -94,7 +102,8 @@ public class VLToolBarLayout implements LayoutManager2 {
         components.remove(comp);
     }
 
-    public void addLayoutComponent(String name, Component comp) {}
+    public void addLayoutComponent(String name, Component comp) {
+    }
 
     public Dimension minimumLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
@@ -132,7 +141,8 @@ public class VLToolBarLayout implements LayoutManager2 {
         return minimumLayoutSize(parent);
     }
 
-    /** overridden to adjust position (x(top) = width(left), y(left) = height(top)
+    /**
+     * overridden to adjust position (x(top) = width(left), y(left) = height(top)
      */
     public void layoutContainer(Container target) {
         synchronized (target.getTreeLock()) {
@@ -140,14 +150,12 @@ public class VLToolBarLayout implements LayoutManager2 {
             Insets insets = target.getInsets();
             if (isHorizontal) {
                 int left = insets.left;
-                /*for (int i = 0; i < components.size(); i++) {
-                  Component comp = (Component) components.get(i);
-                  if (comp.isVisible()){
-                    Dimension d = comp.getPreferredSize();
-                    comp.setBounds(left, insets.top, d.width, toolbarDim.height - insets.top - insets.bottom);
-                    left += d.width + gap;
-                  }
-                }*/
+                /*
+                 * for (int i = 0; i < components.size(); i++) { Component comp = (Component)
+                 * components.get(i); if (comp.isVisible()){ Dimension d = comp.getPreferredSize();
+                 * comp.setBounds(left, insets.top, d.width, toolbarDim.height - insets.top - insets.bottom);
+                 * left += d.width + gap; } }
+                 */
                 if (target.getComponentOrientation().isLeftToRight()) {
                     for (int i = 0; i < components.size(); i++) {
                         left = layoutHorizComponent((Component) components.get(i), toolbarDim, insets, left);
@@ -172,7 +180,8 @@ public class VLToolBarLayout implements LayoutManager2 {
                     Component comp = (Component) components.get(i);
                     if (comp.isVisible()) {
                         Dimension d = comp.getPreferredSize();
-                        comp.setBounds(insets.left, top, toolbarDim.width - insets.left - insets.right, d.height);
+                        comp.setBounds(insets.left, top, toolbarDim.width - insets.left - insets.right,
+                                d.height);
                         top += d.height + gap;
                     }
                 }

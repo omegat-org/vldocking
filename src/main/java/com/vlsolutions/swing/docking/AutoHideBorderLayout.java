@@ -21,32 +21,39 @@ package com.vlsolutions.swing.docking;
 import java.awt.*;
 import java.util.*;
 
-/** A Layout Manager for auto-hide borders.
+/**
+ * A Layout Manager for auto-hide borders.
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class AutoHideBorderLayout implements LayoutManager2 {
 
     private ArrayList components = new ArrayList();
     private boolean isHorizontal;
     private int gap; // gap in pixels between components
 
-    /** Constructs a new Layout.
+    /**
+     * Constructs a new Layout.
      *
-     * @param isHorizontal  indicates if the layout will be horizontal or vertical.
+     * @param isHorizontal
+     *            indicates if the layout will be horizontal or vertical.
      *
-     * */
+     */
     public AutoHideBorderLayout(boolean isHorizontal) {
         this(isHorizontal, AutoHidePolicy.getPolicy().getDefaultGap());
         /** @todo we do not yet listen to gap property change */
     }
 
-    /** Constructs a new Layout.
-     * @param isHorizontal  indicates if the layout will be horizontal or vertical.
-     * @param gap gap in pixels between components
-     * */
+    /**
+     * Constructs a new Layout.
+     * 
+     * @param isHorizontal
+     *            indicates if the layout will be horizontal or vertical.
+     * @param gap
+     *            gap in pixels between components
+     */
     public AutoHideBorderLayout(boolean isHorizontal, int gap) {
         this.isHorizontal = isHorizontal;
         this.gap = gap;
@@ -60,7 +67,8 @@ public class AutoHideBorderLayout implements LayoutManager2 {
         return 0.5F;
     }
 
-    public void invalidateLayout(Container target) {}
+    public void invalidateLayout(Container target) {
+    }
 
     public Dimension maximumLayoutSize(Container target) {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -79,7 +87,8 @@ public class AutoHideBorderLayout implements LayoutManager2 {
         components.remove(comp);
     }
 
-    public void addLayoutComponent(String name, Component comp) {}
+    public void addLayoutComponent(String name, Component comp) {
+    }
 
     public Dimension minimumLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
@@ -117,7 +126,8 @@ public class AutoHideBorderLayout implements LayoutManager2 {
         return minimumLayoutSize(parent);
     }
 
-    /** overridden to adjust position (x(top) = width(left), y(left) = height(top)
+    /**
+     * overridden to adjust position (x(top) = width(left), y(left) = height(top)
      */
     public void layoutContainer(Container target) {
         synchronized (target.getTreeLock()) {

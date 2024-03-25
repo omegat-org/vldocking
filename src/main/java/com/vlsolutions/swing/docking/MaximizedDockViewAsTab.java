@@ -24,7 +24,8 @@ import java.awt.Point;
 import javax.swing.AbstractAction;
 import javax.swing.UIManager;
 
-/** A maximized view to use with the TabFactory.
+/**
+ * A maximized view to use with the TabFactory.
  *
  * @author Lilian Chamontin, VLSolutions
  * @see TabFactory
@@ -44,8 +45,8 @@ public class MaximizedDockViewAsTab extends DockViewAsTab {
             maximizeSmartIcon.setPressedIcon(UIManager.getIcon("DockViewTitleBar.restore.pressed"));
             maximizeSmartIcon.setRolloverIcon(UIManager.getIcon("DockViewTitleBar.restore.rollover"));
             // add a tooltip
-            maximizeAction.putValue(
-                    AbstractAction.SHORT_DESCRIPTION, UIManager.get("DockViewTitleBar.restoreButtonText"));
+            maximizeAction.putValue(AbstractAction.SHORT_DESCRIPTION,
+                    UIManager.get("DockViewTitleBar.restoreButtonText"));
         }
     }
 

@@ -24,7 +24,8 @@ import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-/** A simple button that applies a workspace to a given Docking context when pressed .
+/**
+ * A simple button that applies a workspace to a given Docking context when pressed .
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.1.3
@@ -47,7 +48,7 @@ public class WorkspaceButton extends JButton {
         }
     };
 
-    /** default constructor  */
+    /** default constructor */
     public WorkspaceButton() {
         addActionListener(actionListener);
     }
@@ -74,17 +75,17 @@ public class WorkspaceButton extends JButton {
         return workspace;
     }
 
-    /** updates the workspace to be used by this button  */
+    /** updates the workspace to be used by this button */
     public void setWorkspace(Workspace workspace) {
         this.workspace = workspace;
     }
 
-    /** Returns the docking context used by this button  */
+    /** Returns the docking context used by this button */
     public DockingContext getDockingContext() {
         return ctx;
     }
 
-    /** Updates the docking context used by this button  */
+    /** Updates the docking context used by this button */
     public void setDockingContext(DockingContext ctx) {
         this.ctx = ctx;
     }

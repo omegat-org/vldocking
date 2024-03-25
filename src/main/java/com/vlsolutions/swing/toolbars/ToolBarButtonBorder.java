@@ -26,8 +26,9 @@ import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.border.Border;
 
-/** A border suitable for toolbar buttons.
- *<p>
+/**
+ * A border suitable for toolbar buttons.
+ * <p>
  * Paints a nice button effect with rounded corners.
  *
  * @author Lilian Chamontin, vlsolutions.
@@ -38,13 +39,14 @@ public class ToolBarButtonBorder implements Border {
 
     private boolean pressed;
 
-    public ToolBarButtonBorder() {}
+    public ToolBarButtonBorder() {
+    }
 
-    private static Image borderImage =
-            new ImageIcon(ToolBarButtonBorder.class.getResource("toolbarbuttonborder.png")).getImage();
+    private static Image borderImage = new ImageIcon(
+            ToolBarButtonBorder.class.getResource("toolbarbuttonborder.png")).getImage();
 
-    private static Image pressedBorderImage =
-            new ImageIcon(ToolBarButtonBorder.class.getResource("toolbarbuttonborder_pressed.png")).getImage();
+    private static Image pressedBorderImage = new ImageIcon(
+            ToolBarButtonBorder.class.getResource("toolbarbuttonborder_pressed.png")).getImage();
 
     static int borderWidth = borderImage.getWidth(null);
     static int borderHeight = borderImage.getHeight(null);
@@ -68,24 +70,15 @@ public class ToolBarButtonBorder implements Border {
         // top right corner
         graphics.drawImage(img, x + w - 5, y, x + w, y + 5, borderWidth - 5, 0, borderWidth, 5, null);
         // vertical right
-        graphics.drawImage(
-                img, x + w - 5, y + 5, x + w, y + h - 5, borderWidth - 5, 5, borderWidth, borderHeight - 5, null);
+        graphics.drawImage(img, x + w - 5, y + 5, x + w, y + h - 5, borderWidth - 5, 5, borderWidth,
+                borderHeight - 5, null);
         // bottom-right corner
-        graphics.drawImage(
-                img,
-                x + w - 5,
-                y + h - 5,
-                x + w,
-                y + h,
-                borderWidth - 5,
-                borderHeight - 5,
-                borderWidth,
-                borderHeight,
-                null);
+        graphics.drawImage(img, x + w - 5, y + h - 5, x + w, y + h, borderWidth - 5, borderHeight - 5,
+                borderWidth, borderHeight, null);
 
         // horizontal bottom
-        graphics.drawImage(
-                img, x + 5, y + h - 5, x + w - 5, y + h, 5, borderHeight - 5, borderWidth - 5, borderHeight, null);
+        graphics.drawImage(img, x + 5, y + h - 5, x + w - 5, y + h, 5, borderHeight - 5, borderWidth - 5,
+                borderHeight, null);
         // bottom left corner
         graphics.drawImage(img, x, y + h - 5, x + 5, y + h, 0, borderHeight - 5, 5, borderHeight, null);
 

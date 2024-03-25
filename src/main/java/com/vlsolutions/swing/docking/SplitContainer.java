@@ -23,12 +23,12 @@ import java.awt.*;
 import java.awt.geom.*;
 import javax.swing.*;
 
-/** A Specialized JSplitPane which accepts drag and drop of DockableContainer.
- *<p>
+/**
+ * A Specialized JSplitPane which accepts drag and drop of DockableContainer.
+ * <p>
  * The split container should be used only by the DockingDesktop.
- *<p>
- * It is a SplitPane with bug workarounds and a custom UI (in fact : no UI painting at all,
- * by default).
+ * <p>
+ * It is a SplitPane with bug workarounds and a custom UI (in fact : no UI painting at all, by default).
  *
  *
  * @author Lilian Chamontin, vlsolutions.
@@ -38,17 +38,8 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
 
     private static final long serialVersionUID = 1L;
     // this is for debugging purpose and will be removed.
-    private static Color[] colors = {
-        Color.RED,
-        Color.BLUE,
-        Color.CYAN,
-        Color.GREEN,
-        Color.MAGENTA,
-        Color.ORANGE,
-        Color.PINK,
-        Color.WHITE,
-        Color.YELLOW
-    };
+    private static Color[] colors = { Color.RED, Color.BLUE, Color.CYAN, Color.GREEN, Color.MAGENTA,
+            Color.ORANGE, Color.PINK, Color.WHITE, Color.YELLOW };
     private static int colorindex = -1;
 
     private static final boolean DEBUG = false;
@@ -83,7 +74,9 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
         }
     }
 
-    /** Returns a suitable name for when this container is the main child of a Tab (TabbedDockableContainer) */
+    /**
+     * Returns a suitable name for when this container is the main child of a Tab (TabbedDockableContainer)
+     */
     public String getTabName() {
         Component left = getLeftComponent();
         if (left instanceof SingleDockableContainer) {
@@ -109,7 +102,7 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
         // reject operation if the source is an ancestor of this view.
         if (event.getDragSource().getDockableContainer().isAncestorOf(this)) {
             // this is possible for compound containers (as they contain sub-dockables)
-            // in that case, you cannnot drop a compound into one of its children  // 2007/01/08
+            // in that case, you cannnot drop a compound into one of its children // 2007/01/08
             if (drop) {
                 ((DockDropEvent) event).rejectDrop();
             } else {
@@ -118,9 +111,9 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
             return;
         }
 
-        /*   Dock is available :
-         *    - on borders of the two components
-         *    - on the center of the 2 components (meaning : tab'em)
+        /*
+         * Dock is available : - on borders of the two components - on the center of the 2 components (meaning
+         * : tab'em)
          */
         Point p = event.getMouseEvent().getPoint();
         Rectangle compBounds = getLeftComponent().getBounds();
@@ -146,7 +139,7 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
     private boolean hasProportionalLocation;
     private double proportionalLocation;
 
-    /** Overriden for a bug workaround*/
+    /** Overriden for a bug workaround */
     public void setDividerLocation(double proportionalLocation) {
         if (!isPainted) {
             hasProportionalLocation = true;
@@ -190,12 +183,12 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
         super.paint(g);
     }
 
-    /** Resest recursively the left and right components to their preferred size
-     * if possible. (same contract as JSplitPane's).
+    /**
+     * Resest recursively the left and right components to their preferred size if possible. (same contract as
+     * JSplitPane's).
      * <p>
-     * If contained components are SplitContainers, their are also reset to their
-     * preferredSize.
-     *  */
+     * If contained components are SplitContainers, their are also reset to their preferredSize.
+     */
     public void resetToPreferredSizes() {
         super.resetToPreferredSizes();
         if (getLeftComponent() instanceof SplitContainer) {
@@ -206,20 +199,25 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
         }
     }
 
-    /** Replaces the child component by a sub-split pane.
-     * @param child one or the two components of this split pane
-     * @param newComp the new component to add
-     * @param position where to put comp / child (i.e if SPLIT_TOP,
-     * a vertical splitpane will be created and comp will be on top of it
-     * (and child at bottom).
+    /**
+     * Replaces the child component by a sub-split pane.
+     * 
+     * @param child
+     *            one or the two components of this split pane
+     * @param newComp
+     *            the new component to add
+     * @param position
+     *            where to put comp / child (i.e if SPLIT_TOP, a vertical splitpane will be created and comp
+     *            will be on top of it (and child at bottom).
      */
     public void split(Component newComp, Component child, DockingConstants.Split position) {
 
         SplitContainer split;
         if (position == DockingConstants.SPLIT_TOP || position == DockingConstants.SPLIT_BOTTOM) {
             split = new SplitContainer(JSplitPane.VERTICAL_SPLIT);
-        } else /*if (position == DockingConstants.SPLIT_LEFT
-               || position == DockingConstants.SPLIT_RIGHT)*/ {
+        } else /*
+                * if (position == DockingConstants.SPLIT_LEFT || position == DockingConstants.SPLIT_RIGHT)
+                */ {
             split = new SplitContainer(JSplitPane.HORIZONTAL_SPLIT);
         }
 
@@ -261,122 +259,69 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
         if (min == distTop) {
             // dock on top
             if (drop) {
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockableState,
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_TOP,
-                        0.5f));
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockableState, splitState, comp, DockingConstants.SPLIT_TOP, 0.5f));
 
                 ((DockDropEvent) event).acceptDrop();
 
-                event.getDesktop()
-                        .splitComponent(comp, event.getDragSource().getDockable(), DockingConstants.SPLIT_TOP);
+                event.getDesktop().splitComponent(comp, event.getDragSource().getDockable(),
+                        DockingConstants.SPLIT_TOP);
             } else {
                 Rectangle2D r2d = new Rectangle2D.Float(compBounds.x, compBounds.y, compBounds.width, 20);
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockableState,
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_TOP,
-                        0.5f));
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockableState, splitState, comp, DockingConstants.SPLIT_TOP, 0.5f));
 
                 ((DockDragEvent) event).acceptDrag(r2d);
             }
         } else if (min == distLeft) {
             if (drop) {
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockableState,
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_LEFT,
-                        0.5f));
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockableState, splitState, comp, DockingConstants.SPLIT_LEFT, 0.5f));
 
                 ((DockDropEvent) event).acceptDrop();
-                event.getDesktop()
-                        .splitComponent(comp, event.getDragSource().getDockable(), DockingConstants.SPLIT_LEFT);
+                event.getDesktop().splitComponent(comp, event.getDragSource().getDockable(),
+                        DockingConstants.SPLIT_LEFT);
             } else {
                 Rectangle2D r2d = new Rectangle2D.Float(compBounds.x, compBounds.y, 20, compBounds.height);
 
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockableState,
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_LEFT,
-                        0.5f));
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockableState, splitState, comp, DockingConstants.SPLIT_LEFT, 0.5f));
 
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockable.getDockKey().getLocation(),
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_TOP,
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockable.getDockKey().getLocation(), splitState, comp, DockingConstants.SPLIT_TOP,
                         0.5f));
 
                 ((DockDragEvent) event).acceptDrag(r2d);
             }
         } else if (min == distBottom) {
             if (drop) {
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockableState,
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_BOTTOM,
-                        0.5f));
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockableState, splitState, comp, DockingConstants.SPLIT_BOTTOM, 0.5f));
 
                 ((DockDropEvent) event).acceptDrop();
-                event.getDesktop()
-                        .splitComponent(comp, event.getDragSource().getDockable(), DockingConstants.SPLIT_BOTTOM);
+                event.getDesktop().splitComponent(comp, event.getDragSource().getDockable(),
+                        DockingConstants.SPLIT_BOTTOM);
             } else {
-                Rectangle2D r2d = new Rectangle2D.Float(
-                        compBounds.x, compBounds.y + compBounds.height - 20, compBounds.width, 20);
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockableState,
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_BOTTOM,
-                        0.5f));
+                Rectangle2D r2d = new Rectangle2D.Float(compBounds.x, compBounds.y + compBounds.height - 20,
+                        compBounds.width, 20);
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockableState, splitState, comp, DockingConstants.SPLIT_BOTTOM, 0.5f));
 
                 ((DockDragEvent) event).acceptDrag(r2d);
             }
         } else { // right
             if (drop) {
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockableState,
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_RIGHT,
-                        0.5f));
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockableState, splitState, comp, DockingConstants.SPLIT_RIGHT, 0.5f));
 
                 ((DockDropEvent) event).acceptDrop();
-                event.getDesktop()
-                        .splitComponent(comp, event.getDragSource().getDockable(), DockingConstants.SPLIT_RIGHT);
+                event.getDesktop().splitComponent(comp, event.getDragSource().getDockable(),
+                        DockingConstants.SPLIT_RIGHT);
             } else {
-                Rectangle2D r2d = new Rectangle2D.Float(
-                        compBounds.x + compBounds.width - 20, compBounds.y, 20, compBounds.height);
-                event.setDockingAction(new DockingActionSplitComponentEvent(
-                        event.getDesktop(),
-                        dockable,
-                        dockableState,
-                        splitState,
-                        comp,
-                        DockingConstants.SPLIT_RIGHT,
-                        0.5f));
+                Rectangle2D r2d = new Rectangle2D.Float(compBounds.x + compBounds.width - 20, compBounds.y,
+                        20, compBounds.height);
+                event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                        dockableState, splitState, comp, DockingConstants.SPLIT_RIGHT, 0.5f));
 
                 ((DockDragEvent) event).acceptDrag(r2d);
             }
@@ -384,11 +329,11 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
     }
 }
 
-/* Utility class, resizes a splitcontainer after its size is known (needs an invokelater after
- * having added it).
- * allows us to avoid the nasty resizing of a splitpane when a component
- * is added on the right/bottom (it will then take most of the split surface,
- * which is not good when we add a small dockable to the right of a big dockable
+/*
+ * Utility class, resizes a splitcontainer after its size is known (needs an invokelater after having added
+ * it). allows us to avoid the nasty resizing of a splitpane when a component is added on the right/bottom (it
+ * will then take most of the split surface, which is not good when we add a small dockable to the right of a
+ * big dockable
  */
 class SplitResizer implements Runnable {
 

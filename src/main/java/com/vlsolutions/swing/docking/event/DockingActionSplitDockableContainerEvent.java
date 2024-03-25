@@ -24,8 +24,8 @@ import com.vlsolutions.swing.docking.DockingDesktop;
 import java.awt.Component;
 import java.awt.Container;
 
-/** A split event : split a base component in two, and puts a dockable container
- * in the other split position.
+/**
+ * A split event : split a base component in two, and puts a dockable container in the other split position.
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.1
@@ -40,16 +40,12 @@ public class DockingActionSplitDockableContainerEvent extends DockingActionEvent
 
     private Component base;
 
-    /** Constructs a new event
+    /**
+     * Constructs a new event
      */
-    public DockingActionSplitDockableContainerEvent(
-            DockingDesktop desk,
-            DockableState.Location initialLocation,
-            DockableState.Location nextLocation,
-            Component base,
-            Container dockableContainer,
-            DockingConstants.Split position,
-            float location) {
+    public DockingActionSplitDockableContainerEvent(DockingDesktop desk,
+            DockableState.Location initialLocation, DockableState.Location nextLocation, Component base,
+            Container dockableContainer, DockingConstants.Split position, float location) {
         super(desk, initialLocation, nextLocation, ACTION_SPLIT_DOCKABLE);
         this.base = base;
         this.dockableContainer = dockableContainer;

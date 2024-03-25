@@ -31,14 +31,15 @@ import javax.swing.GrayFilter;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-/** A sub component of JTabbedPaneSmartIcon, used to describe a button included in a tabbedpane.
- *<p>
- * As JTabbedPanes cannot use any JComponents as tab selectors (the access if protected and we just have
- * a label, an icon and a tooltip), we have to rely on tricks to bypass them.
- *<p>
- * This trick, the SmartIconJButton is an icon faking the behaviour of a button. It uses an Action
- * for reacting to clicks and manages a set of images (default, rollover, pressed, disabled) to
- * behave like a rollover button.
+/**
+ * A sub component of JTabbedPaneSmartIcon, used to describe a button included in a tabbedpane.
+ * <p>
+ * As JTabbedPanes cannot use any JComponents as tab selectors (the access if protected and we just have a
+ * label, an icon and a tooltip), we have to rely on tricks to bypass them.
+ * <p>
+ * This trick, the SmartIconJButton is an icon faking the behaviour of a button. It uses an Action for
+ * reacting to clicks and manages a set of images (default, rollover, pressed, disabled) to behave like a
+ * rollover button.
  *
  * @author Lilian Chamontin, VLSolutions
  */
@@ -47,10 +48,10 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
     /** The action triggered when the clicks on the icon */
     protected Action action;
 
-    /** the default icon (enabled/visible)*/
+    /** the default icon (enabled/visible) */
     protected Icon defaultIcon;
 
-    /** the icon for the rollover effect*/
+    /** the icon for the rollover effect */
     protected Icon rolloverIcon;
 
     /** the icno for the pressed effect */
@@ -62,10 +63,11 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
     /** the tooltip associated with the button */
     protected String tooltipText;
 
-    /* internal state variables*/
+    /* internal state variables */
     private boolean isRollover, isPressed, isEnabled, isVisible;
 
-    /** Constructs a new button with an action.
+    /**
+     * Constructs a new button with an action.
      *
      * The button is enabled and visible.
      */
@@ -138,27 +140,28 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
         this.isPressed = isPressed;
     }
 
-    /** Returns the rollover state*/
+    /** Returns the rollover state */
     public boolean isRollover() {
         return isRollover;
     }
 
-    /** Returns the pressed state*/
+    /** Returns the pressed state */
     public boolean isPressed() {
         return isPressed;
     }
 
-    /** Returns the enabled state*/
+    /** Returns the enabled state */
     public boolean isEnabled() {
         return isEnabled;
     }
 
-    /** Returns the visible state*/
+    /** Returns the visible state */
     public boolean isVisible() {
         return isVisible;
     }
 
-    /** paints the appropriate icon according to its internal state (pressed, rollover...)
+    /**
+     * paints the appropriate icon according to its internal state (pressed, rollover...)
      */
     public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
         if (!isVisible) {
@@ -194,8 +197,8 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
             Image i = GrayFilter.createDisabledImage(((ImageIcon) defaultIcon).getImage());
             return new ImageIcon(i);
         } else {
-            BufferedImage bi = new BufferedImage(
-                    defaultIcon.getIconWidth(), defaultIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+            BufferedImage bi = new BufferedImage(defaultIcon.getIconWidth(), defaultIcon.getIconHeight(),
+                    BufferedImage.TYPE_INT_ARGB);
             Graphics g = bi.createGraphics();
             g.setColor(new Color(0, 0, 0, 0));
             g.fillRect(0, 0, defaultIcon.getIconWidth(), defaultIcon.getIconHeight());
@@ -247,7 +250,8 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
         this.tooltipText = tooltip;
     }
 
-    /** Do not call directly as it a side effect of listening to the action changes.
+    /**
+     * Do not call directly as it a side effect of listening to the action changes.
      */
     public void propertyChange(PropertyChangeEvent evt) {
         // track changes in the Action

@@ -22,7 +22,8 @@ import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
-/** The component used to have a "grip" action on a toolbar (Drag and Drop support)
+/**
+ * The component used to have a "grip" action on a toolbar (Drag and Drop support)
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.0
@@ -53,8 +54,8 @@ public class ToolBarGripper extends JComponent {
     public void setOrientation(int orientation) {
         int old = this.orientation;
         this.orientation = orientation;
-        firePropertyChange(
-                PROPERTY_ORIENTATION, old, orientation); // not used by the framwork, but might be usefull for someone
+        firePropertyChange(PROPERTY_ORIENTATION, old, orientation); // not used by the framwork, but might be
+                                                                    // usefull for someone
     }
 
     /** Returns the orientation of this gripper (SwingConstants.HORIZONTAL/VERTICAL) */
@@ -71,14 +72,16 @@ public class ToolBarGripper extends JComponent {
         setUI(UIManager.getUI(this));
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     * 
      * @since 2.0
      */
     public String getUIClassID() {
         return uiClassID;
     }
 
-    /** Return true is this toolbar can be collapsed (default is true)*/
+    /** Return true is this toolbar can be collapsed (default is true) */
     public boolean isCollapsible() {
         return collapsible;
     }

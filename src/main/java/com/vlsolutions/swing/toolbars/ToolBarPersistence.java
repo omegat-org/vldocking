@@ -32,12 +32,11 @@ import org.xml.sax.SAXException;
 /**
  * This class contains methods to keep a set of toolbars persistent.
  * <p>
- * The class uses the preferences framework of the java runtime, and installs a
- * shutdown hook to save the toolbars state on application exit.
+ * The class uses the preferences framework of the java runtime, and installs a shutdown hook to save the
+ * toolbars state on application exit.
  * <p>
- * Warning : this class cannot be run from a sandboxed (untrusted) environment
- *  (unsigned applet/ java web start) as it uses classes requiring a SecurityManager
- * (Preferences API and Runtime shutdown hook).
+ * Warning : this class cannot be run from a sandboxed (untrusted) environment (unsigned applet/ java web
+ * start) as it uses classes requiring a SecurityManager (Preferences API and Runtime shutdown hook).
  * <p>
  * Call loadToolBarLayout() upon application startup, after registering all ToolBars.
  *
@@ -55,18 +54,18 @@ public class ToolBarPersistence implements Runnable {
     /**
      * Construct a new set of persistent toolbars.
      *
-     * @param mainClass the main class of the application.  Will be used to
-     * generate a reasonable name for the preferences to store toolbar
-     * configuration
-     * @param container the toolbarcontainer to keep persistent
-     * @throws SecurityException if this class is invoked from an untrusted environment
+     * @param mainClass
+     *            the main class of the application. Will be used to generate a reasonable name for the
+     *            preferences to store toolbar configuration
+     * @param container
+     *            the toolbarcontainer to keep persistent
+     * @throws SecurityException
+     *             if this class is invoked from an untrusted environment
      */
     public ToolBarPersistence(Object mainClass, ToolBarContainer container) {
         this.container = container;
         this.io = new ToolBarIO(container);
-        String nodeName = mainClass
-                .getClass()
-                .getName()
+        String nodeName = mainClass.getClass().getName()
                 .replaceFirst(mainClass.getClass().getPackage().getName() + ".", ""); // $NON-NLS-1$ //$NON-NLS-2$
         prefs = Preferences.userNodeForPackage(mainClass.getClass()).node(nodeName);
         Runtime.getRuntime().addShutdownHook(new Thread(this));
@@ -74,7 +73,8 @@ public class ToolBarPersistence implements Runnable {
 
     protected void handleUnloadedToolBar(VLToolBar toolbar) {
         ToolBarPanel panel = container.getToolBarPanelAt(BorderLayout.NORTH);
-        if (panel != null) panel.add(toolbar, new ToolBarConstraints());
+        if (panel != null)
+            panel.add(toolbar, new ToolBarConstraints());
     }
 
     /**
@@ -92,7 +92,7 @@ public class ToolBarPersistence implements Runnable {
             ToolBarIOReadInfo tri = io.readXML(in);
             Collection unloadedToolBars = tri.getNotInstalledToolbars();
             in.close();
-            for (Iterator i = unloadedToolBars.iterator(); i.hasNext(); ) {
+            for (Iterator i = unloadedToolBars.iterator(); i.hasNext();) {
                 VLToolBar toolbar = (VLToolBar) i.next();
                 handleUnloadedToolBar(toolbar);
             }
@@ -101,8 +101,10 @@ public class ToolBarPersistence implements Runnable {
 
     /**
      * Save the toolbar configuration.
-     *<p> Masks all errors.
-     *<p> don't call this method directly : it is used by the shudown hook.
+     * <p>
+     * Masks all errors.
+     * <p>
+     * don't call this method directly : it is used by the shudown hook.
      *
      * @see java.lang.Runnable#run()
      */

@@ -24,11 +24,12 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
-/** A specific UI for removing border effects of the JSplitPanes used for docking.
+/**
+ * A specific UI for removing border effects of the JSplitPanes used for docking.
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
- * */
+ */
 public class DockingSplitPaneUI extends BasicSplitPaneUI {
 
     Color shadow = UIManager.getColor("VLDocking.shadow");
@@ -45,10 +46,13 @@ public class DockingSplitPaneUI extends BasicSplitPaneUI {
 
     private static boolean isSplitResizingEnabled = UIManager.getBoolean("SplitContainer.isResizingEnabled");
 
-    public DockingSplitPaneUI() {}
+    public DockingSplitPaneUI() {
+    }
 
-    /** if true, the UI will paint shadowed dots along the split pane divider,
-     * if false, the divider will remain empty. Default is false
+    /**
+     * if true, the UI will paint shadowed dots along the split pane divider, if false, the divider will
+     * remain empty. Default is false
+     * 
      * @deprecated use UIManager.put("SplitContainer.drawDotsDelimitors", Boolean) instead
      */
     public static void setDrawDelimitors(boolean draw) {
@@ -100,7 +104,8 @@ public class DockingSplitPaneUI extends BasicSplitPaneUI {
 
             if (useCustomImages) {
                 Graphics2D g2 = (Graphics2D) g.create();
-                BufferedImage image = getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? verticalImage : horizontalImage;
+                BufferedImage image = getOrientation() == JSplitPane.HORIZONTAL_SPLIT ? verticalImage
+                        : horizontalImage;
                 int width = image.getWidth();
                 int height = image.getHeight();
 
@@ -137,7 +142,7 @@ public class DockingSplitPaneUI extends BasicSplitPaneUI {
                     big.dispose();
                 }
 
-                //      g.setColor(shadow);
+                // g.setColor(shadow);
                 Graphics2D g2 = (Graphics2D) g.create();
 
                 // Add the texture paint to the graphics context.

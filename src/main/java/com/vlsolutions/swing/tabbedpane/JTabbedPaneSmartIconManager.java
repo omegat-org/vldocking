@@ -27,13 +27,14 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
 
-/** This class is the interface between a JTabbedPane and a smart icon.
- *<p>
- * As JTabbedPanes cannot use any JComponents as tab selectors (the access if protected and we just have
- * a label, an icon and a tooltip), we have to rely on tricks to bypass them.
+/**
+ * This class is the interface between a JTabbedPane and a smart icon.
  * <p>
- * This class is used (with a mouse listener) to forward events into the smart icon. which is responsible
- * for faking an enhanced tab selector (including label and optional buttons).
+ * As JTabbedPanes cannot use any JComponents as tab selectors (the access if protected and we just have a
+ * label, an icon and a tooltip), we have to rely on tricks to bypass them.
+ * <p>
+ * This class is used (with a mouse listener) to forward events into the smart icon. which is responsible for
+ * faking an enhanced tab selector (including label and optional buttons).
  *
  *
  * @author Lilian Chamontin, VLSolutions
@@ -55,8 +56,9 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
         tabbedPane.addMouseMotionListener(this);
     }
 
-    /** MouseListener implementation, use to track mouse behaviour inside the tab selector bounds
-     * and forward them to the appropriate smart icon.
+    /**
+     * MouseListener implementation, use to track mouse behaviour inside the tab selector bounds and forward
+     * them to the appropriate smart icon.
      */
     public void mouseReleased(MouseEvent e) {
         checkTabCount();
@@ -70,15 +72,8 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
             }
             Point iPoint = convertPointToIcon(r, p, pressedIcon);
 
-            final MouseEvent eSmart = new MouseEvent(
-                    (Component) e.getSource(),
-                    e.getID(),
-                    e.getWhen(),
-                    e.getModifiers(),
-                    iPoint.x,
-                    iPoint.y,
-                    e.getClickCount(),
-                    e.isPopupTrigger(),
+            final MouseEvent eSmart = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(),
+                    e.getModifiers(), iPoint.x, iPoint.y, e.getClickCount(), e.isPopupTrigger(),
                     e.getButton());
             try {
                 if (pressedIcon.onMouseReleased(eSmart)) {
@@ -96,8 +91,9 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
         return new Point(x, y);
     }
 
-    /** MouseListener implementation, use to track mouse behaviour inside the tab selector bounds
-     * and forward them to the appropriate smart icon.
+    /**
+     * MouseListener implementation, use to track mouse behaviour inside the tab selector bounds and forward
+     * them to the appropriate smart icon.
      */
     public void mousePressed(MouseEvent e) {
         // where is the mouse pressed ?
@@ -125,16 +121,8 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
                 int y = p.y - (r.y + r.height / 2 - icon.getIconHeight() / 2);
                 if (x >= 0 && y >= 0 && x < icon.getIconWidth() && y < icon.getIconHeight()) {
                     // forward the event to the smart icon
-                    MouseEvent eSmart = new MouseEvent(
-                            (Component) e.getSource(),
-                            e.getID(),
-                            e.getWhen(),
-                            e.getModifiers(),
-                            x,
-                            y,
-                            e.getClickCount(),
-                            e.isPopupTrigger(),
-                            e.getButton());
+                    MouseEvent eSmart = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(),
+                            e.getModifiers(), x, y, e.getClickCount(), e.isPopupTrigger(), e.getButton());
                     if (smartIcon.onMousePressed(eSmart)) {
                         tabbedPane.repaint(r.x, r.y, r.width, r.height); // no choice but trigger a repaint
                     }
@@ -145,10 +133,10 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
         }
     }
 
-    /** verify if the tab count hasn't changed.
-     *<p>
-     * There is always the risk that the last tab has been removed (and movedTab will be
-     * out of bounds)
+    /**
+     * verify if the tab count hasn't changed.
+     * <p>
+     * There is always the risk that the last tab has been removed (and movedTab will be out of bounds)
      *
      */
     private void checkTabCount() {
@@ -174,8 +162,9 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
         return -1;
     }
 
-    /** MouseListener implementation, use to track mouse behaviour inside the tab selector bounds
-     * and forward them to the appropriate smart icon.
+    /**
+     * MouseListener implementation, use to track mouse behaviour inside the tab selector bounds and forward
+     * them to the appropriate smart icon.
      */
     public void mouseMoved(MouseEvent e) {
         checkTabCount();
@@ -195,22 +184,15 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
                         return;
                     }
                     Point iPoint = convertPointToIcon(prevRect, p, movedIcon);
-                    MouseEvent eSmart = new MouseEvent(
-                            (Component) e.getSource(),
-                            MouseEvent.MOUSE_EXITED,
-                            e.getWhen(),
-                            e.getModifiers(),
-                            iPoint.x,
-                            iPoint.y,
-                            e.getClickCount(),
-                            e.isPopupTrigger(),
-                            e.getButton());
+                    MouseEvent eSmart = new MouseEvent((Component) e.getSource(), MouseEvent.MOUSE_EXITED,
+                            e.getWhen(), e.getModifiers(), iPoint.x, iPoint.y, e.getClickCount(),
+                            e.isPopupTrigger(), e.getButton());
                     if (movedIcon.onMouseExited(eSmart)) {
                         String tip = movedIcon.getLocalTooltipText();
                         if (tip != null && !tip.equals(tabbedPane.getToolTipTextAt(targetTab))) {
                             tabbedPane.setToolTipTextAt(targetTab, tip);
                         }
-                        //            tabbedPane.repaint(prevRect.x, prevRect.y, prevRect.width, prevRect.height);
+                        // tabbedPane.repaint(prevRect.x, prevRect.y, prevRect.width, prevRect.height);
                         tabbedPane.revalidate();
                         tabbedPane.repaint();
                     }
@@ -226,20 +208,11 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
                 }
                 Point iPoint = convertPointToIcon(r, p, icon);
 
-                if (iPoint.x >= 0
-                        && iPoint.y >= 0
-                        && iPoint.x < icon.getIconWidth()
+                if (iPoint.x >= 0 && iPoint.y >= 0 && iPoint.x < icon.getIconWidth()
                         && iPoint.y < icon.getIconHeight()) {
                     // forward the event to the smart icon
-                    MouseEvent eSmart = new MouseEvent(
-                            (Component) e.getSource(),
-                            e.getID(),
-                            e.getWhen(),
-                            e.getModifiers(),
-                            iPoint.x,
-                            iPoint.y,
-                            e.getClickCount(),
-                            e.isPopupTrigger(),
+                    MouseEvent eSmart = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(),
+                            e.getModifiers(), iPoint.x, iPoint.y, e.getClickCount(), e.isPopupTrigger(),
                             e.getButton());
                     if (smartIcon.onMouseMoved(eSmart)) {
                         String tip = smartIcon.getLocalTooltipText();
@@ -248,7 +221,7 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
                         }
                         tabbedPane.revalidate();
                         tabbedPane.repaint();
-                        //            tabbedPane.repaint(r.x, r.y, r.width, r.height);
+                        // tabbedPane.repaint(r.x, r.y, r.width, r.height);
                     }
                     movedIcon = smartIcon;
                     movedTab = targetTab;
@@ -260,16 +233,9 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
                             return;
                         }
                         iPoint = convertPointToIcon(prevRect, p, movedIcon);
-                        MouseEvent eSmart = new MouseEvent(
-                                (Component) e.getSource(),
-                                MouseEvent.MOUSE_EXITED,
-                                e.getWhen(),
-                                e.getModifiers(),
-                                iPoint.x,
-                                iPoint.y,
-                                e.getClickCount(),
-                                e.isPopupTrigger(),
-                                e.getButton());
+                        MouseEvent eSmart = new MouseEvent((Component) e.getSource(), MouseEvent.MOUSE_EXITED,
+                                e.getWhen(), e.getModifiers(), iPoint.x, iPoint.y, e.getClickCount(),
+                                e.isPopupTrigger(), e.getButton());
                         if (movedIcon.onMouseExited(eSmart)) {
                             String tip = movedIcon.getLocalTooltipText();
                             if (tip != null && !tip.equals(tabbedPane.getToolTipTextAt(targetTab))) {
@@ -278,7 +244,7 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
 
                             tabbedPane.revalidate();
                             tabbedPane.repaint();
-                            //            tabbedPane.repaint(prevRect.x, prevRect.y, prevRect.width, prevRect.height);
+                            // tabbedPane.repaint(prevRect.x, prevRect.y, prevRect.width, prevRect.height);
                         }
                     }
                     movedIcon = null;
@@ -292,16 +258,9 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
                         return;
                     }
                     Point iPoint = convertPointToIcon(prevRect, p, movedIcon);
-                    MouseEvent eSmart = new MouseEvent(
-                            (Component) e.getSource(),
-                            MouseEvent.MOUSE_EXITED,
-                            e.getWhen(),
-                            e.getModifiers(),
-                            iPoint.x,
-                            iPoint.y,
-                            e.getClickCount(),
-                            e.isPopupTrigger(),
-                            e.getButton());
+                    MouseEvent eSmart = new MouseEvent((Component) e.getSource(), MouseEvent.MOUSE_EXITED,
+                            e.getWhen(), e.getModifiers(), iPoint.x, iPoint.y, e.getClickCount(),
+                            e.isPopupTrigger(), e.getButton());
                     if (movedIcon.onMouseExited(eSmart)) {
                         String tip = movedIcon.getLocalTooltipText();
                         if (tip != null && !tip.equals(tabbedPane.getToolTipTextAt(targetTab))) {
@@ -310,7 +269,7 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
 
                         tabbedPane.revalidate();
                         tabbedPane.repaint();
-                        //          tabbedPane.repaint(prevRect.x, prevRect.y, prevRect.width, prevRect.height);
+                        // tabbedPane.repaint(prevRect.x, prevRect.y, prevRect.width, prevRect.height);
                     }
                     movedIcon = null;
                     movedTab = -1;
@@ -324,16 +283,9 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
                     return;
                 }
                 Point iPoint = convertPointToIcon(prevRect, p, movedIcon);
-                MouseEvent eSmart = new MouseEvent(
-                        (Component) e.getSource(),
-                        MouseEvent.MOUSE_EXITED,
-                        e.getWhen(),
-                        e.getModifiers(),
-                        iPoint.x,
-                        iPoint.y,
-                        e.getClickCount(),
-                        e.isPopupTrigger(),
-                        e.getButton());
+                MouseEvent eSmart = new MouseEvent((Component) e.getSource(), MouseEvent.MOUSE_EXITED,
+                        e.getWhen(), e.getModifiers(), iPoint.x, iPoint.y, e.getClickCount(),
+                        e.isPopupTrigger(), e.getButton());
                 if (movedIcon.onMouseExited(eSmart)) {
                     String tip = movedIcon.getLocalTooltipText();
                     if (tip != null && !tip.equals(tabbedPane.getToolTipTextAt(movedTab))) {
@@ -342,7 +294,7 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
 
                     tabbedPane.revalidate();
                     tabbedPane.repaint();
-                    //        tabbedPane.repaint(prevRect.x, prevRect.y, prevRect.width, prevRect.height);
+                    // tabbedPane.repaint(prevRect.x, prevRect.y, prevRect.width, prevRect.height);
                 }
                 movedIcon = null;
                 movedTab = -1;
@@ -350,8 +302,9 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
         }
     }
 
-    /** MouseListener implementation, use to track mouse behaviour inside the tab selector bounds
-     * and forward them to the appropriate smart icon.
+    /**
+     * MouseListener implementation, use to track mouse behaviour inside the tab selector bounds and forward
+     * them to the appropriate smart icon.
      */
     public void mouseExited(MouseEvent e) {
         checkTabCount();
@@ -363,15 +316,8 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
                 return;
             }
             Point iPoint = convertPointToIcon(prevRect, p, movedIcon);
-            MouseEvent eSmart = new MouseEvent(
-                    (Component) e.getSource(),
-                    MouseEvent.MOUSE_EXITED,
-                    e.getWhen(),
-                    e.getModifiers(),
-                    iPoint.x,
-                    iPoint.y,
-                    e.getClickCount(),
-                    e.isPopupTrigger(),
+            MouseEvent eSmart = new MouseEvent((Component) e.getSource(), MouseEvent.MOUSE_EXITED,
+                    e.getWhen(), e.getModifiers(), iPoint.x, iPoint.y, e.getClickCount(), e.isPopupTrigger(),
                     e.getButton());
             if (movedIcon.onMouseExited(eSmart)) {
                 String tip = movedIcon.getLocalTooltipText();
@@ -386,15 +332,21 @@ public class JTabbedPaneSmartIconManager implements MouseListener, MouseMotionLi
         }
     }
 
-    /** MouseListener implementation, not used.
+    /**
+     * MouseListener implementation, not used.
      */
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
-    /** MouseMotionListener implementation, not used.
+    /**
+     * MouseMotionListener implementation, not used.
      */
-    public void mouseDragged(MouseEvent e) {}
+    public void mouseDragged(MouseEvent e) {
+    }
 
-    /** MouseListener implementation, not used.
+    /**
+     * MouseListener implementation, not used.
      */
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
 }

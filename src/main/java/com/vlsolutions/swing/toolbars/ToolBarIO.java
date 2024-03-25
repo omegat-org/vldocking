@@ -33,7 +33,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 
-/** A utility class used to save and restore toolbars to/from an XML configuration.
+/**
+ * A utility class used to save and restore toolbars to/from an XML configuration.
  *
  * @author Lilian Chamontin, VLSolutions
  */
@@ -47,12 +48,13 @@ public class ToolBarIO {
         this.container = container;
     }
 
-    /** Saves the current toolbar configuration into an XML stream.
+    /**
+     * Saves the current toolbar configuration into an XML stream.
      * <p>
      * The stream is not closed at the end of the operation.
      *
      * @see #readXML(InputStream)
-     * */
+     */
     public void writeXML(OutputStream stream) {
         try (PrintWriter out = new PrintWriter(new OutputStreamWriter(stream, StandardCharsets.UTF_8))) {
             out.println("<?xml version=\"1.0\"?>");
@@ -98,27 +100,29 @@ public class ToolBarIO {
         out.println("</ToolBarPanel>");
     }
 
-    /** Reads an XML encoded stream as the toolbar configuration.
+    /**
+     * Reads an XML encoded stream as the toolbar configuration.
      * <p>
-     * When the method returns, the container is totally reconfigured with possibly different
-     * toolbars at different positions.
+     * When the method returns, the container is totally reconfigured with possibly different toolbars at
+     * different positions.
      * <p>
-     * <b>Note : </b> The <code>VLToolBar</code>s of the stream must be registered with
-     * the {@link ToolBarContainer#registerToolBar(VLToolBar) registerToolBar} method,
-     * prior readXML.
-     * <p> Also note that the container must already contain its ToolBarPanels before reading
-     * the configuration.
+     * <b>Note : </b> The <code>VLToolBar</code>s of the stream must be registered with the
+     * {@link ToolBarContainer#registerToolBar(VLToolBar) registerToolBar} method, prior readXML.
+     * <p>
+     * Also note that the container must already contain its ToolBarPanels before reading the configuration.
      *
      * <p>
      * Dismisses all visible toolbars.
      * <p>
      * The stream is not closed at the end of the operation.
+     * 
      * @see #writeXML(OutputStream)
      * @see ToolBarContainer#registerToolBar(VLToolBar)
-     * @return a descriptor of the reading operation(useful for example to know the registered toolbars, that weren't
-     *         loaded (missing) from the input file).
-     *  */
-    public ToolBarIOReadInfo readXML(InputStream in) throws ParserConfigurationException, IOException, SAXException {
+     * @return a descriptor of the reading operation(useful for example to know the registered toolbars, that
+     *         weren't loaded (missing) from the input file).
+     */
+    public ToolBarIOReadInfo readXML(InputStream in)
+            throws ParserConfigurationException, IOException, SAXException {
 
         ToolBarIOReadInfo tri = new ToolBarIOReadInfo();
 
@@ -202,8 +206,7 @@ public class ToolBarIO {
         String toolbarName = toolbarElt.getAttribute("name");
         int major = Integer.parseInt(toolbarElt.getAttribute("major"));
         int minor = Integer.parseInt(toolbarElt.getAttribute("minor"));
-        boolean collapsed =
-                Boolean.valueOf(toolbarElt.getAttribute("collapsed")).booleanValue(); // 2.0.6b
+        boolean collapsed = Boolean.valueOf(toolbarElt.getAttribute("collapsed")).booleanValue(); // 2.0.6b
         ToolBarConstraints tc = new ToolBarConstraints(major, minor);
 
         VLToolBar tb = container.getToolBarByName(toolbarName);

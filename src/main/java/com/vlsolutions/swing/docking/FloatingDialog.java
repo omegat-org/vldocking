@@ -47,14 +47,13 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 
 /**
- * The floating jdialog for floatable dockables. This is the default
- * implementation of the FloatingDockableContainer interface.
+ * The floating jdialog for floatable dockables. This is the default implementation of the
+ * FloatingDockableContainer interface.
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.0
- * @update 2005/10/06 Lilian Chamontin : Reworked the layout (added border
- *         components) to have better cursor and resize management and to allow
- *         nesting dockables as tabs.
+ * @update 2005/10/06 Lilian Chamontin : Reworked the layout (added border components) to have better cursor
+ *         and resize management and to allow nesting dockables as tabs.
  *
  */
 @SuppressWarnings("unused")
@@ -187,8 +186,8 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
     }
 
     public void setInitialDockable(Dockable dockable) {
-        SingleDockableContainer sdc = DockableContainerFactory.getFactory()
-                .createDockableContainer(dockable, DockableContainerFactory.ParentType.PARENT_DETACHED_WINDOW);
+        SingleDockableContainer sdc = DockableContainerFactory.getFactory().createDockableContainer(dockable,
+                DockableContainerFactory.ParentType.PARENT_DETACHED_WINDOW);
         sdc.installDocking(desktop);
 
         Component comp = (Component) sdc;
@@ -217,57 +216,57 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
             int dy = p.y - lastPoint.y;
 
             switch (dragType) {
-                case DRAG_TOP:
-                    Point loc = getLocation();
-                    setLocation(loc.x + dx, loc.y + dy);
-                    break;
-                case DRAG_TOP | DRAG_LEFT:
-                    invalidate();
-                    bounds.x += dx;
-                    bounds.y += dy;
-                    bounds.width -= dx;
-                    bounds.height -= dy;
-                    setBounds(bounds);
-                    validate();
-                    break;
-                case DRAG_TOP | DRAG_RIGHT:
-                    invalidate();
-                    bounds.y += dy;
-                    bounds.width += dx;
-                    bounds.height -= dy;
-                    setBounds(bounds);
-                    validate();
-                    break;
-                case DRAG_RIGHT:
-                    invalidate();
-                    setSize(d.width + dx, d.height);
-                    validate();
-                    break;
-                case DRAG_RIGHT | DRAG_BOTTOM:
-                    invalidate();
-                    setSize(d.width + dx, d.height + dy);
-                    validate();
-                    break;
-                case DRAG_BOTTOM:
-                    invalidate();
-                    setSize(d.width, d.height + dy);
-                    validate();
-                    break;
-                case DRAG_BOTTOM | DRAG_LEFT:
-                    invalidate();
-                    bounds.x += dx;
-                    bounds.width -= dx;
-                    bounds.height += dy;
-                    setBounds(bounds);
-                    validate();
-                    break;
-                case DRAG_LEFT:
-                    invalidate();
-                    bounds.x += dx;
-                    bounds.width -= dx;
-                    setBounds(bounds);
-                    validate();
-                    break;
+            case DRAG_TOP:
+                Point loc = getLocation();
+                setLocation(loc.x + dx, loc.y + dy);
+                break;
+            case DRAG_TOP | DRAG_LEFT:
+                invalidate();
+                bounds.x += dx;
+                bounds.y += dy;
+                bounds.width -= dx;
+                bounds.height -= dy;
+                setBounds(bounds);
+                validate();
+                break;
+            case DRAG_TOP | DRAG_RIGHT:
+                invalidate();
+                bounds.y += dy;
+                bounds.width += dx;
+                bounds.height -= dy;
+                setBounds(bounds);
+                validate();
+                break;
+            case DRAG_RIGHT:
+                invalidate();
+                setSize(d.width + dx, d.height);
+                validate();
+                break;
+            case DRAG_RIGHT | DRAG_BOTTOM:
+                invalidate();
+                setSize(d.width + dx, d.height + dy);
+                validate();
+                break;
+            case DRAG_BOTTOM:
+                invalidate();
+                setSize(d.width, d.height + dy);
+                validate();
+                break;
+            case DRAG_BOTTOM | DRAG_LEFT:
+                invalidate();
+                bounds.x += dx;
+                bounds.width -= dx;
+                bounds.height += dy;
+                setBounds(bounds);
+                validate();
+                break;
+            case DRAG_LEFT:
+                invalidate();
+                bounds.x += dx;
+                bounds.width -= dx;
+                setBounds(bounds);
+                validate();
+                break;
             }
 
             lastPoint = p;
@@ -281,9 +280,9 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
             dragType = 0;
             Point p = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), getContentPane());
             /*
-             * if (p.y < 10){ dragType |= DRAG_TOP; } if (p.x < 5){ dragType |=
-             * DRAG_LEFT; } if (p.x > getWidth() - 5){ dragType |= DRAG_RIGHT; }
-             * if (p.y > getHeight() - 5){ dragType |= DRAG_BOTTOM; }
+             * if (p.y < 10){ dragType |= DRAG_TOP; } if (p.x < 5){ dragType |= DRAG_LEFT; } if (p.x >
+             * getWidth() - 5){ dragType |= DRAG_RIGHT; } if (p.y > getHeight() - 5){ dragType |= DRAG_BOTTOM;
+             * }
              */
             if (p.y < title.getY() + title.getHeight()) {
                 dragType |= DRAG_TOP;
@@ -302,11 +301,14 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
             SwingUtilities.convertPointToScreen(lastPoint, e.getComponent());
         }
 
-        public void mouseExited(MouseEvent e) {}
+        public void mouseExited(MouseEvent e) {
+        }
 
-        public void mouseEntered(MouseEvent e) {}
+        public void mouseEntered(MouseEvent e) {
+        }
 
-        public void mouseClicked(MouseEvent e) {}
+        public void mouseClicked(MouseEvent e) {
+        }
 
         public void mouseMoved(MouseEvent e) {
             Point p = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), getContentPane());
@@ -327,33 +329,33 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
             }
             Cursor c = null;
             switch (dragType) {
-                case 0:
-                    c = Cursor.getDefaultCursor();
-                    break;
-                case DRAG_TOP:
-                    c = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
-                    break;
-                case DRAG_TOP | DRAG_LEFT:
-                    c = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
-                    break;
-                case DRAG_TOP | DRAG_RIGHT:
-                    c = Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
-                    break;
-                case DRAG_RIGHT:
-                    c = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
-                    break;
-                case DRAG_RIGHT | DRAG_BOTTOM:
-                    c = Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
-                    break;
-                case DRAG_BOTTOM:
-                    c = Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
-                    break;
-                case DRAG_BOTTOM | DRAG_LEFT:
-                    c = Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
-                    break;
-                case DRAG_LEFT:
-                    c = Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
-                    break;
+            case 0:
+                c = Cursor.getDefaultCursor();
+                break;
+            case DRAG_TOP:
+                c = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+                break;
+            case DRAG_TOP | DRAG_LEFT:
+                c = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
+                break;
+            case DRAG_TOP | DRAG_RIGHT:
+                c = Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
+                break;
+            case DRAG_RIGHT:
+                c = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
+                break;
+            case DRAG_RIGHT | DRAG_BOTTOM:
+                c = Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
+                break;
+            case DRAG_BOTTOM:
+                c = Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
+                break;
+            case DRAG_BOTTOM | DRAG_LEFT:
+                c = Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
+                break;
+            case DRAG_LEFT:
+                c = Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
+                break;
             }
             if (!e.getComponent().getCursor().equals(c)) {
                 e.getComponent().setCursor(c);
@@ -377,9 +379,8 @@ public class FloatingDialog extends JDialog implements FloatingDockableContainer
                 brighter = UIManager.getColor("inactiveCaptionBorder");
             }
             /*
-             * Graphics2D g2 = (Graphics2D) g; Paint paint = g2.getPaint();
-             * GradientPaint gradient = new GradientPaint(0,0, darker, 0,
-             * getHeight(), brighter); g2.setPaint(gradient); g2.fillRect(0,0,
+             * Graphics2D g2 = (Graphics2D) g; Paint paint = g2.getPaint(); GradientPaint gradient = new
+             * GradientPaint(0,0, darker, 0, getHeight(), brighter); g2.setPaint(gradient); g2.fillRect(0,0,
              * getWidth(), getHeight()); g2.setPaint(paint); // restore
              */
             Graphics2D g2 = (Graphics2D) g;

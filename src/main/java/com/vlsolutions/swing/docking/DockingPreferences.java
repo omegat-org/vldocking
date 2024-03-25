@@ -28,13 +28,13 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-/** This is the centralized settings repository for managing docking look and feel.
+/**
+ * This is the centralized settings repository for managing docking look and feel.
  * <p>
  * It acts as a facade for installing common settings.
- *<p>
- * This class contains only high-level settings, like the heavyweight components support
- * or the global desktop style (shadowed or flat). To access low-level properties, use
- * the DockingUISettings class instead.
+ * <p>
+ * This class contains only high-level settings, like the heavyweight components support or the global desktop
+ * style (shadowed or flat). To access low-level properties, use the DockingUISettings class instead.
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 1.1
@@ -45,25 +45,26 @@ public class DockingPreferences {
     private static boolean isLightWeightUsageEnabled = true;
     private static boolean isSingleHeavyWeightComponent = false;
 
-    /** private stuff : use static methods only  */
-    private DockingPreferences() {}
+    /** private stuff : use static methods only */
+    private DockingPreferences() {
+    }
 
     public static final AutoHidePolicy getAutoHidePolicy() {
         return AutoHidePolicy.getPolicy();
     }
 
-    /** A simple utility method to configure the docking framework to work properly with
-     * heavyweight component.
-     *<p>
+    /**
+     * A simple utility method to configure the docking framework to work properly with heavyweight component.
+     * <p>
      * Don't forget to invoke also the following general swing methods :
+     * 
      * <pre>
-     *      ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-     *      JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-     *</pre>
-     *<p>
-     * If you are sure you will always use heavyweight component, you can replace this
-     * method invocation by initHeavyWeightUsage(), which will do all the work for you
-     * (even the general swing methods invocation).
+     * ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+     * JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+     * </pre>
+     * <p>
+     * If you are sure you will always use heavyweight component, you can replace this method invocation by
+     * initHeavyWeightUsage(), which will do all the work for you (even the general swing methods invocation).
      *
      */
     public static void setLightweigthComponentEnabled(boolean lightweight) {
@@ -74,9 +75,10 @@ public class DockingPreferences {
         return isLightWeightUsageEnabled;
     }
 
-    /** Notifies the framework that there is only one dockable that is heavyweight.
-     * <p> This allows optimizations and workarounds (for properly using the JDIC WebBrowser
-     *  for example).
+    /**
+     * Notifies the framework that there is only one dockable that is heavyweight.
+     * <p>
+     * This allows optimizations and workarounds (for properly using the JDIC WebBrowser for example).
      */
     public static void setSingleHeavyWeightComponent(boolean single) {
         isSingleHeavyWeightComponent = single;
@@ -86,15 +88,16 @@ public class DockingPreferences {
         return isSingleHeavyWeightComponent;
     }
 
-    /** Facade method used to allow mixing of lightweight and heavyweight components in the
-     * desktop.
+    /**
+     * Facade method used to allow mixing of lightweight and heavyweight components in the desktop.
      * <p>
-     *  This method is a shortcut for :
+     * This method is a shortcut for :
+     * 
      * <pre>
-     *        ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-     *        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-     *        setLightweigthComponentEnabled(false);
-     *        getAutoHidePolicy().setExpansionDuration(0);
+     * ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+     * JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+     * setLightweigthComponentEnabled(false);
+     * getAutoHidePolicy().setExpansionDuration(0);
      * </pre>
      */
     public static void initHeavyWeightUsage() {
@@ -105,8 +108,8 @@ public class DockingPreferences {
         getAutoHidePolicy().setExpansionDuration(0);
     }
 
-    /** Facade method used to allow mixing of lightweight and heavyweight components in the
-     * desktop.
+    /**
+     * Facade method used to allow mixing of lightweight and heavyweight components in the desktop.
      */
     public static void initHeavyWeightUsage(boolean isSingleHeavyWeightComponent) {
         initHeavyWeightUsage();
@@ -121,17 +124,19 @@ public class DockingPreferences {
         UIManager.put("TabbedDockableContainer.tabPlacement", new Integer(SwingConstants.BOTTOM));
     }
 
-    /** Convenience method to use the VLDocking 2.0 layout and border style.
+    /**
+     * Convenience method to use the VLDocking 2.0 layout and border style.
      * <p>
      * The new "flat style" uses light borders around dockables and top tab placements.
      * <p>
-     * This style is the new default one, so there is no need to call this method unless you want
-     * to swap dynamically between desktop styles.
+     * This style is the new default one, so there is no need to call this method unless you want to swap
+     * dynamically between desktop styles.
      */
     public static void setFlatDesktopStyle() {
         DockingUISettings.getInstance().installUI();
 
-        // flat style is the default (outside : empty 1 pix / inside : hightlight-top-left + shadow-bottom-right
+        // flat style is the default (outside : empty 1 pix / inside : hightlight-top-left +
+        // shadow-bottom-right
         Color shadow = UIManager.getColor("VLDocking.shadow");
         Color highlight = UIManager.getColor("VLDocking.highlight");
 
@@ -139,14 +144,15 @@ public class DockingPreferences {
                 BorderFactory.createMatteBorder(1, 1, 0, 0, highlight),
                 BorderFactory.createMatteBorder(0, 0, 1, 1, shadow));
 
-        Border flatSingleBorder =
-                BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerFlatSingleBorder);
+        Border flatSingleBorder = BorderFactory
+                .createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerFlatSingleBorder);
         UIManager.put("DockView.singleDockableBorder", flatSingleBorder);
         UIManager.put("DockView.tabbedDockableBorder", null);
         UIManager.put("TabbedDockableContainer.tabPlacement", new Integer(SwingConstants.TOP));
     }
 
-    /** Another docking style with ligh dots between dockables.
+    /**
+     * Another docking style with ligh dots between dockables.
      */
     public static void setDottedDesktopStyle() {
         DockingUISettings.getInstance().installUI();
@@ -166,7 +172,8 @@ public class DockingPreferences {
         UIManager.put("SplitContainer.drawDotsDelimitors", Boolean.TRUE);
     }
 
-    /** Another docking style with custom tiles between dockables.
+    /**
+     * Another docking style with custom tiles between dockables.
      */
     public static void setCustomSplitDesktopStyle(BufferedImage horizontalTile, BufferedImage verticalTile) {
 

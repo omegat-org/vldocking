@@ -20,7 +20,8 @@ package com.vlsolutions.swing.docking;
 
 import java.beans.*;
 
-/** This class holds preferences on default autohiding behaviour.
+/**
+ * This class holds preferences on default autohiding behaviour.
  *
  * @see AutoHideButtonPanel
  *
@@ -37,12 +38,16 @@ public class AutoHidePolicy {
         EXPAND_ON_CLICK;
     }
 
-    /** A constant for initial expantion : based on preferred size of component
+    /**
+     * A constant for initial expantion : based on preferred size of component
+     * 
      * @see AutoHidePolicy#setInitialExpansionModel(int)
      */
     public static final int INITIAL_EXPAND_COMPONENT_SIZE = 0;
 
-    /** A constant for initial expantion : based on custom widths and heights
+    /**
+     * A constant for initial expantion : based on custom widths and heights
+     * 
      * @see AutoHidePolicy#setInitialExpansionWidth(int)
      * @see AutoHidePolicy#setInitialExpansionHeight(int)
      * @see AutoHidePolicy#setInitialExpansionModel(int)
@@ -81,21 +86,24 @@ public class AutoHidePolicy {
 
     private PropertyChangeSupport propertySupport = new PropertyChangeSupport(this);
 
-    private AutoHidePolicy() {}
+    private AutoHidePolicy() {
+    }
 
-    /** Updates the default hide border.
+    /**
+     * Updates the default hide border.
      * <p>
      * Default is AutoHideExpandPanel.LEFT;
      *
-     * @param defaultHideBorder values taken from DockingConstants.HIDE_TOP, HIDE_LEFT, HIDE_BOTTOM, HIDE_RIGHT
-     * */
+     * @param defaultHideBorder
+     *            values taken from DockingConstants.HIDE_TOP, HIDE_LEFT, HIDE_BOTTOM, HIDE_RIGHT
+     */
     public void setDefaultHideBorder(DockingConstants.Hide defaultHideBorder) {
         DockingConstants.Hide old = this.defaultHideBorder;
         this.defaultHideBorder = defaultHideBorder;
         propertySupport.firePropertyChange(PROPERTY_DEFAULT_HIDE_BORDER, old, defaultHideBorder);
     }
 
-    /** Returns the default hide border (used when not specified in a DockKey)*/
+    /** Returns the default hide border (used when not specified in a DockKey) */
     public DockingConstants.Hide getDefaultHideBorder() {
         return defaultHideBorder;
     }
@@ -105,7 +113,7 @@ public class AutoHidePolicy {
         return defaultGap;
     }
 
-    /** Updates the gap (in pixels) between auto-hide buttons*/
+    /** Updates the gap (in pixels) between auto-hide buttons */
     public void setDefaultGap(int gap) {
         int old = this.defaultGap;
         this.defaultGap = gap;
@@ -117,31 +125,40 @@ public class AutoHidePolicy {
         return policy;
     }
 
-    /** Returns the expand mode in use.
-     *   @return EXPAND_ON_ROLLOVER or EXPAND_ON_CLICK
-     * */
+    /**
+     * Returns the expand mode in use.
+     * 
+     * @return EXPAND_ON_ROLLOVER or EXPAND_ON_CLICK
+     */
     public ExpandMode getExpandMode() {
         return expandMode;
     }
 
-    /** Updates the expand mode.
-     * @param expandMode legal values are EXPAND_ON_ROLLOVER or EXPAND_ON_CLICK
-     * */
+    /**
+     * Updates the expand mode.
+     * 
+     * @param expandMode
+     *            legal values are EXPAND_ON_ROLLOVER or EXPAND_ON_CLICK
+     */
     public void setExpandMode(ExpandMode expandMode) {
         ExpandMode old = this.expandMode;
         this.expandMode = expandMode;
         propertySupport.firePropertyChange(PROPERTY_EXPAND_MODE, old, expandMode);
     }
 
-    /** Returns the rollover trigger delay (in millis)
+    /**
+     * Returns the rollover trigger delay (in millis)
      *
-     * */
+     */
     public int getRolloverTriggerDelay() {
         return rolloverTriggerDelay;
     }
 
-    /** Updates the rollover trigger delay
-     * @param delay  delay in millis before expanding a Dockable
+    /**
+     * Updates the rollover trigger delay
+     * 
+     * @param delay
+     *            delay in millis before expanding a Dockable
      */
     public void setRolloverTriggerDelay(int delay) {
         int old = this.rolloverTriggerDelay;
@@ -181,7 +198,8 @@ public class AutoHidePolicy {
         propertySupport.removePropertyChangeListener(propertyName, listener);
     }
 
-    /** returns the expansion model (computation size of first expansion)
+    /**
+     * returns the expansion model (computation size of first expansion)
      *
      * @return the useComponentPreferredSize
      */
@@ -190,8 +208,8 @@ public class AutoHidePolicy {
     }
 
     /**
-     * @param model the model to set, values are INITIAL_EXPAND_CUSTOM_SIZE
-     * and INITIAL_EXPAND_COMPONENT_SIZE
+     * @param model
+     *            the model to set, values are INITIAL_EXPAND_CUSTOM_SIZE and INITIAL_EXPAND_COMPONENT_SIZE
      */
     public void setInitialExpansionModel(int model) {
         this.initialExpansionModel = model;
@@ -204,8 +222,11 @@ public class AutoHidePolicy {
         return initialExpansionWidth;
     }
 
-    /** sets the first expansion width (only used with INITIAL_EXPAND_CUSTOM_SIZE model)
-     * @param initialExpansionWidth the with to set for first expansion
+    /**
+     * sets the first expansion width (only used with INITIAL_EXPAND_CUSTOM_SIZE model)
+     * 
+     * @param initialExpansionWidth
+     *            the with to set for first expansion
      * @see AutoHidePolicy#setInitialExpansionModel(int)
      */
     public void setInitialExpansionWidth(int initialExpansionWidth) {
@@ -219,9 +240,11 @@ public class AutoHidePolicy {
         return initialExpansionHeight;
     }
 
-    /** sets the first expansion height (only used with INITIAL_EXPAND_CUSTOM_SIZE model)
+    /**
+     * sets the first expansion height (only used with INITIAL_EXPAND_CUSTOM_SIZE model)
      *
-     * @param initialExpansionHeight the initialExpansionHeight to set
+     * @param initialExpansionHeight
+     *            the initialExpansionHeight to set
      * @see AutoHidePolicy#setInitialExpansionModel(int)
      */
     public void setInitialExpansionHeight(int initialExpansionHeight) {

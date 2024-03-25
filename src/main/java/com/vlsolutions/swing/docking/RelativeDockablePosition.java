@@ -21,29 +21,27 @@ package com.vlsolutions.swing.docking;
 import java.awt.*;
 import javax.swing.*;
 
-/** This class is an immutable object used to remember the relative positionning
- * of docked components.
+/**
+ * This class is an immutable object used to remember the relative positionning of docked components.
  * <p>
- * <code>x, y, w, h</code> fields are expressed with <code>double</code> values
- * varying from 0 to 1.
+ * <code>x, y, w, h</code> fields are expressed with <code>double</code> values varying from 0 to 1.
  * <p>
  * <ul>
- *  <li> x : 0 = left, 1 = right
- *  <li> y : 0 = top, 1 = bottom
- *  <li> w : 0 = no width, 1-x = full remaining width
- *  <li> h : 0 = no height, 1-y = full remaining height
+ * <li>x : 0 = left, 1 = right
+ * <li>y : 0 = top, 1 = bottom
+ * <li>w : 0 = no width, 1-x = full remaining width
+ * <li>h : 0 = no height, 1-y = full remaining height
  * </ul>
  *
  * <p>
- * Objects of this class are used to reposition a Dockable on the desktop, based
- * on lazy constraints : As the desktop is a mix of horizontal and vertical
- * split panes ({@link SplitContainer}) it is not always possible to put a dockable
- * exactly where you want given a set of x,y, w, and h constraints.
+ * Objects of this class are used to reposition a Dockable on the desktop, based on lazy constraints : As the
+ * desktop is a mix of horizontal and vertical split panes ({@link SplitContainer}) it is not always possible
+ * to put a dockable exactly where you want given a set of x,y, w, and h constraints.
  *
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
- * */
+ */
 public class RelativeDockablePosition {
 
     /** convenience field referencing the TOP border of the DockingDesktop */
@@ -62,16 +60,19 @@ public class RelativeDockablePosition {
     public static final RelativeDockablePosition RIGHT = new RelativeDockablePosition(0.8, 0, 0.2, 1);
 
     /** convenience field referencing the CENTER part of the RIGHT border of the DockingDesktop */
-    public static final RelativeDockablePosition RIGHT_CENTER = new RelativeDockablePosition(0.8, 0.4, 0.2, 0.2);
+    public static final RelativeDockablePosition RIGHT_CENTER = new RelativeDockablePosition(0.8, 0.4, 0.2,
+            0.2);
 
     /** convenience field referencing the TOP-RIGHT corner of the DockingDesktop */
-    public static final RelativeDockablePosition BOTTOM_RIGHT = new RelativeDockablePosition(0.8, 0.8, 0.2, 0.2);
+    public static final RelativeDockablePosition BOTTOM_RIGHT = new RelativeDockablePosition(0.8, 0.8, 0.2,
+            0.2);
 
     /** convenience field referencing the BOTTOM border of the DockingDesktop */
     public static final RelativeDockablePosition BOTTOM = new RelativeDockablePosition(0, 0.8, 1, 0.2);
 
     /** convenience field referencing the CENTER part of the BOTTOM border of the DockingDesktop */
-    public static final RelativeDockablePosition BOTTOM_CENTER = new RelativeDockablePosition(0.4, 0.8, 0.2, 0.2);
+    public static final RelativeDockablePosition BOTTOM_CENTER = new RelativeDockablePosition(0.4, 0.8, 0.2,
+            0.2);
 
     /** convenience field referencing the TOP-RIGHT corner of the DockingDesktop */
     public static final RelativeDockablePosition BOTTOM_LEFT = new RelativeDockablePosition(0, 0.8, 0.2, 0.2);
@@ -84,23 +85,27 @@ public class RelativeDockablePosition {
 
     private double x, y, w; // relative positionning (0-1) of the component in the container
 
-    /** The container used for relative positioning (can be a top level DockingPanel
-     * or an intermediate CompoundDockingPanel) */
+    /**
+     * The container used for relative positioning (can be a top level DockingPanel or an intermediate
+     * CompoundDockingPanel)
+     */
     private Container relativeAncestorContainer;
 
     private double h;
 
-    /** @see AnchorConstraints.ANCHOR_TOP (this field is an ORing of possible anchors) and contains
-     * 4 boolean values (TOP, LEFT, BOTTOM, RIGHT)
+    /**
+     * @see AnchorConstraints.ANCHOR_TOP (this field is an ORing of possible anchors) and contains 4 boolean
+     *      values (TOP, LEFT, BOTTOM, RIGHT)
      */
     private int anchors;
 
-    /** Construct a RelativeDockablePosition, assigning x, y, w, h values from the
-     * current position of a dockable in its desktop container.
+    /**
+     * Construct a RelativeDockablePosition, assigning x, y, w, h values from the current position of a
+     * dockable in its desktop container.
      * <p>
-     * This constructor is a convenience for the framework, and should not be
-     * used by API users (thus is package protected visibility).
-     * */
+     * This constructor is a convenience for the framework, and should not be used by API users (thus is
+     * package protected visibility).
+     */
     RelativeDockablePosition(Container relativeAncestorContainer, Dockable dockable) {
         /* (package protected) */
 
@@ -108,21 +113,25 @@ public class RelativeDockablePosition {
     }
 
     /** Constructs an empty relative position (all fields are initialized with 0.0 values) */
-    public RelativeDockablePosition() {}
+    public RelativeDockablePosition() {
+    }
 
-    /** Constructs a relative position with given location and size.
-     *<p>
-     * Please remember that the values must be between 0 and 1, as they designate
-     * relative coordinates position/size.
+    /**
+     * Constructs a relative position with given location and size.
+     * <p>
+     * Please remember that the values must be between 0 and 1, as they designate relative coordinates
+     * position/size.
      *
-     * @throws IllegalArgumentException if values are not in the given bounds
-     *  */
+     * @throws IllegalArgumentException
+     *             if values are not in the given bounds
+     */
     public RelativeDockablePosition(double x, double y, double w, double h) {
         this(null, x, y, w, h);
     }
 
     /** Constructs a relative position with a given location and size, relative to a container */
-    public RelativeDockablePosition(Container relativeAncestorContainer, double x, double y, double w, double h) {
+    public RelativeDockablePosition(Container relativeAncestorContainer, double x, double y, double w,
+            double h) {
         this.relativeAncestorContainer = relativeAncestorContainer;
         if (x < 0 || x > 1) {
             throw new IllegalArgumentException("x is out of bounds [0.0 , 1.0] " + x);
@@ -162,23 +171,27 @@ public class RelativeDockablePosition {
         return h;
     }
 
-    /** Returns a meaningfull string representation of this RelativeDockablePosition  */
+    /** Returns a meaningfull string representation of this RelativeDockablePosition */
     public String toString() {
         return "RelativePosition [" + x + ", " + y + ", " + w + ", " + h + ", anchors=" + anchors + "]";
     }
 
-    /** Returns the ancestor container used as a reference for the relative potionning
-     *<p> This can be a DockingPanel (top level ancestor) or CompoundDockingPanel (intermediate ancestor)
+    /**
+     * Returns the ancestor container used as a reference for the relative potionning
+     * <p>
+     * This can be a DockingPanel (top level ancestor) or CompoundDockingPanel (intermediate ancestor)
      */
     public Container getRelativeAncestorContainer() {
         return relativeAncestorContainer;
     }
 
-    /** Returns an integer value representing the anchoring of the dockable relatively to
-     * its ancestor container.
+    /**
+     * Returns an integer value representing the anchoring of the dockable relatively to its ancestor
+     * container.
      * <p>
-     * For example a dockable at the top left angle of an ancestor container will have an
-     * "anchors" value or : AnchorConstraints.ANCHOR_TOP|AnchorConstraints.ANCHOR_LEFT
+     * For example a dockable at the top left angle of an ancestor container will have an "anchors" value or :
+     * AnchorConstraints.ANCHOR_TOP|AnchorConstraints.ANCHOR_LEFT
+     * 
      * @see AnchorConstraints
      */
     public int getAnchors() {
@@ -192,15 +205,16 @@ public class RelativeDockablePosition {
         DockableContainer dockableContainer = DockingUtilities.findSingleDockableContainer(dockable);
         if (dockableContainer != null && relativeAncestorContainer != null) {
             Component c = (Component) dockableContainer;
-            Rectangle converted = SwingUtilities.convertRectangle(
-                    c, new Rectangle(0, 0, c.getWidth(), c.getHeight()), relativeAncestorContainer);
+            Rectangle converted = SwingUtilities.convertRectangle(c,
+                    new Rectangle(0, 0, c.getWidth(), c.getHeight()), relativeAncestorContainer);
             x = converted.x / (float) relativeAncestorContainer.getWidth();
             y = converted.y / (float) relativeAncestorContainer.getHeight();
             w = converted.width / (float) relativeAncestorContainer.getWidth();
             h = converted.height / (float) relativeAncestorContainer.getHeight();
 
             // also set boolean anchors
-            this.anchors = RelativeDockingUtilities.findAnchors(dockable.getComponent(), relativeAncestorContainer);
+            this.anchors = RelativeDockingUtilities.findAnchors(dockable.getComponent(),
+                    relativeAncestorContainer);
         }
     }
 }

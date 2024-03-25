@@ -25,23 +25,23 @@ import java.awt.Window;
 /**
  * Default implementation of the DockableContainerFactory.
  * <p>
- * Uses <code>DockView</code> as a <code>SingleDockableContainer</code>, and
- * <code>DockTabbedPane</code> as a <code>TabbedDockableContainer</code>
+ * Uses <code>DockView</code> as a <code>SingleDockableContainer</code>, and <code>DockTabbedPane</code> as a
+ * <code>TabbedDockableContainer</code>
  * <p>
- * Note : the API has changed between VLDocking 1.1 and 2.0 : the
- * createDockableContainer now uses a second parameter to specify the context of
- * the container creation.
+ * Note : the API has changed between VLDocking 1.1 and 2.0 : the createDockableContainer now uses a second
+ * parameter to specify the context of the container creation.
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 2.0
  */
 public class DefaultDockableContainerFactory extends DockableContainerFactory {
 
-    public DefaultDockableContainerFactory() {}
+    public DefaultDockableContainerFactory() {
+    }
 
     /**
-     * Returns the component used to modify the expand panel size when expanded
-     * from the top. This implementation uses the following components :
+     * Returns the component used to modify the expand panel size when expanded from the top. This
+     * implementation uses the following components :
      * <ul>
      * <li>DockView for standard dockables
      * <li>TabbedDockView for dockable contained in a tabContainer
@@ -56,16 +56,16 @@ public class DefaultDockableContainerFactory extends DockableContainerFactory {
      */
     public SingleDockableContainer createDockableContainer(Dockable dockable, ParentType parentType) {
         switch (parentType) {
-            case PARENT_TABBED_CONTAINER:
-                return new TabbedDockView(dockable);
-            case PARENT_DESKTOP:
-                return new MaximizedDockView(dockable);
-            case PARENT_SPLIT_CONTAINER:
-                return new DockView(dockable);
-            case PARENT_DETACHED_WINDOW:
-                return new DetachedDockView(dockable);
-            default:
-                throw new RuntimeException("Wrong dockable container type");
+        case PARENT_TABBED_CONTAINER:
+            return new TabbedDockView(dockable);
+        case PARENT_DESKTOP:
+            return new MaximizedDockView(dockable);
+        case PARENT_SPLIT_CONTAINER:
+            return new DockView(dockable);
+        case PARENT_DETACHED_WINDOW:
+            return new DetachedDockView(dockable);
+        default:
+            throw new RuntimeException("Wrong dockable container type");
         }
     }
 
@@ -81,8 +81,8 @@ public class DefaultDockableContainerFactory extends DockableContainerFactory {
     }
 
     /**
-     * This method is called when a dockable is detached from the DockingDesktop
-     * and put in the FLOATING state.
+     * This method is called when a dockable is detached from the DockingDesktop and put in the FLOATING
+     * state.
      * <p>
      * The floating container must be an instanceof Dialog or Window.
      */
@@ -95,8 +95,7 @@ public class DefaultDockableContainerFactory extends DockableContainerFactory {
     }
 
     /**
-     * This implementation of the factory method return a default
-     * DockViewTitleBar object.
+     * This implementation of the factory method return a default DockViewTitleBar object.
      *
      * @since 2.1.3
      */

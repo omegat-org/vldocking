@@ -21,11 +21,12 @@ package com.vlsolutions.swing.docking;
 import com.vlsolutions.swing.docking.event.DockDragEvent;
 import com.vlsolutions.swing.docking.event.DockDropEvent;
 
-/** A dockView suitable for maximized dockables
+/**
+ * A dockView suitable for maximized dockables
  *
  * @author Lilian Chamontin, VLSolutions
- * @update 2007/01/24 Lilian Chamontin : added DnD blocking (maximized components should't support
- * drag/drop from floating windows)
+ * @update 2007/01/24 Lilian Chamontin : added DnD blocking (maximized components should't support drag/drop
+ *         from floating windows)
  */
 public class MaximizedDockView extends DockView {
 

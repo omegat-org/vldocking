@@ -21,15 +21,16 @@ package com.vlsolutions.swing.docking.event;
 import com.vlsolutions.swing.docking.DockableState;
 import com.vlsolutions.swing.docking.DockingDesktop;
 
-/** An abstract event class describing a docking action.
- *<p>
- * This event is used to explain a dockable action : it doesn't contain any information
- * about the current state of a dockable, but describes precisely what we want to do
- * with it (for example, detach it, or left-split another dockable).
- *<p>
- * The DockingActionDockableEvent abstract subclass is used as a superclass for all events
- * associated to a single dockable.
- *<p>
+/**
+ * An abstract event class describing a docking action.
+ * <p>
+ * This event is used to explain a dockable action : it doesn't contain any information about the current
+ * state of a dockable, but describes precisely what we want to do with it (for example, detach it, or
+ * left-split another dockable).
+ * <p>
+ * The DockingActionDockableEvent abstract subclass is used as a superclass for all events associated to a
+ * single dockable.
+ * <p>
  * Concrete sub classes are used for every type of docking action (split, tab...)
  *
  * @since 2.1
@@ -64,18 +65,20 @@ public abstract class DockingActionEvent implements Cloneable {
     private int actionType;
     private DockingDesktop desktop;
 
-    /** Constructs a new DockingActionEvent
+    /**
+     * Constructs a new DockingActionEvent
      *
-     * @param targetDesktop the desktop that will receive the action .
-     * @param initialState  the initial (before action) DockableState (DockableState.STATE_FLOATING...)
-     * @param nextState     the next (after action) DockableState (DockableState.STATE_DOCKED...)
-     * @param actionType    a field defining the type of action used (ACTION_CLOSE...)
+     * @param targetDesktop
+     *            the desktop that will receive the action .
+     * @param initialState
+     *            the initial (before action) DockableState (DockableState.STATE_FLOATING...)
+     * @param nextState
+     *            the next (after action) DockableState (DockableState.STATE_DOCKED...)
+     * @param actionType
+     *            a field defining the type of action used (ACTION_CLOSE...)
      */
-    public DockingActionEvent(
-            DockingDesktop targetDesktop,
-            DockableState.Location initialLocation,
-            DockableState.Location nextLocation,
-            int actionType) {
+    public DockingActionEvent(DockingDesktop targetDesktop, DockableState.Location initialLocation,
+            DockableState.Location nextLocation, int actionType) {
         this.desktop = targetDesktop;
         this.initialLocation = initialLocation;
         this.nextLocation = nextLocation;
@@ -92,16 +95,18 @@ public abstract class DockingActionEvent implements Cloneable {
         return nextLocation;
     }
 
-    /** Returns a field describing the action (ACTION_CLOSE...).
+    /**
+     * Returns a field describing the action (ACTION_CLOSE...).
      */
     public int getActionType() {
         return actionType;
     }
 
-    /** Returns the desktop used as a receiver (target) of the docking action.
-     *<p>
-     * The desktop used as a source (on multi-desktop applications) can be retrieved by asking for
-     * the current dockable state (to the DockingContext).
+    /**
+     * Returns the desktop used as a receiver (target) of the docking action.
+     * <p>
+     * The desktop used as a source (on multi-desktop applications) can be retrieved by asking for the current
+     * dockable state (to the DockingContext).
      */
     public DockingDesktop getDesktop() {
         return desktop;

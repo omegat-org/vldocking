@@ -18,11 +18,12 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-/** Interface describing a container that can be used to display more than
- * one Dockable in a Tabbed Pane fashion.
- *<p>
- * This interface is meant for API Extenders in order to provide new kinds of
- * TabbedDockableContainers (the default implementation is <code>DockTabbedPane</code>).
+/**
+ * Interface describing a container that can be used to display more than one Dockable in a Tabbed Pane
+ * fashion.
+ * <p>
+ * This interface is meant for API Extenders in order to provide new kinds of TabbedDockableContainers (the
+ * default implementation is <code>DockTabbedPane</code>).
  *
  *
  * @author Lilian Chamontin, vlsolutions.

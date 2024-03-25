@@ -45,17 +45,20 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-/** Abstract drag controler : provides common behaviour for LW and HW controlers
- * <p>(should only be used by VLDocking core framework and extensions)
+/**
+ * Abstract drag controler : provides common behaviour for LW and HW controlers
+ * <p>
+ * (should only be used by VLDocking core framework and extensions)
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 3.0
  */
-@SuppressWarnings({"rawtypes", "unchecked", "unused"})
+@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 abstract class AbstractDragControler implements DragControler {
 
-    /* This class is not public : it relies so heavily on vldocking internals that I'm reluctant
-     * to give extenders an access to it.
+    /*
+     * This class is not public : it relies so heavily on vldocking internals that I'm reluctant to give
+     * extenders an access to it.
      */
     protected Shape dropShape;
 
@@ -67,7 +70,7 @@ abstract class AbstractDragControler implements DragControler {
 
     protected Point startDragPoint; // for offset drawing
 
-    protected boolean ignoreDrag; // flag to ignore a drag  operation
+    protected boolean ignoreDrag; // flag to ignore a drag operation
 
     protected DockableDragSource dockableDragSource;
 
@@ -89,15 +92,19 @@ abstract class AbstractDragControler implements DragControler {
     }
 
     /** process mouse clicks on DockableDragSource */
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
 
     /** process mouse entered on DockableDragSource (nothing yet) */
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
     /** process mouse exit on DockableDragSource (nothing yet) */
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 
-    public void mouseMoved(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {
+    }
 
     /** process mouse pressed on DockableDragSource : prepares a drag operation */
     public void mousePressed(MouseEvent e) {
@@ -165,11 +172,12 @@ abstract class AbstractDragControler implements DragControler {
         }
     }
 
-    /** This method cancels the current drag gesture.
-     *<p>
+    /**
+     * This method cancels the current drag gesture.
+     * <p>
      * It can be used for example by a key listener reacting to the escape key
      *
-     *@since 2.0.1
+     * @since 2.0.1
      */
     /**
      * This method cancels the current drag gesture.
@@ -252,8 +260,10 @@ abstract class AbstractDragControler implements DragControler {
         }
     }
 
-    /** invoked only when a drag gesture has beed done
-     * @return  true if the dockable has been dropped.
+    /**
+     * invoked only when a drag gesture has beed done
+     * 
+     * @return true if the dockable has been dropped.
      */
     private boolean processMouseReleased(MouseEvent e) {
         // 2007/01/08 updated to return a boolean
@@ -299,10 +309,7 @@ abstract class AbstractDragControler implements DragControler {
         DockingPanel dp = targetDesktop.getDockingPanel();
 
         Insets i = targetDesktop.getDockingPanelInsets();
-        Rectangle deskBounds = new Rectangle(
-                i.left,
-                i.top,
-                targetDesktop.getWidth() - i.left - i.right,
+        Rectangle deskBounds = new Rectangle(i.left, i.top, targetDesktop.getWidth() - i.left - i.right,
                 targetDesktop.getHeight() - i.top - i.bottom);
         Rectangle innerBounds = new Rectangle(deskBounds);
         innerBounds.x += 5;
@@ -316,7 +323,8 @@ abstract class AbstractDragControler implements DragControler {
         }
 
         // move up hierarchy till we find a drop receiver
-        while (underMouse != null && underMouse != targetDesktop && !(underMouse instanceof DockDropReceiver)) {
+        while (underMouse != null && underMouse != targetDesktop
+                && !(underMouse instanceof DockDropReceiver)) {
             underMouse = underMouse.getParent();
         }
 
@@ -340,11 +348,12 @@ abstract class AbstractDragControler implements DragControler {
                 // refused (vetoed)
                 return false;
             }
-        } else if (underMouse instanceof DockDropReceiver && e.isControlDown()) { // 2005/11/08 HOT SWAP FUNCTION
+        } else if (underMouse instanceof DockDropReceiver && e.isControlDown()) { // 2005/11/08 HOT SWAP
+                                                                                  // FUNCTION
             processHotSwap(underMouse, e.getComponent(), null, true);
             return true;
         } else if (underMouse instanceof DockDropReceiver) {
-            //      MouseEvent convertMouse;
+            // MouseEvent convertMouse;
             DropProcess process = new DropProcess(e, dockableDragSource, umInfo);
             DockDragEvent event = process.findAcceptableEvent(e);
 
@@ -361,7 +370,7 @@ abstract class AbstractDragControler implements DragControler {
                 return false;
             }
         } else {
-            /*if (underMouse == null){ */
+            /* if (underMouse == null){ */
             // not under a droppable zone
             DropProcess process = new DropProcess(e, dockableDragSource, umInfo);
             if (process.canDockableBeDetached() && process.checkDockableWillBeDetached()) {
@@ -376,14 +385,11 @@ abstract class AbstractDragControler implements DragControler {
     }
 
     /** Allow hot swappping of two top level dockable containers (during drag) */
-    protected void processHotSwap(
-            Component underMouse,
-            Component dragged,
-            ShapePainterStrategy shapePainterStrategy,
-            boolean drop) { // 2005/11/08
-        /* This whole method should be reworked to allow hooking a DockingActionEvent subclass
-         * to process hotswapping.
-         * This also means we have to get rid of these "Component" and rely on DockableContainers
+    protected void processHotSwap(Component underMouse, Component dragged,
+            ShapePainterStrategy shapePainterStrategy, boolean drop) { // 2005/11/08
+        /*
+         * This whole method should be reworked to allow hooking a DockingActionEvent subclass to process
+         * hotswapping. This also means we have to get rid of these "Component" and rely on DockableContainers
          * instead (which will allow us to properly track dockable state changes)
          */
 
@@ -417,10 +423,8 @@ abstract class AbstractDragControler implements DragControler {
             while (splitChild != null && !(splitChild.getParent() instanceof SplitContainer)) {
                 splitChild = splitChild.getParent();
             }
-            if (splitChild != null
-                    && splitChild != underMouse
-                    && underMouse
-                            instanceof DockDropReceiver) { // this one should always be true (although as it depends on
+            if (splitChild != null && splitChild != underMouse && underMouse instanceof DockDropReceiver) {
+                // this one should always be true (although as it depends on
                 // implementation details, I prefer to keep it safe)
                 // ok we've found a suitable swap pattern
                 if (drop) {
@@ -469,7 +473,7 @@ abstract class AbstractDragControler implements DragControler {
         }
     }
 
-    /** Returns information about the component right under the mouse (including other owned windows)*/
+    /** Returns information about the component right under the mouse (including other owned windows) */
     protected UnderMouseInfo findComponentUnderMouse(MouseEvent e) {
 
         // are we above an insertion point ?
@@ -490,8 +494,7 @@ abstract class AbstractDragControler implements DragControler {
                     // an owned window is on top of the desktop, at current mouse position
                     // we have to try and find a dockable into this window
                     Point p2 = SwingUtilities.convertPoint(e.getComponent(), e.getPoint(), wChild);
-                    Container contentPane = (wChild instanceof JDialog)
-                            ? ((JDialog) wChild).getContentPane()
+                    Container contentPane = (wChild instanceof JDialog) ? ((JDialog) wChild).getContentPane()
                             : ((JFrame) wChild).getContentPane();
                     umInfo.underMouse = findComponentAt(contentPane, p2.x, p2.y); // bypass the glasspane
                     umInfo.desktop = desktop;
@@ -536,7 +539,8 @@ abstract class AbstractDragControler implements DragControler {
                         ? ((JDialog) topWindow).getContentPane()
                         : ((JFrame) topWindow).getContentPane();
                 umInfo.underMouse = findComponentAt(contentPane, p2.x, p2.y); // bypass the glasspane
-                // now find the desktop associated to the component (there might be more than 1 desktop / window)
+                // now find the desktop associated to the component (there might be more than 1 desktop /
+                // window)
                 // we have to walk up the hierarchy
                 Component c = umInfo.underMouse;
                 while (c != null) {
@@ -646,10 +650,7 @@ abstract class AbstractDragControler implements DragControler {
         DockingPanel dp = targetDesktop.getDockingPanel();
 
         Insets i = targetDesktop.getDockingPanelInsets();
-        Rectangle deskBounds = new Rectangle(
-                i.left,
-                i.top,
-                targetDesktop.getWidth() - i.left - i.right,
+        Rectangle deskBounds = new Rectangle(i.left, i.top, targetDesktop.getWidth() - i.left - i.right,
                 targetDesktop.getHeight() - i.top - i.bottom);
         Rectangle innerBounds = new Rectangle(deskBounds);
         innerBounds.x += 5;
@@ -657,16 +658,15 @@ abstract class AbstractDragControler implements DragControler {
         innerBounds.width -= 10;
         innerBounds.height -= 10;
 
-        if (deskBounds.contains(dragPoint)
-                && !innerBounds.contains(dragPoint)
-                && underMouse != null
+        if (deskBounds.contains(dragPoint) && !innerBounds.contains(dragPoint) && underMouse != null
                 && targetDesktop.isAncestorOf(underMouse)) {
             // at less than 5 pixels from a border, promote DockingPanel as the receiver
             underMouse = dp;
         }
 
         // go up the hierarchy until we find a component that can receive a drop
-        while (underMouse != null && underMouse != targetDesktop && !(underMouse instanceof DockDropReceiver)) {
+        while (underMouse != null && underMouse != targetDesktop
+                && !(underMouse instanceof DockDropReceiver)) {
             underMouse = underMouse.getParent();
         }
 
@@ -687,7 +687,8 @@ abstract class AbstractDragControler implements DragControler {
                 shapePainterStrategy.showStopDragCursor();
                 setDropShape(null, shapePainterStrategy);
             }
-        } else if (underMouse instanceof DockDropReceiver && e.isControlDown()) { // 2005/11/08 HOT SWAP FUNCTION
+        } else if (underMouse instanceof DockDropReceiver && e.isControlDown()) { // 2005/11/08 HOT SWAP
+                                                                                  // FUNCTION
             processHotSwap(underMouse, dragged, shapePainterStrategy, false);
         } else if (underMouse instanceof DockDropReceiver) {
             // loop if it returns null
@@ -701,7 +702,8 @@ abstract class AbstractDragControler implements DragControler {
             if (event.isDragAccepted() && process.isDockingActionAccepted()) {
                 shapePainterStrategy.showDragCursor();
                 setDropShape(event.getDropShape(), shapePainterStrategy);
-            } else if (process.canDockableBeDetached() && process.checkAndDetachDockable(shapePainterStrategy)) {
+            } else if (process.canDockableBeDetached()
+                    && process.checkAndDetachDockable(shapePainterStrategy)) {
                 // detach done by the "if"
             } else {
                 event.rejectDrag(); // vetoed by listeners
@@ -773,7 +775,8 @@ abstract class AbstractDragControler implements DragControler {
             Component underMouse = umInfo.underMouse;
             do {
                 dropReceiver = (DockDropReceiver) underMouse;
-                MouseEvent convertMouse = SwingUtilities.convertMouseEvent((Component) e.getSource(), e, underMouse);
+                MouseEvent convertMouse = SwingUtilities.convertMouseEvent((Component) e.getSource(), e,
+                        underMouse);
                 DockableDragSource dragSource = ((DockableDragSource) e.getSource());
 
                 event = new DockDragEvent(umInfo.desktop, dragSource, convertMouse);
@@ -782,8 +785,7 @@ abstract class AbstractDragControler implements DragControler {
                 } else if (event.isDragDelegated()) {
                     // find another dropper
                     underMouse = underMouse.getParent();
-                    while (underMouse != null
-                            && underMouse != umInfo.desktop
+                    while (underMouse != null && underMouse != umInfo.desktop
                             && !(underMouse instanceof DockDropReceiver)) {
                         underMouse = underMouse.getParent();
                     }
@@ -804,8 +806,9 @@ abstract class AbstractDragControler implements DragControler {
             return event;
         }
 
-        /** verifies if the dockable(s) movement will not be vetoed by listeners
-         * */
+        /**
+         * verifies if the dockable(s) movement will not be vetoed by listeners
+         */
         public boolean isDockingActionAccepted() {
             if (source.getDockableContainer() instanceof TabbedDockableContainer) {
                 // here we're dragging a whole tabbed pane
@@ -822,7 +825,7 @@ abstract class AbstractDragControler implements DragControler {
             }
         }
 
-        /** internal method for a single dockable  */
+        /** internal method for a single dockable */
         private boolean isSingleDockingActionAccepted(Dockable dockable) {
             DockableState currentState = umInfo.desktop.getDockableState(dockable);
 
@@ -833,7 +836,8 @@ abstract class AbstractDragControler implements DragControler {
             if (currentState.getLocation() != futureLocation) { // state cannot be null
                 this.stateChange = true;
                 DockableState newState = new DockableState(umInfo.desktop, dockable, futureLocation);
-                DockableStateWillChangeEvent dscwEvent = new DockableStateWillChangeEvent(currentState, newState);
+                DockableStateWillChangeEvent dscwEvent = new DockableStateWillChangeEvent(currentState,
+                        newState);
                 if (!desktop.getContext().fireDockableStateWillChange(dscwEvent)) {
                     return false;
                 }
@@ -896,14 +900,11 @@ abstract class AbstractDragControler implements DragControler {
             }
             if (key.isFloatEnabled()) {
                 if (key.getLocation() != DockableState.Location.MAXIMIZED) {
-                    /* int dx = dragPoint.x - startDragPoint.x;
-                    int dy = dragPoint.y - startDragPoint.y;
-                    if (Math.abs(dx) < 20 && Math.abs(dy) < 10){
-                    // deny detach when too near from start point 2005/11/01
-                    return false;
-                    } else {
-                    return true;
-                    }*/
+                    /*
+                     * int dx = dragPoint.x - startDragPoint.x; int dy = dragPoint.y - startDragPoint.y; if
+                     * (Math.abs(dx) < 20 && Math.abs(dy) < 10){ // deny detach when too near from start point
+                     * 2005/11/01 return false; } else { return true; }
+                     */
                     return true; // the test above has been moved up to filter more drag events
                 } else {
                     return false;
@@ -944,8 +945,8 @@ abstract class AbstractDragControler implements DragControler {
                 return false;
             } else {
                 // also trigger DockingAction
-                DockingActionEvent dae = new DockingActionSimpleStateChangeEvent(
-                        desktop, dockable, currentState.getLocation(), DockableState.Location.FLOATING);
+                DockingActionEvent dae = new DockingActionSimpleStateChangeEvent(desktop, dockable,
+                        currentState.getLocation(), DockableState.Location.FLOATING);
                 return desktop.getContext().fireAcceptDockingAction(dae);
             }
         }
@@ -957,12 +958,9 @@ abstract class AbstractDragControler implements DragControler {
                     SwingUtilities.convertPointToScreen(shapePoint, desktop);
                     if (dropReceiver != null) { // we are above a drop receiver and we can show something
                         SwingUtilities.convertPointFromScreen(shapePoint, (Component) dropReceiver);
-                        Dimension dragSize =
-                                dockableDragSource.getDockableContainer().getSize();
-                        setDropShape(
-                                new Rectangle2D.Float(shapePoint.x, shapePoint.y, dragSize.width, dragSize.height),
-                                shapePainterStrategy,
-                                true);
+                        Dimension dragSize = dockableDragSource.getDockableContainer().getSize();
+                        setDropShape(new Rectangle2D.Float(shapePoint.x, shapePoint.y, dragSize.width,
+                                dragSize.height), shapePainterStrategy, true);
                     } else {
                         setDropShape(null, shapePainterStrategy);
                     }
@@ -988,8 +986,8 @@ abstract class AbstractDragControler implements DragControler {
 
         public boolean dropIfPossible() {
 
-            MouseEvent convertMouse =
-                    SwingUtilities.convertMouseEvent((Component) event.getSource(), event, umInfo.underMouse);
+            MouseEvent convertMouse = SwingUtilities.convertMouseEvent((Component) event.getSource(), event,
+                    umInfo.underMouse);
 
             DockDropEvent dropEvent = new DockDropEvent(umInfo.desktop, source, convertMouse);
             dropReceiver.processDockableDrop(dropEvent);
@@ -1026,8 +1024,8 @@ abstract class AbstractDragControler implements DragControler {
                 DockableState currentState = desktop.getDockableState(dockable);
                 dockable.getDockKey().setLocation(futureLocation);
 
-                dockingContext.fireDockableStateChange(new DockableStateChangeEvent(
-                        currentState, new DockableState(desktop, dockable, futureLocation)));
+                dockingContext.fireDockableStateChange(new DockableStateChangeEvent(currentState,
+                        new DockableState(desktop, dockable, futureLocation)));
             }
             if (dockingActionEvent instanceof DockingActionDockableEvent) {
                 DockingActionDockableEvent dde = (DockingActionDockableEvent) dockingActionEvent;

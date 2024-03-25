@@ -42,7 +42,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-/** This component is used to display single dockables like if they were in a tabbed pane.
+/**
+ * This component is used to display single dockables like if they were in a tabbed pane.
  * <p>
  * Please note this component is still in its early stages and might change in future releases.
  * <p>
@@ -52,7 +53,7 @@ import javax.swing.UIManager;
  * @see TabFactory
  * @since 2.1.3
  */
-@SuppressWarnings({"rawtypes", "unchecked", "unused"})
+@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 public class DockViewAsTab extends DockView implements SingleDockableContainer {
 
     private static final long serialVersionUID = 1L;
@@ -77,7 +78,7 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
     /** smart icon manager */
     protected JTabbedPaneSmartIconManager tpManager = new JTabbedPaneSmartIconManager(tabHeader);
 
-    /** smart icon used to display the title  */
+    /** smart icon used to display the title */
     protected JTabbedPaneSmartIcon smartIcon = new JTabbedPaneSmartIcon(null, " ", null);
 
     protected AbstractAction closeAction = new AbstractAction("Close") {
@@ -123,14 +124,19 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
 
     // flags to hide/show buttons in the title bar (they are always visible in the contextual menu, but might
     // take too much space on the titles (for example a minimum set could be hide/float/close
-    //  as maximize is accessed by double click)
-    protected boolean isCloseButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isCloseButtonDisplayed");
+    // as maximize is accessed by double click)
+    protected boolean isCloseButtonDisplayed = UIManager
+            .getBoolean("DockViewTitleBar.isCloseButtonDisplayed");
     protected boolean isHideButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isHideButtonDisplayed");
     protected boolean isDockButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isDockButtonDisplayed");
-    protected boolean isMaximizeButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isMaximizeButtonDisplayed");
-    protected boolean isRestoreButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isRestoreButtonDisplayed");
-    protected boolean isFloatButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isFloatButtonDisplayed");
-    protected boolean isAttachButtonDisplayed = UIManager.getBoolean("DockViewTitleBar.isAttachButtonDisplayed");
+    protected boolean isMaximizeButtonDisplayed = UIManager
+            .getBoolean("DockViewTitleBar.isMaximizeButtonDisplayed");
+    protected boolean isRestoreButtonDisplayed = UIManager
+            .getBoolean("DockViewTitleBar.isRestoreButtonDisplayed");
+    protected boolean isFloatButtonDisplayed = UIManager
+            .getBoolean("DockViewTitleBar.isFloatButtonDisplayed");
+    protected boolean isAttachButtonDisplayed = UIManager
+            .getBoolean("DockViewTitleBar.isAttachButtonDisplayed");
 
     /** listen to the key changes */
     private PropertyChangeListener keyListener = new PropertyChangeListener() {
@@ -214,20 +220,20 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
         // first add the standard menu
         DockKey key = target.getDockKey();
         switch (key.getLocation()) {
-            case DOCKED:
-                initDockedPopUp(popup);
-                break;
-            case HIDDEN:
-                // initAutoHidePopUp(popup);
-                break;
-            case MAXIMIZED:
-                initMaximizedPopUp(popup);
-                break;
-            case FLOATING:
-                initFloatingPopUp(popup);
-                break;
-            default:
-                // nothing to do
+        case DOCKED:
+            initDockedPopUp(popup);
+            break;
+        case HIDDEN:
+            // initAutoHidePopUp(popup);
+            break;
+        case MAXIMIZED:
+            initMaximizedPopUp(popup);
+            break;
+        case FLOATING:
+            initFloatingPopUp(popup);
+            break;
+        default:
+            // nothing to do
         }
 
         DockableActionCustomizer customizer = target.getDockKey().getActionCustomizer();
@@ -243,8 +249,8 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
         }
     }
 
-    private JMenuItem createPopUpItem(
-            String text, Icon icon, String tooltip, String actionCommand, KeyStroke accelerator) {
+    private JMenuItem createPopUpItem(String text, Icon icon, String tooltip, String actionCommand,
+            KeyStroke accelerator) {
         JMenuItem menuItem = new JMenuItem(text, icon);
         menuItem.setActionCommand(actionCommand);
         menuItem.addActionListener(actionListener);
@@ -257,40 +263,40 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
     /** Init the popup displayed as the title bar contextual menu */
     protected void initMaximizedPopUp(JPopupMenu popup) {
 
-        popup.add(createPopUpItem(RESTORE_TEXT, restoreIcon, RESTORE_TEXT, "maximize", (KeyStroke)
-                UIManager.get("DockingDesktop.maximizeActionAccelerator")));
+        popup.add(createPopUpItem(RESTORE_TEXT, restoreIcon, RESTORE_TEXT, "maximize",
+                (KeyStroke) UIManager.get("DockingDesktop.maximizeActionAccelerator")));
     }
 
     protected void initAutoHidePopUp(JPopupMenu popup) {
         if (DockingUtilities.isChildOfCompoundDockable(getDockable())) {
             // restore option not allowed for children of a compound dockable
         } else {
-            popup.add(createPopUpItem(RESTORE_TEXT, dockIcon, RESTORE_TEXT, "dock", (KeyStroke)
-                    UIManager.get("DockingDesktop.dockActionAccelerator")));
+            popup.add(createPopUpItem(RESTORE_TEXT, dockIcon, RESTORE_TEXT, "dock",
+                    (KeyStroke) UIManager.get("DockingDesktop.dockActionAccelerator")));
         }
         if (getDockable().getDockKey().isCloseEnabled()) {
-            popup.add(createPopUpItem(CLOSE_TEXT, closeSmartIcon, CLOSE_TEXT, "close", (KeyStroke)
-                    UIManager.get("DockingDesktop.closeActionAccelerator")));
+            popup.add(createPopUpItem(CLOSE_TEXT, closeSmartIcon, CLOSE_TEXT, "close",
+                    (KeyStroke) UIManager.get("DockingDesktop.closeActionAccelerator")));
         }
     }
 
     protected void initDockedPopUp(JPopupMenu popup) {
         DockKey key = getDockable().getDockKey();
         if (key.isAutoHideEnabled()) {
-            popup.add(createPopUpItem(ICONIFY_TEXT, hideSmartIcon, ICONIFY_TEXT, "dock", (KeyStroke)
-                    UIManager.get("DockingDesktop.dockActionAccelerator")));
+            popup.add(createPopUpItem(ICONIFY_TEXT, hideSmartIcon, ICONIFY_TEXT, "dock",
+                    (KeyStroke) UIManager.get("DockingDesktop.dockActionAccelerator")));
         }
         if (key.isFloatEnabled()) {
-            popup.add(createPopUpItem(FLOAT_TEXT, floatSmartIcon, FLOAT_TEXT, "float", (KeyStroke)
-                    UIManager.get("DockingDesktop.floatActionAccelerator")));
+            popup.add(createPopUpItem(FLOAT_TEXT, floatSmartIcon, FLOAT_TEXT, "float",
+                    (KeyStroke) UIManager.get("DockingDesktop.floatActionAccelerator")));
         }
         if (key.isMaximizeEnabled()) {
-            popup.add(createPopUpItem(MAXIMIZE_TEXT, maximizeSmartIcon, MAXIMIZE_TEXT, "maximize", (KeyStroke)
-                    UIManager.get("DockingDesktop.maximizeActionAccelerator")));
+            popup.add(createPopUpItem(MAXIMIZE_TEXT, maximizeSmartIcon, MAXIMIZE_TEXT, "maximize",
+                    (KeyStroke) UIManager.get("DockingDesktop.maximizeActionAccelerator")));
         }
         if (key.isCloseEnabled()) {
-            popup.add(createPopUpItem(CLOSE_TEXT, closeSmartIcon, CLOSE_TEXT, "close", (KeyStroke)
-                    UIManager.get("DockingDesktop.closeActionAccelerator")));
+            popup.add(createPopUpItem(CLOSE_TEXT, closeSmartIcon, CLOSE_TEXT, "close",
+                    (KeyStroke) UIManager.get("DockingDesktop.closeActionAccelerator")));
         }
     }
 
@@ -299,13 +305,14 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
         if (DockingUtilities.isChildOfCompoundDockable(getDockable())) {
             // attach option not allowed for children of a compound dockable
         } else {
-            popup.add(createPopUpItem(ATTACH_TEXT, attachIcon, ATTACH_TEXT, "float", (KeyStroke)
-                    UIManager.get("DockingDesktop.floatActionAccelerator")));
+            popup.add(createPopUpItem(ATTACH_TEXT, attachIcon, ATTACH_TEXT, "float",
+                    (KeyStroke) UIManager.get("DockingDesktop.floatActionAccelerator")));
         }
     }
 
-    /** This method is invoked to hide the pop-up that could still be visible
-     * (To avoid a visible pop-up for an invisible component)
+    /**
+     * This method is invoked to hide the pop-up that could still be visible (To avoid a visible pop-up for an
+     * invisible component)
      */
     public void closePopUp() {
         if (currentPopUp != null) {
@@ -358,7 +365,8 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
             floatSmartIcon.setPressedIcon(UIManager.getIcon("DockViewTitleBar.float.pressed"));
             floatSmartIcon.setRolloverIcon(UIManager.getIcon("DockViewTitleBar.float.rollover"));
             // add a tooltip
-            floatAction.putValue(AbstractAction.SHORT_DESCRIPTION, UIManager.get("DockViewTitleBar.floatButtonText"));
+            floatAction.putValue(AbstractAction.SHORT_DESCRIPTION,
+                    UIManager.get("DockViewTitleBar.floatButtonText"));
         }
     }
 
@@ -369,8 +377,8 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
             maximizeSmartIcon.setPressedIcon(UIManager.getIcon("DockViewTitleBar.maximize.pressed"));
             maximizeSmartIcon.setRolloverIcon(UIManager.getIcon("DockViewTitleBar.maximize.rollover"));
             // add a tooltip
-            maximizeAction.putValue(
-                    AbstractAction.SHORT_DESCRIPTION, UIManager.get("DockViewTitleBar.maximizeButtonText"));
+            maximizeAction.putValue(AbstractAction.SHORT_DESCRIPTION,
+                    UIManager.get("DockViewTitleBar.maximizeButtonText"));
         }
     }
 
@@ -381,7 +389,8 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
             hideSmartIcon.setPressedIcon(UIManager.getIcon("DockViewTitleBar.hide.pressed"));
             hideSmartIcon.setRolloverIcon(UIManager.getIcon("DockViewTitleBar.hide.rollover"));
             // add a tooltip
-            hideAction.putValue(AbstractAction.SHORT_DESCRIPTION, UIManager.get("DockViewTitleBar.minimizeButtonText"));
+            hideAction.putValue(AbstractAction.SHORT_DESCRIPTION,
+                    UIManager.get("DockViewTitleBar.minimizeButtonText"));
         }
     }
 
@@ -392,7 +401,8 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
             closeSmartIcon.setPressedIcon(UIManager.getIcon("DockTabbedPane.close.pressed"));
             closeSmartIcon.setRolloverIcon(UIManager.getIcon("DockTabbedPane.close.rollover"));
             // add a tooltip
-            closeAction.putValue(AbstractAction.SHORT_DESCRIPTION, UIManager.get("DockTabbedPane.closeButtonText"));
+            closeAction.putValue(AbstractAction.SHORT_DESCRIPTION,
+                    UIManager.get("DockTabbedPane.closeButtonText"));
         }
     }
 
@@ -409,7 +419,7 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
 
         resetTabIcons();
 
-        // allow resizing  of split pane beyond minimum size
+        // allow resizing of split pane beyond minimum size
         // could be replaced by adding a JScrollPane instead of panels
         setMinimumSize(new Dimension(30, 30));
     }
@@ -481,6 +491,7 @@ public class DockViewAsTab extends DockView implements SingleDockableContainer {
             return dockable;
         }
 
-        public void endDragComponent(boolean dropped) {}
+        public void endDragComponent(boolean dropped) {
+        }
     }
 }

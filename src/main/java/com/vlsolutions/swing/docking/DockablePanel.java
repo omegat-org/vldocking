@@ -21,13 +21,13 @@ package com.vlsolutions.swing.docking;
 import java.awt.*;
 import javax.swing.*;
 
-/** A basic implementation of Dockable.
+/**
+ * A basic implementation of Dockable.
  * <p>
  * It's a JPanel with a BorderLayout, and it can display a single Dockable.
  * <p>
- * This class is provided as an intermediary between a User Component and the docking
- * desktop (for example, for application that don't want to be too tied with the
- * DockingFramework).
+ * This class is provided as an intermediary between a User Component and the docking desktop (for example,
+ * for application that don't want to be too tied with the DockingFramework).
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
@@ -59,9 +59,10 @@ public class DockablePanel extends JPanel implements Dockable {
         return this;
     }
 
-    /** Removes all contained components (normally no more than one), and
-     * put this <code>comp</code> on the center area of the BorderLayout.
-     *  */
+    /**
+     * Removes all contained components (normally no more than one), and put this <code>comp</code> on the
+     * center area of the BorderLayout.
+     */
     public void setComponent(Component comp) {
         removeAll();
         add(comp, BorderLayout.CENTER);

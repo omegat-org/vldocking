@@ -42,16 +42,18 @@ import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-/** A Heavyweight implementation of the drag controler, and its associated classes
+/**
+ * A Heavyweight implementation of the drag controler, and its associated classes
  *
  * @since 3.0
  * @author Lilian Chamontin, vlsolutions.
  */
 class HeavyWeightDragControler extends AbstractDragControler {
 
-    private boolean paintBackgroundUnderDragRect = UIManager.getBoolean("DragControler.paintBackgroundUnderDragRect");
+    private boolean paintBackgroundUnderDragRect = UIManager
+            .getBoolean("DragControler.paintBackgroundUnderDragRect");
 
-    /** instantiates a controler for a given docking panel*/
+    /** instantiates a controler for a given docking panel */
     HeavyWeightDragControler(DockingDesktop desktop) {
         super(desktop);
     }
@@ -79,10 +81,10 @@ class HeavyWeightDragControler extends AbstractDragControler {
                     } else if (!(child instanceof HeavyShape || child instanceof HeavyLabel)) {
                         // skip our dedicated components for heavyweight support
                         return child;
-                        //          } else if (child != shapePainterStrategy.heavyShape &&
-                        //              child != shapePainterStrategy.heavyShape.label){
-                        //            // skip our dedicated components for heavyweight support
-                        //            return child;
+                        // } else if (child != shapePainterStrategy.heavyShape &&
+                        // child != shapePainterStrategy.heavyShape.label){
+                        // // skip our dedicated components for heavyweight support
+                        // return child;
                     }
                 }
             }
@@ -104,17 +106,20 @@ class HeavyWeightDragControler extends AbstractDragControler {
     }
 
     // -----------------------------------------------------------------------------------------------------------
-    // --------------------------------- you don't want to look at the code underneath this line... --------------
+    // --------------------------------- you don't want to look at the code underneath this line...
+    // --------------
     // -----------------------------------------------------------------------------------------------------------
     // I'll rewrite it entirely someday as i'm not pleased with it (much too complex)
-    /** This class holds implementation strategies of shapes painting.
-     *<p>
-     * As painting is different when pure Swing is used (glasspane) and
-     * heavyweight components are mixed in (glasspane + canvas).
+    /**
+     * This class holds implementation strategies of shapes painting.
+     * <p>
+     * As painting is different when pure Swing is used (glasspane) and heavyweight components are mixed in
+     * (glasspane + canvas).
      */
     private class HWShapePainterStrategy implements ShapePainterStrategy {
 
-        private DragControlerGlassPane dragGlassPane = new DragControlerGlassPane(HeavyWeightDragControler.this);
+        private DragControlerGlassPane dragGlassPane = new DragControlerGlassPane(
+                HeavyWeightDragControler.this);
 
         private Component oldGlassPane = null;
 
@@ -127,12 +132,10 @@ class HeavyWeightDragControler extends AbstractDragControler {
         // heavyweight support
         private HeavyShape heavyShape; // instanciated only when heavyweight suport is enabled
 
-        /*public ShapePainterStrategy(){
-        if (! isLightWeight){
-        dragGlassPane.setPaintShapes(false);
-        heavyShape = new HeavyShape();
-        }
-        }*/
+        /*
+         * public ShapePainterStrategy(){ if (! isLightWeight){ dragGlassPane.setPaintShapes(false);
+         * heavyShape = new HeavyShape(); } }
+         */
         public HWShapePainterStrategy(Window window) {
             this.window = window;
             dragGlassPane.setPaintShapes(false);
@@ -145,27 +148,29 @@ class HeavyWeightDragControler extends AbstractDragControler {
             heavyShape.setCursor(dragGlassPane.getCursor());
         }
 
-        /** show the stop-drag cursor  (drag not enabled)*/
+        /** show the stop-drag cursor (drag not enabled) */
         public void showStopDragCursor() {
             dragGlassPane.showStopDragCursor();
             heavyShape.setCursor(dragGlassPane.getCursor());
         }
 
-        /** show the stop-drag cursor  (drag not enabled)*/
+        /** show the stop-drag cursor (drag not enabled) */
         public void showSwapDragCursor() {
             dragGlassPane.showSwapDragCursor();
             heavyShape.setCursor(dragGlassPane.getCursor());
         }
 
-        /** show the float (detached) cursor  */
+        /** show the float (detached) cursor */
         public void showFloatCursor() {
             dragGlassPane.showFloatCursor();
             heavyShape.setCursor(dragGlassPane.getCursor());
         }
 
         public void repaint() {
-            /* this is a hack that will be refactored : we post a repaint when there is
-             * a need to show a drag shape */
+            /*
+             * this is a hack that will be refactored : we post a repaint when there is a need to show a drag
+             * shape
+             */
             if (dropShape != null) {
                 heavyShape.moveToShape(dropShape); // adjust to the shape before repainting
             } else if (heavyShape.isVisible()) {
@@ -229,7 +234,8 @@ class HeavyWeightDragControler extends AbstractDragControler {
         }
     }
 
-    /** heavyweight component used to paint shapes on top of heavyweight components
+    /**
+     * heavyweight component used to paint shapes on top of heavyweight components
      */
     private class HeavyShape extends Canvas {
 
@@ -255,8 +261,9 @@ class HeavyWeightDragControler extends AbstractDragControler {
             // jdk1.5 only
             try {
                 // desktop.setComponentZOrder(this, -1); // on top
-                Method m = Container.class.getMethod("setComponentZOrder", new Class[] {Component.class, int.class});
-                m.invoke(getParent(), new Object[] {this, new Integer(0)});
+                Method m = Container.class.getMethod("setComponentZOrder",
+                        new Class[] { Component.class, int.class });
+                m.invoke(getParent(), new Object[] { this, new Integer(0) });
             } catch (Exception ignore) {
             }
             label.setZOrder();
@@ -266,8 +273,7 @@ class HeavyWeightDragControler extends AbstractDragControler {
             Container parent = getParent();
 
             if (paintBackgroundUnderDragRect) { // 2007/02/27
-                if (desktopImage == null
-                        || (desktopImage.getWidth() != parent.getWidth())
+                if (desktopImage == null || (desktopImage.getWidth() != parent.getWidth())
                         || (desktopImage.getHeight() != parent.getHeight())) {
                     desktopImage = (BufferedImage) parent.createImage(parent.getWidth(), parent.getHeight());
                     subImage = null;
@@ -301,7 +307,8 @@ class HeavyWeightDragControler extends AbstractDragControler {
                     g.drawImage(subImage, 0, 0, null);
                 }
 
-                Shape s = AffineTransform.getTranslateInstance(-shapeX, -shapeY).createTransformedShape(dropShape);
+                Shape s = AffineTransform.getTranslateInstance(-shapeX, -shapeY)
+                        .createTransformedShape(dropShape);
 
                 Graphics2D g2 = (Graphics2D) g;
                 outlinePainter.paintShape(g2, s);
@@ -368,8 +375,9 @@ class HeavyWeightDragControler extends AbstractDragControler {
             // jdk1.5 only (but we compile with source=1.4)
             try {
                 // desktop.setComponentZOrder(this, -2); // on top of heavy panel
-                Method m = Container.class.getMethod("setComponentZOrder", new Class[] {Component.class, int.class});
-                m.invoke(getParent(), new Object[] {this, new Integer(0)});
+                Method m = Container.class.getMethod("setComponentZOrder",
+                        new Class[] { Component.class, int.class });
+                m.invoke(getParent(), new Object[] { this, new Integer(0) });
             } catch (Exception ignore) {
                 ignore.printStackTrace();
             }
@@ -390,11 +398,8 @@ class HeavyWeightDragControler extends AbstractDragControler {
                 FontMetrics fm = getFontMetrics(f);
                 int w = fm.stringWidth(name) + 10;
                 int h = fm.getHeight() + 5;
-                setBounds(
-                        shapeBounds.x + shapeBounds.width / 2 - w / 2,
-                        shapeBounds.y + shapeBounds.height / 2 - h / 2,
-                        w,
-                        h);
+                setBounds(shapeBounds.x + shapeBounds.width / 2 - w / 2,
+                        shapeBounds.y + shapeBounds.height / 2 - h / 2, w, h);
             }
         }
 

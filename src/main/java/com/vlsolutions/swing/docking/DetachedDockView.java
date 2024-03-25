@@ -26,7 +26,8 @@ import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
-/** A DockView suitable for detached dockables (in their own window).
+/**
+ * A DockView suitable for detached dockables (in their own window).
  *
  * @see DockView
  *
@@ -42,7 +43,9 @@ public class DetachedDockView extends DockView {
         super(dockable);
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
+     * 
      * @since 2.0
      */
     public String getUIClassID() {
@@ -104,15 +107,15 @@ public class DetachedDockView extends DockView {
         DockableState.Location viewLocation = dockable.getDockKey().getLocation();
 
         if (drop) {
-            event.setDockingAction(new DockingActionCreateTabEvent(
-                    event.getDesktop(), d, dockableLocation, viewLocation, dockable, 0));
-            ((DockDropEvent) event)
-                    .acceptDrop(false); // don't remove the floatable : we have to find it's current position
+            event.setDockingAction(new DockingActionCreateTabEvent(event.getDesktop(), d, dockableLocation,
+                    viewLocation, dockable, 0));
+            ((DockDropEvent) event).acceptDrop(false); // don't remove the floatable : we have to find it's
+                                                       // current position
             desktop.createTab(dockable, event.getDragSource().getDockable(), 0, true);
         } else {
             Rectangle2D r2d = new Rectangle2D.Float(bounds.x, bounds.y, bounds.width, bounds.height);
-            event.setDockingAction(new DockingActionCreateTabEvent(
-                    event.getDesktop(), d, dockableLocation, viewLocation, dockable, 0));
+            event.setDockingAction(new DockingActionCreateTabEvent(event.getDesktop(), d, dockableLocation,
+                    viewLocation, dockable, 0));
             if (r2d.equals(lastDropShape)) {
                 // optimized shape caching
                 ((DockDragEvent) event).acceptDrag(lastDropGeneralPath);
@@ -128,7 +131,8 @@ public class DetachedDockView extends DockView {
         }
     }
 
-    /** {@inheritDoc}
+    /**
+     * {@inheritDoc}
      */
     public String toString() {
         return "DetachedDockView of " + dockable.getDockKey();

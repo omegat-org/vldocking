@@ -28,24 +28,27 @@ import javax.swing.JToolBar;
 import javax.swing.JToolBar.Separator;
 import javax.swing.SwingConstants;
 
-/** The toolbar panel is able to receive multiple toolbars and arrange them in
- * many columns or rows (depending on the horizontal/vertical orientation).
+/**
+ * The toolbar panel is able to receive multiple toolbars and arrange them in many columns or rows (depending
+ * on the horizontal/vertical orientation).
  *
- * <p align="center"><img src="doc-files/overview.gif"><br>
- *  The ToolBarPanel is a JPanel with a ToolBarPanelLayout. It support horizontal and vertical orientation,
- *  and can contain one or more VLToolbars (with given ToolBarContraints for positionning).
+ * <p align="center">
+ * <img src="doc-files/overview.gif"><br>
+ * The ToolBarPanel is a JPanel with a ToolBarPanelLayout. It support horizontal and vertical orientation, and
+ * can contain one or more VLToolbars (with given ToolBarContraints for positionning).
  * </p>
+ * 
  * @author Lilian Chamontin, VLSolutions
  * @update 2006/09/09 Support for LTR and RTL component orientation
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ToolBarPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
     private int orientation = SwingConstants.HORIZONTAL;
 
-    /** an optionnal background painter  */
+    /** an optionnal background painter */
     private BackgroundPainter painter;
 
     /**
@@ -56,13 +59,12 @@ public class ToolBarPanel extends JPanel {
     }
 
     /**
-     * Constructs a new <code>ToolBarPanel</code> with the specified
-     * alignment.
-     * @param align the alignment value
-     *    The value of the alignment argument must be one of
-     *    <code>FlowLayout.LEFT</code>, <code>FlowLayout.RIGHT</code>,
-     *    <code>FlowLayout.CENTER</code>, <code>FlowLayout.LEADING</code>, or
-     *    <code>FlowLayout.TRAILING</code>.
+     * Constructs a new <code>ToolBarPanel</code> with the specified alignment.
+     * 
+     * @param align
+     *            the alignment value The value of the alignment argument must be one of
+     *            <code>FlowLayout.LEFT</code>, <code>FlowLayout.RIGHT</code>, <code>FlowLayout.CENTER</code>,
+     *            <code>FlowLayout.LEADING</code>, or <code>FlowLayout.TRAILING</code>.
      *
      */
     public ToolBarPanel(int align) {
@@ -70,14 +72,14 @@ public class ToolBarPanel extends JPanel {
     }
 
     /**
-     * Constructs a new <code>ToolBarPanel</code> with the specified
-     * alignment and background painter.
-     * @param align the alignment value
-     *    The value of the alignment argument must be one of
-     *    <code>FlowLayout.LEFT</code>, <code>FlowLayout.RIGHT</code>,
-     *    <code>FlowLayout.CENTER</code>, <code>FlowLayout.LEADING</code>, or
-     *    <code>FlowLayout.TRAILING</code>.
-     * @param painter  the background painter.
+     * Constructs a new <code>ToolBarPanel</code> with the specified alignment and background painter.
+     * 
+     * @param align
+     *            the alignment value The value of the alignment argument must be one of
+     *            <code>FlowLayout.LEFT</code>, <code>FlowLayout.RIGHT</code>, <code>FlowLayout.CENTER</code>,
+     *            <code>FlowLayout.LEADING</code>, or <code>FlowLayout.TRAILING</code>.
+     * @param painter
+     *            the background painter.
      * @since 2.1.4
      */
     public ToolBarPanel(int align, BackgroundPainter painter) {
@@ -85,15 +87,17 @@ public class ToolBarPanel extends JPanel {
         this.painter = painter;
     }
 
-    /** Adds a new toolbar respecting the given positionning constraints.
+    /**
+     * Adds a new toolbar respecting the given positionning constraints.
      */
     public void add(JToolBar toolbar) {
         add(toolbar, 0);
         setVisible(true);
     }
 
-    /** Adds a new JToolBar to the Panel at the given row. Multiple VLToolBars
-     * are constructed using Separators in the original JToolBar
+    /**
+     * Adds a new JToolBar to the Panel at the given row. Multiple VLToolBars are constructed using Separators
+     * in the original JToolBar
      */
     public void add(JToolBar toolbar, int major) {
         toolbar.setOrientation(orientation);
@@ -105,9 +109,11 @@ public class ToolBarPanel extends JPanel {
     }
 
     /**
-     * Helper function to convert a JToolBar into multiple VLToolBar objects. The JToolBar
-     * is split at the separator boundary to create VLToolbars
-     * @param bar, the JToolBar object
+     * Helper function to convert a JToolBar into multiple VLToolBar objects. The JToolBar is split at the
+     * separator boundary to create VLToolbars
+     * 
+     * @param bar,
+     *            the JToolBar object
      * @return array of VLToolBar objects
      */
     private VLToolBar[] getVLToolBarsFromJToolBar(JToolBar bar) {
@@ -117,7 +123,8 @@ public class ToolBarPanel extends JPanel {
         for (int i = 0; i < components.length; i++) {
             if (components[i] instanceof JButton) {
                 JButton button = (JButton) components[i];
-                if (button.getIcon() != null) button.setText(null);
+                if (button.getIcon() != null)
+                    button.setText(null);
                 current.add(button);
             } else if (components[i] instanceof Separator) {
                 vlBars.add(current);
@@ -130,7 +137,8 @@ public class ToolBarPanel extends JPanel {
         return (VLToolBar[]) vlBars.toArray(new VLToolBar[vlBars.size()]);
     }
 
-    /** Adds a new toolbar respecting the given positionning constraints.
+    /**
+     * Adds a new toolbar respecting the given positionning constraints.
      */
     public void add(VLToolBar toolbar, ToolBarConstraints constraints) {
         toolbar.setOrientation(orientation);
@@ -145,7 +153,7 @@ public class ToolBarPanel extends JPanel {
         }
     }
 
-    /* Updates the orientation of this toolbar. Valid values are SwingConstants.HORIZONTAL and VERTICAL*/
+    /* Updates the orientation of this toolbar. Valid values are SwingConstants.HORIZONTAL and VERTICAL */
     public void setOrientation(int orientation) {
         if (this.orientation != orientation) {
             this.orientation = orientation;
@@ -175,15 +183,20 @@ public class ToolBarPanel extends JPanel {
         super.paintComponent(g);
     }
 
-    /** Returns the optional background painter for this toolbar panel (may be null)
-     *@since 2.1.4
+    /**
+     * Returns the optional background painter for this toolbar panel (may be null)
+     * 
+     * @since 2.1.4
      */
     public BackgroundPainter getBackgroundPainter() {
         return painter;
     }
 
-    /** Updates the optional background painter for this toolbar panel
-     * @param painter the new painer (may be null)
+    /**
+     * Updates the optional background painter for this toolbar panel
+     * 
+     * @param painter
+     *            the new painer (may be null)
      * @since 2.1.4
      */
     public void setPainter(BackgroundPainter painter) {

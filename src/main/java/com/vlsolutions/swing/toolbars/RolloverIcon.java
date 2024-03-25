@@ -26,7 +26,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
-/** A custom Icon to have a nice rollover effect for toolbar icons.
+/**
+ * A custom Icon to have a nice rollover effect for toolbar icons.
  * <p>
  * This icon uses a gray version of the provided image and paints it under the original one.
  *

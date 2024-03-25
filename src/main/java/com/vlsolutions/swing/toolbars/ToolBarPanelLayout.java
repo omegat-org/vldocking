@@ -30,12 +30,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.SwingConstants;
 
-/** The layout of a VLToolBarPanel
+/**
+ * The layout of a VLToolBarPanel
  *
  * @author Lilian Chamontin, VLSolutions
  * @update 2006/09/09 Support for LTR and RTL component orientation
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class ToolBarPanelLayout implements LayoutManager2 {
 
     private ToolBarPanel panel;
@@ -55,7 +56,8 @@ public class ToolBarPanelLayout implements LayoutManager2 {
         this(panel, FlowLayout.LEADING);
     }
 
-    /** Returns the alignment of this layout (<code>FlowLayout.LEADING, TRAILING</code>...)
+    /**
+     * Returns the alignment of this layout (<code>FlowLayout.LEADING, TRAILING</code>...)
      */
     public int getAlign() {
         return align;
@@ -70,20 +72,20 @@ public class ToolBarPanelLayout implements LayoutManager2 {
         boolean ltr = target.getComponentOrientation().isLeftToRight();
         int width = preferredLayoutSize(target).width;
         switch (align) {
-            case FlowLayout.LEFT:
-                left += ltr ? 0 : target.getSize().width - width;
-                break;
-            case FlowLayout.CENTER:
-                left += (target.getSize().width - width) / 2;
-                break;
-            case FlowLayout.RIGHT:
-                left += ltr ? target.getSize().width - width : 0;
-                break;
-            case FlowLayout.LEADING:
-                break;
-            case FlowLayout.TRAILING:
-                left += target.getSize().width - width;
-                break;
+        case FlowLayout.LEFT:
+            left += ltr ? 0 : target.getSize().width - width;
+            break;
+        case FlowLayout.CENTER:
+            left += (target.getSize().width - width) / 2;
+            break;
+        case FlowLayout.RIGHT:
+            left += ltr ? target.getSize().width - width : 0;
+            break;
+        case FlowLayout.LEADING:
+            break;
+        case FlowLayout.TRAILING:
+            left += target.getSize().width - width;
+            break;
         }
         return left;
     }
@@ -96,7 +98,8 @@ public class ToolBarPanelLayout implements LayoutManager2 {
         return 0.5F;
     }
 
-    public void invalidateLayout(Container target) {}
+    public void invalidateLayout(Container target) {
+    }
 
     public Dimension maximumLayoutSize(Container target) {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -132,7 +135,8 @@ public class ToolBarPanelLayout implements LayoutManager2 {
         }
     }
 
-    public void addLayoutComponent(String name, Component comp) {}
+    public void addLayoutComponent(String name, Component comp) {
+    }
 
     public Dimension minimumLayoutSize(Container parent) {
         ToolBarPanel panel = (ToolBarPanel) parent;
@@ -208,16 +212,12 @@ public class ToolBarPanelLayout implements LayoutManager2 {
                     int maxHeight = 0;
                     ArrayList minorList = getMinorComponents(i);
 
-                    /*for (int j=0; j < minorList.size(); j++){
-                      ComponentInfo ci = (ComponentInfo) minorList.get(j);
-                      Component comp = ci.comp;
-                      if (comp.isVisible()){
-                        Dimension d = comp.getPreferredSize();
-                        comp.setBounds(left, top, d.width, d.height);
-                        left += d.width + gap;
-                        maxHeight = Math.max(maxHeight, d.height);
-                      }
-                    }*/
+                    /*
+                     * for (int j=0; j < minorList.size(); j++){ ComponentInfo ci = (ComponentInfo)
+                     * minorList.get(j); Component comp = ci.comp; if (comp.isVisible()){ Dimension d =
+                     * comp.getPreferredSize(); comp.setBounds(left, top, d.width, d.height); left += d.width
+                     * + gap; maxHeight = Math.max(maxHeight, d.height); } }
+                     */
                     if (ltr) {
                         for (int j = 0; j < minorList.size(); j++) {
                             ComponentInfo ci = (ComponentInfo) minorList.get(j);
@@ -241,22 +241,14 @@ public class ToolBarPanelLayout implements LayoutManager2 {
                 }
             } else {
                 int majorCount = getMajorCount();
-                /*int left = insets.left;
-                for (int i=0; i < majorCount; i++){
-                  int top = insets.top;
-                  int maxWidth = 0;
-                  ArrayList minorList = getMinorComponents(i);
-                  for (int j=0; j < minorList.size(); j++){
-                    ComponentInfo ci = (ComponentInfo) minorList.get(j);
-                    Component comp = ci.comp;
-                    if (comp.isVisible()){
-                      Dimension d = comp.getPreferredSize();
-                      comp.setBounds(left, top, d.width, d.height);
-                      top += d.height + gap;
-                      maxWidth = Math.max(maxWidth, d.width);
-                    }
-                  }
-                  left += maxWidth;*/
+                /*
+                 * int left = insets.left; for (int i=0; i < majorCount; i++){ int top = insets.top; int
+                 * maxWidth = 0; ArrayList minorList = getMinorComponents(i); for (int j=0; j <
+                 * minorList.size(); j++){ ComponentInfo ci = (ComponentInfo) minorList.get(j); Component comp
+                 * = ci.comp; if (comp.isVisible()){ Dimension d = comp.getPreferredSize();
+                 * comp.setBounds(left, top, d.width, d.height); top += d.height + gap; maxWidth =
+                 * Math.max(maxWidth, d.width); } } left += maxWidth;
+                 */
                 int left = insets.left;
                 if (ltr) {
                     for (int i = 0; i < majorCount; i++) {
@@ -302,14 +294,13 @@ public class ToolBarPanelLayout implements LayoutManager2 {
 
     private void reorderComponents() {
         Collections.sort(componentInfos);
-        /* Usefull state dumps : I'll let them here for some time.
-        System.out.println("---------------------------------------------------");
-        System.out.println("List of components : ----BEFORE ------");
-        for (int i=0; i < componentInfos.size(); i++){
-          ComponentInfo ci = (ComponentInfo)componentInfos.get(i);
-          System.out.println(ci.constraints + " = " + ci.comp);
-        }
-        //*/
+        /*
+         * Usefull state dumps : I'll let them here for some time.
+         * System.out.println("---------------------------------------------------");
+         * System.out.println("List of components : ----BEFORE ------"); for (int i=0; i <
+         * componentInfos.size(); i++){ ComponentInfo ci = (ComponentInfo)componentInfos.get(i);
+         * System.out.println(ci.constraints + " = " + ci.comp); } //
+         */
         // first, insert new major orders
         for (int i = 0; i < componentInfos.size(); i++) {
             ComponentInfo ci = (ComponentInfo) componentInfos.get(i);
@@ -350,11 +341,11 @@ public class ToolBarPanelLayout implements LayoutManager2 {
             }
         }
 
-        /*    System.out.println("List of components : after offsets");
-        for (int i=0; i < componentInfos.size(); i++){
-          ComponentInfo ci = (ComponentInfo)componentInfos.get(i);
-          System.out.println(ci.constraints + " = " + ci.comp);
-        }*/
+        /*
+         * System.out.println("List of components : after offsets"); for (int i=0; i < componentInfos.size();
+         * i++){ ComponentInfo ci = (ComponentInfo)componentInfos.get(i); System.out.println(ci.constraints +
+         * " = " + ci.comp); }
+         */
 
         // next, let all major and minor order be consecutive
         int order = 0;
@@ -386,12 +377,11 @@ public class ToolBarPanelLayout implements LayoutManager2 {
             }
         }
 
-        /*    System.out.println("List of components : ------AFTER ----");
-           for (int i=0; i < componentInfos.size(); i++){
-             ComponentInfo ci = (ComponentInfo)componentInfos.get(i);
-             System.out.println(ci.constraints + " = " + ci.comp);
-           }
-        */
+        /*
+         * System.out.println("List of components : ------AFTER ----"); for (int i=0; i <
+         * componentInfos.size(); i++){ ComponentInfo ci = (ComponentInfo)componentInfos.get(i);
+         * System.out.println(ci.constraints + " = " + ci.comp); }
+         */
 
     }
 
@@ -410,9 +400,11 @@ public class ToolBarPanelLayout implements LayoutManager2 {
                 tc.minorOrder = 0;
                 tc.majorOffset = -1;
                 return tc;
-            } else if (p.y > bounds.y + bounds.height) { // insert after.. ignore (will be tested on next loop)
+            } else if (p.y > bounds.y + bounds.height) { // insert after.. ignore (will be tested on next
+                                                         // loop)
 
-            } else if (p.y > bounds.y + bounds.height - 5) { // insert a new major as we are just below the lower part
+            } else if (p.y > bounds.y + bounds.height - 5) { // insert a new major as we are just below the
+                                                             // lower part
                 tc.majorOrder = i;
                 tc.minorOrder = 0;
                 tc.majorOffset = +1;
@@ -477,7 +469,8 @@ public class ToolBarPanelLayout implements LayoutManager2 {
                 return tc;
             } else if (p.x > bounds.x + bounds.width) { // insert after.. ignore (will be tested on next loop)
 
-            } else if (p.x > bounds.x + bounds.width - 3) { // insert a new major as we are just below the lower part
+            } else if (p.x > bounds.x + bounds.width - 3) { // insert a new major as we are just below the
+                                                            // lower part
                 tc.majorOrder = i;
                 tc.minorOrder = 0;
                 tc.majorOffset = +1;
@@ -582,10 +575,8 @@ public class ToolBarPanelLayout implements LayoutManager2 {
         }
 
         private int getCompareOrder() {
-            int order = constraints.majorOrder * 100000
-                    + constraints.majorOffset * 10000
-                    + constraints.minorOrder * 100
-                    + constraints.minorOffset;
+            int order = constraints.majorOrder * 100000 + constraints.majorOffset * 10000
+                    + constraints.minorOrder * 100 + constraints.minorOffset;
             return order;
         }
 

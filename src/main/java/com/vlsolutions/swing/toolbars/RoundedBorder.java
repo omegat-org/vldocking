@@ -25,7 +25,8 @@ import java.awt.Insets;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-/** A simple rounded border.
+/**
+ * A simple rounded border.
  *
  * Can be used anywhere a rounded border is needed (no specific purpose).
  *
@@ -36,7 +37,8 @@ public class RoundedBorder implements Border {
     private Insets insets = new Insets(2, 2, 2, 2);
     private Color shadow = UIManager.getColor("controlShadow");
 
-    public RoundedBorder() {}
+    public RoundedBorder() {
+    }
 
     public boolean isBorderOpaque() {
         return false;

@@ -25,12 +25,13 @@ import java.awt.Point;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-/** A Button that can be used to store a dockable (for example to allow moving a dockable
- * between two workspaces).
+/**
+ * A Button that can be used to store a dockable (for example to allow moving a dockable between two
+ * workspaces).
  *
  * <p>
- * The button is able to display the Icon, text and toolip of a dockable key, and can be used as a drag
- * source (to initiate a drop into a desktop).
+ * The button is able to display the Icon, text and toolip of a dockable key, and can be used as a drag source
+ * (to initiate a drop into a desktop).
  *
  * @author Lilian Chamontin, VLSolutions
  */
@@ -56,8 +57,9 @@ public class DockableStoreButton extends JButton implements DockDropReceiver, Do
         updateButtonText();
     }
 
-    /** when a dockable is dragged above this button, the button stores it as its new
-     * target dockable.
+    /**
+     * when a dockable is dragged above this button, the button stores it as its new target dockable.
+     * 
      * @see #getDockable()
      */
     public void processDockableDrag(DockDragEvent event) {
@@ -75,8 +77,9 @@ public class DockableStoreButton extends JButton implements DockDropReceiver, Do
         updateButtonText();
     }
 
-    /** Override this method if you want to change the display (text and icon) of this button and
-     * the default settings don't suit your needs.
+    /**
+     * Override this method if you want to change the display (text and icon) of this button and the default
+     * settings don't suit your needs.
      */
     public void updateButtonText() {
         if (dockable == null) {
@@ -112,22 +115,22 @@ public class DockableStoreButton extends JButton implements DockDropReceiver, Do
         }
     }
 
-    /** Returns the text used for this button when no dockable is stored*/
+    /** Returns the text used for this button when no dockable is stored */
     public String getEmptyText() {
         return emptyText;
     }
 
-    /** updates the text used for this button when no dockable is stored*/
+    /** updates the text used for this button when no dockable is stored */
     public void setEmptyText(String emptyText) {
         this.emptyText = emptyText;
     }
 
-    /** Returns the text used as tooltip for this button when no dockable is stored*/
+    /** Returns the text used as tooltip for this button when no dockable is stored */
     public String getEmptyTooltip() {
         return emptyTooltip;
     }
 
-    /** Updates the text used as tooltip for this button when no dockable is stored*/
+    /** Updates the text used as tooltip for this button when no dockable is stored */
     public void setEmptyTooltip(String emptyTooltip) {
         this.emptyTooltip = emptyTooltip;
     }
@@ -137,29 +140,30 @@ public class DockableStoreButton extends JButton implements DockDropReceiver, Do
         return emptyIcon;
     }
 
-    /** Updates the icon used for this button when no dockable is stored*/
+    /** Updates the icon used for this button when no dockable is stored */
     public void setEmptyIcon(Icon emptyIcon) {
         this.emptyIcon = emptyIcon;
     }
 
-    /** Returns the text used for this button when a dockable is stored*/
+    /** Returns the text used for this button when a dockable is stored */
     public String getFullText() {
         return fullText;
     }
 
-    /** Returns the text used for this button when a dockable is stored*/
+    /** Returns the text used for this button when a dockable is stored */
     public void setFullText(String fullText) {
         this.fullText = fullText;
     }
 
-    /** Returns the text used for as tooltip this button when a dockable is stored*/
+    /** Returns the text used for as tooltip this button when a dockable is stored */
     public String getFullTooltip() {
         return fullTooltip;
     }
 
-    /** Updates the text used as tooltip for this button when no dockable is stored.
-     * The special value '&1' will be replaced by the name of this dockable.
-     *<p>
+    /**
+     * Updates the text used as tooltip for this button when no dockable is stored. The special value '&1'
+     * will be replaced by the name of this dockable.
+     * <p>
      * For example "&1 stored" could be replaced by "MyDockable stored"
      */
     public void setFullTooltip(String fullTooltip) {

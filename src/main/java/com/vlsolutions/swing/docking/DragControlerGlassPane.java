@@ -39,7 +39,8 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-/** A glasspane use to paint drag / drop shape on top of the desktop
+/**
+ * A glasspane use to paint drag / drop shape on top of the desktop
  *
  * @author Lilian Chamontin, VLSolutions
  */
@@ -67,8 +68,10 @@ public class DragControlerGlassPane extends JComponent {
 
     DragControlerGlassPane(DragControler controler) {
         this.controler = controler;
-        addMouseListener(new MouseAdapter() {}); // grab events
-        addMouseMotionListener(new MouseMotionAdapter() {});
+        addMouseListener(new MouseAdapter() {
+        }); // grab events
+        addMouseMotionListener(new MouseMotionAdapter() {
+        });
         showDragCursor();
     }
 
@@ -85,8 +88,7 @@ public class DragControlerGlassPane extends JComponent {
                 Point p = SwingUtilities.convertPoint((Component) controler.getDropReceiver(), 0, 0, this);
                 Shape s2 = AffineTransform.getTranslateInstance(p.x, p.y).createTransformedShape(s);
                 outlinePainer.paintShape(g2, s2);
-                labelPainter.paintLabel(
-                        g2, s2, controler.getDockable().getDockKey().getName());
+                labelPainter.paintLabel(g2, s2, controler.getDockable().getDockKey().getName());
             }
         }
     }
@@ -94,8 +96,8 @@ public class DragControlerGlassPane extends JComponent {
     public void showStopDragCursor() {
         if (stopDragCursor == null) {
             Image stopDragImage = (Image) UIManager.get("DragControler.stopDragCursor"); // 2005/11/01
-            stopDragCursor =
-                    Toolkit.getDefaultToolkit().createCustomCursor(stopDragImage, new Point(16, 16), "stopdragcursor");
+            stopDragCursor = Toolkit.getDefaultToolkit().createCustomCursor(stopDragImage, new Point(16, 16),
+                    "stopdragcursor");
         }
         setCursor(stopDragCursor);
     }
@@ -103,8 +105,8 @@ public class DragControlerGlassPane extends JComponent {
     public void showSwapDragCursor() {
         if (swapDragCursor == null) {
             Image swapDragImage = (Image) UIManager.get("DragControler.swapDragCursor"); // 2005/11/01
-            swapDragCursor =
-                    Toolkit.getDefaultToolkit().createCustomCursor(swapDragImage, new Point(16, 16), "swapdragcursor");
+            swapDragCursor = Toolkit.getDefaultToolkit().createCustomCursor(swapDragImage, new Point(16, 16),
+                    "swapdragcursor");
         }
         setCursor(swapDragCursor);
     }
@@ -112,7 +114,8 @@ public class DragControlerGlassPane extends JComponent {
     public void showFloatCursor() {
         if (floatCursor == null) {
             Image floatImage = (Image) UIManager.get("DragControler.detachCursor"); // 2005/11/01
-            floatCursor = Toolkit.getDefaultToolkit().createCustomCursor(floatImage, new Point(16, 16), "floatcursor");
+            floatCursor = Toolkit.getDefaultToolkit().createCustomCursor(floatImage, new Point(16, 16),
+                    "floatcursor");
         }
         setCursor(floatCursor);
     }
@@ -120,7 +123,8 @@ public class DragControlerGlassPane extends JComponent {
     public void showDragCursor() {
         if (dragCursor == null) {
             Image dragImage = (Image) UIManager.get("DragControler.dragCursor"); // 2005/11/01
-            dragCursor = Toolkit.getDefaultToolkit().createCustomCursor(dragImage, new Point(16, 16), "dragcursor");
+            dragCursor = Toolkit.getDefaultToolkit().createCustomCursor(dragImage, new Point(16, 16),
+                    "dragcursor");
         }
         setCursor(dragCursor);
     }
@@ -131,7 +135,7 @@ public class DragControlerGlassPane extends JComponent {
         private Color textColor = Color.WHITE;
 
         private Color textFillColor = new Color(32, 32, 32, 128);
-        //    private Color textFillColor = new Color(128, 128,128);
+        // private Color textFillColor = new Color(128, 128,128);
 
         private Color textBorderColor = new Color(64, 64, 64);
 

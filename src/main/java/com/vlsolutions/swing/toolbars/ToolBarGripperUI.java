@@ -27,23 +27,25 @@ import javax.swing.JComponent;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.ComponentUI;
 
-/** The default UI for the toolbar gripper.
+/**
+ * The default UI for the toolbar gripper.
  *
  * @author Lilian Chamontin, VLSolutions
  */
 public class ToolBarGripperUI extends ComponentUI {
 
     /** the "grip" (an alpha blended dot image, 3*3 pixels, hightlighted underneath ) */
-    protected static final Image gripImage =
-            new ImageIcon(ToolBarGripperUI.class.getResource("gripper.png")).getImage();
+    protected static final Image gripImage = new ImageIcon(ToolBarGripperUI.class.getResource("gripper.png"))
+            .getImage();
 
-    protected static final Image gripExpandHImage =
-            new ImageIcon(ToolBarGripperUI.class.getResource("grip_expand_h.png")).getImage();
-    protected static final Image gripExpandVImage =
-            new ImageIcon(ToolBarGripperUI.class.getResource("grip_expand_v.png")).getImage();
+    protected static final Image gripExpandHImage = new ImageIcon(
+            ToolBarGripperUI.class.getResource("grip_expand_h.png")).getImage();
+    protected static final Image gripExpandVImage = new ImageIcon(
+            ToolBarGripperUI.class.getResource("grip_expand_v.png")).getImage();
 
     /** Constructs a new gripper UI */
-    public ToolBarGripperUI() {}
+    public ToolBarGripperUI() {
+    }
 
     public static ComponentUI createUI(JComponent c) {
         return new ToolBarGripperUI();
@@ -55,7 +57,7 @@ public class ToolBarGripperUI extends ComponentUI {
         comp.setPreferredSize(new Dimension(4, 4));
     }
 
-    /** Paints gripper dots  */
+    /** Paints gripper dots */
     public void paint(Graphics g, JComponent comp) {
         ToolBarGripper gripper = (ToolBarGripper) comp;
         Insets insets = gripper.getInsets();

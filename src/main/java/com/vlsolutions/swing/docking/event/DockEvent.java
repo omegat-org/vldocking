@@ -21,12 +21,14 @@ package com.vlsolutions.swing.docking.event;
 import com.vlsolutions.swing.docking.*;
 import java.awt.event.*;
 
-/** Abstract superclass of drag and drop docking events.
- * <P> This class holds a reference to the source of the event and its mouse event.
+/**
+ * Abstract superclass of drag and drop docking events.
+ * <P>
+ * This class holds a reference to the source of the event and its mouse event.
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
- *  */
+ */
 public abstract class DockEvent {
 
     /** The drag source */
@@ -38,16 +40,20 @@ public abstract class DockEvent {
     /** The MouseEvent, in target's coordinates */
     protected MouseEvent event;
 
-    /** The action corresponding to the drag and drop gesture
-     * (actions can be seen as allowed docking gestures)
+    /**
+     * The action corresponding to the drag and drop gesture (actions can be seen as allowed docking gestures)
      */
     protected DockingActionEvent action;
 
-    /** Constructor for dock events.
+    /**
+     * Constructor for dock events.
      *
-     * @param targetDesktop the desktop which will receive the drop
-     * @param source the source of drag operation
-     * @param event the mouse event which is the cause of this DockEvent.
+     * @param targetDesktop
+     *            the desktop which will receive the drop
+     * @param source
+     *            the source of drag operation
+     * @param event
+     *            the mouse event which is the cause of this DockEvent.
      */
     public DockEvent(DockingDesktop targetDesktop, DockableDragSource source, MouseEvent event) {
         this.desktop = targetDesktop;
@@ -55,16 +61,19 @@ public abstract class DockEvent {
         this.event = event;
     }
 
-    /** Returns the MouseEvent which is the cause of this DockEvent.
+    /**
+     * Returns the MouseEvent which is the cause of this DockEvent.
      * <p>
      * <b> note that mouse coordinates are converted into the target's coordinates.</b>
+     * 
      * @return a mouse event
      */
     public MouseEvent getMouseEvent() {
         return event;
     }
 
-    /** Returns a reference to the drag source of this event.
+    /**
+     * Returns a reference to the drag source of this event.
      *
      * @return the drag source (the component actually dragged)
      */
@@ -72,12 +81,13 @@ public abstract class DockEvent {
         return source;
     }
 
-    /** Returns a reference of the desktop in which the docking event takes place.
-     *<p>
+    /**
+     * Returns a reference of the desktop in which the docking event takes place.
+     * <p>
      * As of version 2.1, this method returns the "target" desktop (the one in which the drop will occur)
-     *<p>
-     * To get a reference of the "source" desktop, use the DockableState information provided by
-     * the DockingContext.
+     * <p>
+     * To get a reference of the "source" desktop, use the DockableState information provided by the
+     * DockingContext.
      *
      */
     public DockingDesktop getDesktop() {
@@ -89,7 +99,8 @@ public abstract class DockEvent {
         return action;
     }
 
-    /** Set the docking action corresponding to this drag and drop gesture.
+    /**
+     * Set the docking action corresponding to this drag and drop gesture.
      *
      */
     public void setDockingAction(DockingActionEvent actionEvent) {

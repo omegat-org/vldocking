@@ -34,37 +34,36 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-/** A JTabbedPane customized for integration with the docking framework.
+/**
+ * A JTabbedPane customized for integration with the docking framework.
  *
  * <p>
  * Defaults :
  * <ul>
- * <li> tab position is TOP (look at DockingUISettings to change that),
- * <li> layout policy is WRAP_TAB_LAYOUT
- * (due to a java bug which limits usage of MouseMotionListeners in JTabbedPanes,
- * it is not possible to use SCROLL_LAYOUT_POLICY)
+ * <li>tab position is TOP (look at DockingUISettings to change that),
+ * <li>layout policy is WRAP_TAB_LAYOUT (due to a java bug which limits usage of MouseMotionListeners in
+ * JTabbedPanes, it is not possible to use SCROLL_LAYOUT_POLICY)
  * </ul>
  *
  * <p>
- * This tabbed pane is not meant to be used outside of DockingDesktop because of
- * their connected behaviour (drag/drop support, docking constraints, etc).
+ * This tabbed pane is not meant to be used outside of DockingDesktop because of their connected behaviour
+ * (drag/drop support, docking constraints, etc).
  * <p>
- * As of version 2.0 of the framework, the tabbed pane displays a close icon (other functions
- * are available with a right click menu).
+ * As of version 2.0 of the framework, the tabbed pane displays a close icon (other functions are available
+ * with a right click menu).
  *
  * @see DockingDesktop
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
- * @update 2005/11/01 Lilian Chamontin : enhanced shape painting (tries to avoid
- * going outside the tab bounds)
+ * @update 2005/11/01 Lilian Chamontin : enhanced shape painting (tries to avoid going outside the tab bounds)
  * @update 2005/11/10 Lilian Chamontin : added support for DnD multiple tabs at once.
  * @update 2005/12/08 Lilian Chamontin : removed a portion of code as its been refactored in BorderSplitter
  * @update 2007/11/04 Lilian Chamontin : fixed a memory leak when removing dockables
  * @update 2008/07/05 Lilian Chamontin : removed a hardcoded icon reference
  *
  */
-@SuppressWarnings({"rawtypes", "unchecked", "unused"})
+@SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 public class DockTabbedPane extends JTabbedPane
         implements DockDropReceiver, DockableDragSource, TabbedDockableContainer {
 
@@ -187,10 +186,11 @@ public class DockTabbedPane extends JTabbedPane
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2 && SwingUtilities.isLeftMouseButton(e)) {
                     Dockable d = findDockableAt(e);
-                    if (d != null
-                            && d.getDockKey().isMaximizeEnabled()
-                            && d.getDockKey().getLocation()
-                                    == DockableState.Location.DOCKED) { // 2005/10/10 don't maximize floatings
+                    if (d != null && d.getDockKey().isMaximizeEnabled()
+                            && d.getDockKey().getLocation() == DockableState.Location.DOCKED) { // 2005/10/10
+                                                                                                // don't
+                                                                                                // maximize
+                                                                                                // floatings
                         desktop.maximize(d);
                     }
                 }
@@ -237,8 +237,9 @@ public class DockTabbedPane extends JTabbedPane
         }
     }
 
-    /** Returns the tab index of the dockable corresponding to the given key, or null if the dockable
-     * doesn't belong to this tab.
+    /**
+     * Returns the tab index of the dockable corresponding to the given key, or null if the dockable doesn't
+     * belong to this tab.
      */
     public int getDockableIndex(DockKey key) {
         for (int i = 0; i < getTabCount(); i++) {
@@ -252,8 +253,9 @@ public class DockTabbedPane extends JTabbedPane
     }
 
     private void checkForPopUp(MouseEvent e) {
-        /*  Tabbed dockable can be of two states : docked and floating
-         * when floating, the only option is to attach again.
+        /*
+         * Tabbed dockable can be of two states : docked and floating when floating, the only option is to
+         * attach again.
          */
         Dockable d = findDockableAt(e);
         if (d != null) {
@@ -285,7 +287,8 @@ public class DockTabbedPane extends JTabbedPane
                 }
             } else if (key.getLocation() == DockableState.Location.FLOATING) {
                 if (DockingUtilities.isChildOfCompoundDockable(d)) {
-                    // as of v2.1 floating dockable which is a child of compound dockable don't have "attach" menu
+                    // as of v2.1 floating dockable which is a child of compound dockable don't have "attach"
+                    // menu
                 } else {
                     popup.add(new JMenuItem(TabbedContainerActions.createAttachTabAction(d, desktop)));
                     menuCount++;
@@ -313,7 +316,7 @@ public class DockTabbedPane extends JTabbedPane
 
     private Dockable findDockableAt(MouseEvent e) {
         Point p = e.getPoint();
-        // find the tab  on which the mouse has been pressed
+        // find the tab on which the mouse has been pressed
         popupTab = -1;
         for (int i = 0; i < getTabCount(); i++) {
             Rectangle tabbounds = getBoundsAt(i);
@@ -325,13 +328,14 @@ public class DockTabbedPane extends JTabbedPane
         return null;
     }
 
-    /** Adds a new tab respecting the presentation and constraints of the component.
+    /**
+     * Adds a new tab respecting the presentation and constraints of the component.
      *
      * {@inheritDoc}
-     * */
+     */
     public void addDockable(Dockable dockable, int tab) {
-        SingleDockableContainer dc = DockableContainerFactory.getFactory()
-                .createDockableContainer(dockable, DockableContainerFactory.ParentType.PARENT_TABBED_CONTAINER);
+        SingleDockableContainer dc = DockableContainerFactory.getFactory().createDockableContainer(dockable,
+                DockableContainerFactory.ParentType.PARENT_TABBED_CONTAINER);
         dc.installDocking(desktop);
         addDockableContainer(dc, tab);
     }
@@ -363,10 +367,11 @@ public class DockTabbedPane extends JTabbedPane
 
         closeAction.setEnabled(key.isCloseEnabled());
         // add a tooltip
-        closeAction.putValue(AbstractAction.SHORT_DESCRIPTION, UIManager.get("DockTabbedPane.closeButtonText"));
+        closeAction.putValue(AbstractAction.SHORT_DESCRIPTION,
+                UIManager.get("DockTabbedPane.closeButtonText"));
 
-        final JTabbedPaneSmartIcon smartIcon =
-                new JTabbedPaneSmartIcon(key.getIcon(), key.getName(), new SmartIconJButton[] {closeIcon});
+        final JTabbedPaneSmartIcon smartIcon = new JTabbedPaneSmartIcon(key.getIcon(), key.getName(),
+                new SmartIconJButton[] { closeIcon });
         smartIcon.setTooltipText(key.getTooltip());
         smartIcon.setIconForTabbedPane(this);
 
@@ -386,11 +391,10 @@ public class DockTabbedPane extends JTabbedPane
         revalidate();
         repaint();
 
-        /*    SwingUtilities.invokeLater(new Runnable(){
-          public void run(){
-            setTitleAt(getDockableIndex(key), ""); // workaround for painting problems
-          }
-        });*/
+        /*
+         * SwingUtilities.invokeLater(new Runnable(){ public void run(){ setTitleAt(getDockableIndex(key),
+         * ""); // workaround for painting problems } });
+         */
 
     }
 
@@ -405,7 +409,7 @@ public class DockTabbedPane extends JTabbedPane
         // reject operation if the source is an ancestor of this component.
         if (dragSource.getDockableContainer().isAncestorOf(this)) {
             // this is possible for compound containers (as they contain sub-dockables)
-            // in that case, you cannnot drop a compound into one of its children  // 2007/01/08
+            // in that case, you cannnot drop a compound into one of its children // 2007/01/08
             if (drop) {
                 ((DockDropEvent) event).rejectDrop();
             } else {
@@ -512,12 +516,11 @@ public class DockTabbedPane extends JTabbedPane
                 }
 
                 Dockable draggedDockable = dragSource.getDockable();
-                DockableState.Location initialLocation =
-                        draggedDockable.getDockKey().getLocation();
+                DockableState.Location initialLocation = draggedDockable.getDockKey().getLocation();
                 Dockable base = getDockableAt(0);
                 DockableState.Location nextLocation = base.getDockKey().getLocation();
-                event.setDockingAction(new DockingActionCreateTabEvent(
-                        event.getDesktop(), draggedDockable, initialLocation, nextLocation, base, i));
+                event.setDockingAction(new DockingActionCreateTabEvent(event.getDesktop(), draggedDockable,
+                        initialLocation, nextLocation, base, i));
 
                 if (drop) {
                     if (DockingUtilities.findTabbedDockableContainer(dockable) == this) {
@@ -528,14 +531,14 @@ public class DockTabbedPane extends JTabbedPane
                     } else {
                         // request the desktop to create the tab
                         if (base.getDockKey().getLocation() == DockableState.Location.FLOATING) { // 2005/12/09
-                            if (dragSource.getDockable().getDockKey().getLocation()
-                                    == DockableState.Location.FLOATING) {
-                                // this is new 2.1 feature : allowed DnD if the tab is a child of a compund dockable
+                            if (dragSource.getDockable().getDockKey()
+                                    .getLocation() == DockableState.Location.FLOATING) {
+                                // this is new 2.1 feature : allowed DnD if the tab is a child of a compund
+                                // dockable
                                 ((DockDropEvent) event).acceptDrop(); // remove
                             } else {
-                                ((DockDropEvent) event)
-                                        .acceptDrop(
-                                                false); // don't remove it yet, we need to store its previous dockable
+                                ((DockDropEvent) event).acceptDrop(false); // don't remove it yet, we need to
+                                                                           // store its previous dockable
                                 // state
                             }
                         } else {
@@ -558,11 +561,8 @@ public class DockTabbedPane extends JTabbedPane
         if (lasttabbounds == null) {
             return;
         }
-        Rectangle afterlast = new Rectangle(
-                lasttabbounds.x + lasttabbounds.width,
-                lasttabbounds.y,
-                getX() + getWidth() - (lasttabbounds.x + lasttabbounds.width),
-                lasttabbounds.height);
+        Rectangle afterlast = new Rectangle(lasttabbounds.x + lasttabbounds.width, lasttabbounds.y,
+                getX() + getWidth() - (lasttabbounds.x + lasttabbounds.width), lasttabbounds.height);
         if (afterlast.contains(p)) {
             SingleDockableContainer dockableContainer = (SingleDockableContainer) getComponentAt(lastTab);
             if (dockableContainer.getDockable() == dragSource.getDockable()) {
@@ -582,12 +582,11 @@ public class DockTabbedPane extends JTabbedPane
                 lastDropPath = gp;
             }
             Dockable draggedDockable = dragSource.getDockable();
-            DockableState.Location initialLocation =
-                    draggedDockable.getDockKey().getLocation();
+            DockableState.Location initialLocation = draggedDockable.getDockKey().getLocation();
             Dockable base = getDockableAt(0);
             DockableState.Location nextLocation = base.getDockKey().getLocation();
-            event.setDockingAction(new DockingActionCreateTabEvent(
-                    event.getDesktop(), draggedDockable, initialLocation, nextLocation, base, lastTab + 1));
+            event.setDockingAction(new DockingActionCreateTabEvent(event.getDesktop(), draggedDockable,
+                    initialLocation, nextLocation, base, lastTab + 1));
 
             if (drop) {
 
@@ -598,13 +597,14 @@ public class DockTabbedPane extends JTabbedPane
                     addDockableContainer(dc, lastTab + 1); // simply move
                 } else {
                     if (base.getDockKey().getLocation() == DockableState.Location.FLOATING) { // 2005/12/09
-                        if (dragSource.getDockable().getDockKey().getLocation() == DockableState.Location.FLOATING) {
-                            // this is new 2.1 feature : allowed DnD if the tab is a child of a compund dockable
+                        if (dragSource.getDockable().getDockKey()
+                                .getLocation() == DockableState.Location.FLOATING) {
+                            // this is new 2.1 feature : allowed DnD if the tab is a child of a compund
+                            // dockable
                             ((DockDropEvent) event).acceptDrop(); // remove
                         } else {
-                            ((DockDropEvent) event)
-                                    .acceptDrop(
-                                            false); // don't remove it yet, we need to store its previous dockable state
+                            ((DockDropEvent) event).acceptDrop(false); // don't remove it yet, we need to
+                                                                       // store its previous dockable state
                         }
                     } else {
                         ((DockDropEvent) event).acceptDrop();
@@ -631,7 +631,7 @@ public class DockTabbedPane extends JTabbedPane
         }
     }
 
-    /** Creates a general path suitable for showing tab insertion before the currentTab*/
+    /** Creates a general path suitable for showing tab insertion before the currentTab */
     protected GeneralPath buildPathForCurrentTab(Rectangle vbounds, Rectangle tabbounds) {
         GeneralPath gp = new GeneralPath();
         if (getTabPlacement() == SwingConstants.BOTTOM) {
@@ -682,7 +682,7 @@ public class DockTabbedPane extends JTabbedPane
         return gp;
     }
 
-    /** Creates a general path suitable for showing tab insertion after the last tab*/
+    /** Creates a general path suitable for showing tab insertion after the last tab */
     protected GeneralPath buildPathAfterLastTab(Rectangle vbounds, Rectangle afterlast) {
         GeneralPath gp = new GeneralPath();
         if (getTabPlacement() == SwingConstants.BOTTOM) {
@@ -751,14 +751,13 @@ public class DockTabbedPane extends JTabbedPane
         return gp;
     }
 
-    private void scanMainTabZone(DockEvent event, boolean drop, DockableDragSource dragSource, Rectangle vbounds) {
+    private void scanMainTabZone(DockEvent event, boolean drop, DockableDragSource dragSource,
+            Rectangle vbounds) {
 
         Point p = event.getMouseEvent().getPoint();
 
-        /* allow drop :
-         *  - on the current tab
-         *  - between tabs
-         * delegate drop if mouse to near of the borders
+        /*
+         * allow drop : - on the current tab - between tabs delegate drop if mouse to near of the borders
          */
         if (scanBorderBounds(event, drop, p)) {
             return;
@@ -817,15 +816,15 @@ public class DockTabbedPane extends JTabbedPane
         DockableState.Location nextLocation = base.getDockKey().getLocation();
 
         if (drop) {
-            event.setDockingAction(new DockingActionCreateTabEvent(
-                    event.getDesktop(), draggedDockable, initialLocation, nextLocation, base, tab));
+            event.setDockingAction(new DockingActionCreateTabEvent(event.getDesktop(), draggedDockable,
+                    initialLocation, nextLocation, base, tab));
             if (base.getDockKey().getLocation() == DockableState.Location.FLOATING) { // 2005/12/09
                 if (dragSource.getDockable().getDockKey().getLocation() == DockableState.Location.FLOATING) {
                     // this is new 2.1 feature : allowed DnD if the tab is a child of a compound dockable
                     ((DockDropEvent) event).acceptDrop(); // remove
                 } else {
-                    ((DockDropEvent) event)
-                            .acceptDrop(false); // don't remove it yet, we need to store its previous dockable state
+                    ((DockDropEvent) event).acceptDrop(false); // don't remove it yet, we need to store its
+                                                               // previous dockable state
                 }
             } else {
                 ((DockDropEvent) event).acceptDrop();
@@ -837,10 +836,10 @@ public class DockTabbedPane extends JTabbedPane
 
             setSelectedIndex(tab);
 
-            //        dockingPanel.moveDock(dragSource.getTargetKey(), dc);
+            // dockingPanel.moveDock(dragSource.getTargetKey(), dc);
         } else {
-            event.setDockingAction(new DockingActionCreateTabEvent(
-                    event.getDesktop(), draggedDockable, initialLocation, nextLocation, base, tab));
+            event.setDockingAction(new DockingActionCreateTabEvent(event.getDesktop(), draggedDockable,
+                    initialLocation, nextLocation, base, tab));
             ((DockDragEvent) event).acceptDrag(lastDropPath);
         }
         return;
@@ -849,8 +848,8 @@ public class DockTabbedPane extends JTabbedPane
     private boolean scanAdjacentTab(DockEvent event, boolean drop, DockableDragSource dragSource) {
         if (getSelectedIndex() > 0) {
             // check and reject a drag/drop of [tab-1] on [tab]
-            SingleDockableContainer dockableContainer =
-                    (SingleDockableContainer) getComponentAt(getSelectedIndex() - 1);
+            SingleDockableContainer dockableContainer = (SingleDockableContainer) getComponentAt(
+                    getSelectedIndex() - 1);
             if (dockableContainer.getDockable() == dragSource.getDockable()) {
                 if (drop) {
                     ((DockDropEvent) event).rejectDrop();
@@ -878,7 +877,7 @@ public class DockTabbedPane extends JTabbedPane
     }
 
     private boolean scanBorderBounds(DockEvent event, boolean drop, Point p) {
-        /** we early reject this operation if the tab is used by a floating dialog  */
+        /** we early reject this operation if the tab is used by a floating dialog */
         Dockable firstDockable = getDockableAt(0);
         if (firstDockable.getDockKey().getLocation() == DockableState.Location.FLOATING) {
             // as of v2.1 this DnD operation is allowed if the tabbed pane is a child of a compund dockable
@@ -909,25 +908,16 @@ public class DockTabbedPane extends JTabbedPane
             // too near of the bounds, suggest a split docking
 
             BorderSplitter splitter = new BorderSplitter(this)
-                    /* NO LONGER NEEDED : REIMPLEMENTED IN BORDER SPLITTER 2005/12/08
-                     {
-                      // we override split in order to resolve the case where
-                      // the drop operation would remove this tabpane from the containment
-                      // hierarchy
-                       public void split(DockDropEvent event, Container draggedContainer, DockingConstants.Split position){
-                         if (getTabCount() == 1){
-                             // there is only one tab left, meaning
-                             // this tabbedpane  has already been removed from containment hierarchy
-                           Dockable remainingDockable = getDockableAt(0);
-                           event.getDesktop().split(
-                               remainingDockable, // one of the remaining dockables
-                               event.getDragSource().getDockable(),
-                               position);
-                         } else {
-                           super.split(event, draggedContainer, position); // standard behaviour
-                         }
-                       }
-                    }*/ ;
+            /*
+             * NO LONGER NEEDED : REIMPLEMENTED IN BORDER SPLITTER 2005/12/08 { // we override split in order
+             * to resolve the case where // the drop operation would remove this tabpane from the containment
+             * // hierarchy public void split(DockDropEvent event, Container draggedContainer,
+             * DockingConstants.Split position){ if (getTabCount() == 1){ // there is only one tab left,
+             * meaning // this tabbedpane has already been removed from containment hierarchy Dockable
+             * remainingDockable = getDockableAt(0); event.getDesktop().split( remainingDockable, // one of
+             * the remaining dockables event.getDragSource().getDockable(), position); } else {
+             * super.split(event, draggedContainer, position); // standard behaviour } } }
+             */ ;
             if (drop) {
                 splitter.processDockableDrop((DockDropEvent) event);
             } else {
@@ -938,12 +928,12 @@ public class DockTabbedPane extends JTabbedPane
         return false;
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public void processDockableDrop(DockDropEvent event) {
         scanDrop(event, true);
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public boolean startDragComponent(Point p) {
         clearDragState();
 
@@ -955,7 +945,8 @@ public class DockTabbedPane extends JTabbedPane
                 if (i > 2 && i == getTabCount() - 1) {
                     // workaround for a focus problem : when the JTabbedPane has focus on the last tab
                     // and we start a drag (and drop outside the tabbedpane, there is a
-                    // nonblocking stacktrace due to a bad focusIndex in BasicTabbedPaneUI (method focusLost() of the
+                    // nonblocking stacktrace due to a bad focusIndex in BasicTabbedPaneUI (method focusLost()
+                    // of the
                     // Handler)
                     KeyboardFocusManager.getCurrentKeyboardFocusManager().upFocusCycle();
                     // by putting the focus up before the drop occurs, we ensure a good focusIndex is set
@@ -976,11 +967,8 @@ public class DockTabbedPane extends JTabbedPane
         }
         header = header.union(lasttabbounds);
 
-        Rectangle afterlast = new Rectangle(
-                lasttabbounds.x + lasttabbounds.width,
-                lasttabbounds.y,
-                getX() + getWidth() - (lasttabbounds.x + lasttabbounds.width),
-                lasttabbounds.height);
+        Rectangle afterlast = new Rectangle(lasttabbounds.x + lasttabbounds.width, lasttabbounds.y,
+                getX() + getWidth() - (lasttabbounds.x + lasttabbounds.width), lasttabbounds.height);
         if (afterlast.contains(p) || header.contains(p)) { // either after the last tab or between tabs
             this.isMultipleDrag = true;
             return true;
@@ -989,7 +977,7 @@ public class DockTabbedPane extends JTabbedPane
         return false;
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public Dockable getDockable() { // from DockableDragSource
         if (isMultipleDrag) {
             return selfDockable;
@@ -1001,7 +989,7 @@ public class DockTabbedPane extends JTabbedPane
         }
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public Dockable getSelectedDockable() {
         if (getSelectedIndex() < 0) {
             return null; // safety
@@ -1016,7 +1004,7 @@ public class DockTabbedPane extends JTabbedPane
         }
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public void setSelectedDockable(Dockable dockable) {
         Component c = (Component) DockingUtilities.findSingleDockableContainer(dockable);
         if (c != null && indexOfComponent(c) >= 0) {
@@ -1024,7 +1012,7 @@ public class DockTabbedPane extends JTabbedPane
         }
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public Dockable getDockableAt(int index) {
         Component c = getComponentAt(index);
         if (c instanceof SingleDockableContainer) {
@@ -1034,7 +1022,7 @@ public class DockTabbedPane extends JTabbedPane
         }
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public void removeDockable(Dockable dockable) {
         DockableContainer dc = DockingUtilities.findSingleDockableContainer(dockable);
         if (dc != null) {
@@ -1050,12 +1038,12 @@ public class DockTabbedPane extends JTabbedPane
             }
             remove((Component) dc);
         } // 2007/11/04
-        // clean up key / actions references / listeners
+          // clean up key / actions references / listeners
         closeActions.remove(dockable.getDockKey());
         dockable.getDockKey().removePropertyChangeListener(keyChangeListener);
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public void removeDockable(int index) {
         Dockable dockable = getDockableAt(index);
         final int prev = this.previousSelectedDockable;
@@ -1079,12 +1067,12 @@ public class DockTabbedPane extends JTabbedPane
         this.isMultipleDrag = false;
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public String toString() {
         return "DockTabbedPane [" + Integer.toHexString(hashCode()) + " - tabcount=" + getTabCount() + "]";
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public int indexOfDockable(Dockable dockable) {
         DockableContainer dc = DockingUtilities.findSingleDockableContainer(dockable);
         if (dc != null) {
@@ -1094,13 +1082,13 @@ public class DockTabbedPane extends JTabbedPane
         }
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public void installDocking(DockingDesktop desktop) {
         this.desktop = desktop;
         desktop.installDockableDragSource(this);
     }
 
-    /**  {@inheritDoc} */
+    /** {@inheritDoc} */
     public void uninstallDocking(DockingDesktop desktop) {
         desktop.uninstallDockableDragSource(this);
     }

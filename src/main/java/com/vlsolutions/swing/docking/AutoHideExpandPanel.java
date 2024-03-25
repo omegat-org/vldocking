@@ -29,26 +29,27 @@ import javax.swing.border.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
-/** A component used to show the currently expanded view.
+/**
+ * A component used to show the currently expanded view.
  * <p>
- * Auto-Hide / Auto-Expand feature is a means to save space of screen replacing
- * a Dockable by a Button on one of the Desktop borders.
- * <p> When the user clicks on the button or his mouse rolls over it, the component
- * is shown (with an expansion animation) as if it was coming from behind the button's
- * border.
+ * Auto-Hide / Auto-Expand feature is a means to save space of screen replacing a Dockable by a Button on one
+ * of the Desktop borders.
+ * <p>
+ * When the user clicks on the button or his mouse rolls over it, the component is shown (with an expansion
+ * animation) as if it was coming from behind the button's border.
  *
  * @author Lilian Chamontin, vlsolutions.
  * @version 2.0
- * @update 2005/10/06 Lilian Chamontin : protected access to the exansion timer that might be
- * null when AutoHidePolicy is EXPAND_ON_CLICK
- * @update 2005/11/01 Lilian Chamontin : enhanced timer management to auto-collaspe the panel
- * when mouse out of bounds
+ * @update 2005/10/06 Lilian Chamontin : protected access to the exansion timer that might be null when
+ *         AutoHidePolicy is EXPAND_ON_CLICK
+ * @update 2005/11/01 Lilian Chamontin : enhanced timer management to auto-collaspe the panel when mouse out
+ *         of bounds
  * @update 2005/12/08 Lilian Chamontin : updated the order of component insertion for JDIC support.
  * @update 2006/12/19 Lilian Chamontin : fixed a memory leak issue.
  * @update 2007/01/08 Lilian Chamontin : updated to use the new titlebar factory method
  *
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public class AutoHideExpandPanel extends JPanel implements SingleDockableContainer {
 
     private static final long serialVersionUID = 1L;
@@ -75,7 +76,8 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
 
     DockingDesktop desk;
 
-    private JPanel topDragger = getTopDragger(); // indirection because those components are used by the ui delegate
+    private JPanel topDragger = getTopDragger(); // indirection because those components are used by the ui
+                                                 // delegate
 
     private JPanel leftDragger = getLeftDragger();
 
@@ -95,22 +97,24 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
 
     private Border expandFromTopBorder, expandFromLeftBorder, expandFromBottomBorder, expandFromRightBorder;
 
-    /** this boolean is used to disable auto-hiding temporarily, especially during
-     * drag operation (where mouse can leave the component) */
+    /**
+     * this boolean is used to disable auto-hiding temporarily, especially during drag operation (where mouse
+     * can leave the component)
+     */
     private boolean shouldCollapse = true;
 
     /** flag used when heavywieght usage + single heavyweight component */
     private boolean isHeavyPanelInstalled = false;
 
-    /** Used by the collapse timer*/
+    /** Used by the collapse timer */
     private long lastTimeMouseWasIn = 0;
 
     private boolean canUseMouseInfo = DockingUtilities.canUseMouseInfo();
 
     private FocusCollapser collapser = new FocusCollapser(); // 2006/12/19
 
-    /** Timer used to collapse the expand panel (when mouse is out of bounds).
-     * (only for java > 1.5)
+    /**
+     * Timer used to collapse the expand panel (when mouse is out of bounds). (only for java > 1.5)
      */
     private javax.swing.Timer collapseTimer // 2005/11/01
             = new javax.swing.Timer(250, new ActionListener() {
@@ -132,8 +136,8 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
                         // not inside the component : check also into its associated button
                         Point btnPoint = new Point(); // selectedButton.getX(),selectedButton.getY());
                         SwingUtilities.convertPointToScreen(btnPoint, selectedButton);
-                        Rectangle btnRect = new Rectangle(
-                                btnPoint.x, btnPoint.y, selectedButton.getWidth(), selectedButton.getHeight());
+                        Rectangle btnRect = new Rectangle(btnPoint.x, btnPoint.y, selectedButton.getWidth(),
+                                selectedButton.getHeight());
                         if (btnRect.contains(mouseLocation)) {
                             lastTimeMouseWasIn = System.currentTimeMillis();
                         } else {
@@ -170,7 +174,8 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
         setFocusCycleRoot(true); // keep keyboard focus
 
         // requiered to trap mouse events under the panel (so they don't go to the mousegrabber)
-        addMouseListener(new MouseAdapter() {});
+        addMouseListener(new MouseAdapter() {
+        });
 
         if (DockingPreferences.isLightWeightUsageEnabled()) {
             // for Swing only : direct usage of the content jpanel
@@ -181,15 +186,15 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
                 // to ensure our content will not be covered by an underlying heavy component.
                 // to do this, we add an intermediary heavyweight panel.
                 // note : if there is only one heavyweight dockable,
-                //        we delay and delegate this operation to installHeavyWeightIfNeeded
+                // we delay and delegate this operation to installHeavyWeightIfNeeded
                 heavyPanel.add(content, BorderLayout.CENTER);
 
                 // jdk1.5 only, but we compile with 1.4 source level
                 try {
                     // this.setComponentZOrder(heavyPanel, 0); // top most
-                    Method m =
-                            Container.class.getMethod("setComponentZOrder", new Class[] {Component.class, int.class});
-                    m.invoke(this, new Object[] {heavyPanel, new Integer(0)});
+                    Method m = Container.class.getMethod("setComponentZOrder",
+                            new Class[] { Component.class, int.class });
+                    m.invoke(this, new Object[] { heavyPanel, new Integer(0) });
                 } catch (Exception ignore) {
                 }
 
@@ -204,30 +209,30 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
             }
         }
 
-        addAncestorListener(
-                new AncestorListener() { // 2006/12/19 : reworked to avoid GC leak
+        addAncestorListener(new AncestorListener() { // 2006/12/19 : reworked to avoid GC leak
 
-                    public void ancestorAdded(AncestorEvent event) {
-                        AutoHidePolicy.getPolicy().addPropertyChangeListener(controler);
-                        if (DockingPreferences.isLightWeightUsageEnabled()) {
-                            KeyboardFocusManager.getCurrentKeyboardFocusManager()
-                                    .addPropertyChangeListener("focusOwner", collapser);
-                        }
-                    }
+            public void ancestorAdded(AncestorEvent event) {
+                AutoHidePolicy.getPolicy().addPropertyChangeListener(controler);
+                if (DockingPreferences.isLightWeightUsageEnabled()) {
+                    KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                            .addPropertyChangeListener("focusOwner", collapser);
+                }
+            }
 
-                    public void ancestorMoved(AncestorEvent event) {}
+            public void ancestorMoved(AncestorEvent event) {
+            }
 
-                    public void ancestorRemoved(AncestorEvent event) {
-                        AutoHidePolicy.getPolicy().removePropertyChangeListener(controler);
-                        if (DockingPreferences.isLightWeightUsageEnabled()) {
-                            KeyboardFocusManager.getCurrentKeyboardFocusManager()
-                                    .removePropertyChangeListener("focusOwner", collapser);
-                        }
-                    }
-                });
+            public void ancestorRemoved(AncestorEvent event) {
+                AutoHidePolicy.getPolicy().removePropertyChangeListener(controler);
+                if (DockingPreferences.isLightWeightUsageEnabled()) {
+                    KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                            .removePropertyChangeListener("focusOwner", collapser);
+                }
+            }
+        });
 
         content.add(titleBar, BorderLayout.NORTH);
-        //    initDockingFunctions();
+        // initDockingFunctions();
     }
 
     private void installHeavyWeightParentIfNeeded(Dockable target) {
@@ -269,9 +274,9 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
                 // jdk1.5 only, but we compile with 1.4 source level
                 try {
                     // this.setComponentZOrder(heavyPanel, 0); // top most
-                    Method m =
-                            Container.class.getMethod("setComponentZOrder", new Class[] {Component.class, int.class});
-                    m.invoke(this, new Object[] {heavyPanel, new Integer(0)});
+                    Method m = Container.class.getMethod("setComponentZOrder",
+                            new Class[] { Component.class, int.class });
+                    m.invoke(this, new Object[] { heavyPanel, new Integer(0) });
                 } catch (Exception ignore) {
                 }
             }
@@ -291,8 +296,7 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
             // since 2.1 : the autohide component can contain a nested set of dockables, so the
             // titlebar's activity isn't always usable : we have to verify if the focus is still
             // inside
-            Component focusOwner =
-                    KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+            Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
             if (focusOwner == null) {
                 return false;
             } else {
@@ -302,12 +306,12 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
         // return titleBar.isActive();
     }
 
-    /** Returns true if this panel agrees to beeing hidden.
+    /**
+     * Returns true if this panel agrees to beeing hidden.
      * <p>
-     * During drag operations (resizing), some mouseEnter/mouseExit events
-     * can be lost. In that case, the desktop relies on this method to
-     * request collaping or not.
-     *  */
+     * During drag operations (resizing), some mouseEnter/mouseExit events can be lost. In that case, the
+     * desktop relies on this method to request collaping or not.
+     */
     public boolean shouldCollapse() {
         return shouldCollapse;
     }
@@ -371,23 +375,19 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
         getRightDragger().setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, shadow));
 
         expandFromTopBorder = BorderFactory.createCompoundBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(1, 1, 0, 1, shadow),
+                BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, shadow),
                         BorderFactory.createMatteBorder(1, 1, 1, 0, highlight)),
                 BorderFactory.createEmptyBorder(2, 2, 2, 2));
         expandFromLeftBorder = BorderFactory.createCompoundBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(1, 1, 1, 0, shadow),
+                BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, shadow),
                         BorderFactory.createMatteBorder(1, 1, 1, 1, highlight)),
                 BorderFactory.createEmptyBorder(2, 2, 2, 2));
         expandFromBottomBorder = BorderFactory.createCompoundBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(0, 1, 1, 1, shadow),
+                BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, shadow),
                         BorderFactory.createMatteBorder(1, 1, 1, 1, highlight)),
                 BorderFactory.createEmptyBorder(2, 2, 2, 2));
         expandFromRightBorder = BorderFactory.createCompoundBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(1, 0, 1, 1, shadow),
+                BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, shadow),
                         BorderFactory.createMatteBorder(1, 1, 1, 1, highlight)),
                 BorderFactory.createEmptyBorder(2, 2, 2, 2));
     }
@@ -472,8 +472,9 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
         desk.installDockableDragSource(titleBar);
     }
 
-    /** Returns the component responsible for managing auto-expansion.
-     * */
+    /**
+     * Returns the component responsible for managing auto-expansion.
+     */
     /* package protected */ ExpandControler getControler() {
         return controler;
     }
@@ -488,7 +489,7 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
     }
 
     private void restartCollapseTimer() {
-        //    if (!DockingPreferences.isLightWeightUsageEnabled()){
+        // if (!DockingPreferences.isLightWeightUsageEnabled()){
         if (canUseMouseInfo) { // not for 1.4
             this.lastTimeMouseWasIn = System.currentTimeMillis();
             collapseTimer.restart();
@@ -496,13 +497,13 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
     }
 
     private void stopCollapseTimer() {
-        //    if (!DockingPreferences.isLightWeightUsageEnabled()){
+        // if (!DockingPreferences.isLightWeightUsageEnabled()){
         if (canUseMouseInfo) { // not for 1.4
             collapseTimer.stop();
         }
     }
 
-    /**  Expands the currently selected button */
+    /** Expands the currently selected button */
     public void expand() {
         if (selectedButton == null) {
             return; // 2007/01/10
@@ -524,37 +525,37 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
             if (bestDimension == null) {
                 bestDimension = selectedButton.getDockable().getComponent().getPreferredSize();
                 switch (selectedButton.getZone()) {
-                    case DockingConstants.INT_HIDE_TOP:
-                    case DockingConstants.INT_HIDE_BOTTOM:
-                        if (bestDimension.height > bounds.height / 2) {
-                            bestDimension.height = bounds.height / 2;
-                        }
-                        break;
-                    case DockingConstants.INT_HIDE_LEFT:
-                    case DockingConstants.INT_HIDE_RIGHT:
-                        if (bestDimension.width > bounds.width / 2) {
-                            bestDimension.width = bounds.width / 2;
-                        }
-                        break;
-                }
-            }
-        } else if (model == AutoHidePolicy.INITIAL_EXPAND_CUSTOM_SIZE) {
-            bestDimension = new Dimension();
-            switch (selectedButton.getZone()) {
                 case DockingConstants.INT_HIDE_TOP:
                 case DockingConstants.INT_HIDE_BOTTOM:
-                    bestDimension.height = policy.getInitialExpansionHeight();
                     if (bestDimension.height > bounds.height / 2) {
                         bestDimension.height = bounds.height / 2;
                     }
                     break;
                 case DockingConstants.INT_HIDE_LEFT:
                 case DockingConstants.INT_HIDE_RIGHT:
-                    bestDimension.width = policy.getInitialExpansionWidth();
                     if (bestDimension.width > bounds.width / 2) {
                         bestDimension.width = bounds.width / 2;
                     }
                     break;
+                }
+            }
+        } else if (model == AutoHidePolicy.INITIAL_EXPAND_CUSTOM_SIZE) {
+            bestDimension = new Dimension();
+            switch (selectedButton.getZone()) {
+            case DockingConstants.INT_HIDE_TOP:
+            case DockingConstants.INT_HIDE_BOTTOM:
+                bestDimension.height = policy.getInitialExpansionHeight();
+                if (bestDimension.height > bounds.height / 2) {
+                    bestDimension.height = bounds.height / 2;
+                }
+                break;
+            case DockingConstants.INT_HIDE_LEFT:
+            case DockingConstants.INT_HIDE_RIGHT:
+                bestDimension.width = policy.getInitialExpansionWidth();
+                if (bestDimension.width > bounds.width / 2) {
+                    bestDimension.width = bounds.width / 2;
+                }
+                break;
             }
         } else {
             throw new RuntimeException("invalid Initial Expansion model : " + model);
@@ -567,56 +568,35 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
         Insets i2 = getComponentInsets();
 
         switch (selectedButton.getZone()) {
-            case DockingConstants.INT_HIDE_TOP:
-                new ComponentAnimator(
-                        this,
-                        new Rectangle(i.left, i.top, bounds.width - i.left - i.right, 0),
-                        new Rectangle(
-                                i.left,
-                                i.top,
-                                bounds.width - i.left - i.right,
-                                bestDimension.height + i2.top + i2.bottom),
-                        AutoHidePolicy.getPolicy().getExpansionDuration() / 1000f,
-                        animationControler);
-                break;
-            case DockingConstants.INT_HIDE_BOTTOM:
-                new ComponentAnimator(
-                        this,
-                        new Rectangle(i.left, bounds.height - i.bottom, bounds.width - i.left - i.right, 0),
-                        new Rectangle(
-                                i.left,
-                                bounds.height - bestDimension.height - i.bottom - i2.top - i2.bottom,
-                                bounds.width - i.left - i.right,
-                                bestDimension.height + i2.top + i2.bottom),
-                        AutoHidePolicy.getPolicy().getExpansionDuration() / 1000f,
-                        animationControler);
-                break;
-            case DockingConstants.INT_HIDE_LEFT:
-                new ComponentAnimator(
-                        this,
-                        new Rectangle(i.left, i.top, 0, bounds.height - i.top - i.bottom),
-                        new Rectangle(
-                                i.left,
-                                i.top,
-                                bestDimension.width + i2.left + i2.right,
-                                bounds.height - i.top - i.bottom),
-                        AutoHidePolicy.getPolicy().getExpansionDuration() / 1000f,
-                        animationControler);
-                break;
-            case DockingConstants.INT_HIDE_RIGHT:
-                new ComponentAnimator(
-                        this,
-                        new Rectangle(bounds.width - i.right, i.top, 0, bounds.height - i.top - i.bottom),
-                        new Rectangle(
-                                bounds.width - bestDimension.width - i.right - i2.left - i2.right,
-                                i.top,
-                                bestDimension.width + i2.left + i2.right,
-                                bounds.height - i.top - i.bottom),
-                        AutoHidePolicy.getPolicy().getExpansionDuration() / 1000f,
-                        animationControler);
-                break;
-            default:
-                assert false;
+        case DockingConstants.INT_HIDE_TOP:
+            new ComponentAnimator(this, new Rectangle(i.left, i.top, bounds.width - i.left - i.right, 0),
+                    new Rectangle(i.left, i.top, bounds.width - i.left - i.right,
+                            bestDimension.height + i2.top + i2.bottom),
+                    AutoHidePolicy.getPolicy().getExpansionDuration() / 1000f, animationControler);
+            break;
+        case DockingConstants.INT_HIDE_BOTTOM:
+            new ComponentAnimator(this,
+                    new Rectangle(i.left, bounds.height - i.bottom, bounds.width - i.left - i.right, 0),
+                    new Rectangle(i.left,
+                            bounds.height - bestDimension.height - i.bottom - i2.top - i2.bottom,
+                            bounds.width - i.left - i.right, bestDimension.height + i2.top + i2.bottom),
+                    AutoHidePolicy.getPolicy().getExpansionDuration() / 1000f, animationControler);
+            break;
+        case DockingConstants.INT_HIDE_LEFT:
+            new ComponentAnimator(this, new Rectangle(i.left, i.top, 0, bounds.height - i.top - i.bottom),
+                    new Rectangle(i.left, i.top, bestDimension.width + i2.left + i2.right,
+                            bounds.height - i.top - i.bottom),
+                    AutoHidePolicy.getPolicy().getExpansionDuration() / 1000f, animationControler);
+            break;
+        case DockingConstants.INT_HIDE_RIGHT:
+            new ComponentAnimator(this,
+                    new Rectangle(bounds.width - i.right, i.top, 0, bounds.height - i.top - i.bottom),
+                    new Rectangle(bounds.width - bestDimension.width - i.right - i2.left - i2.right, i.top,
+                            bestDimension.width + i2.left + i2.right, bounds.height - i.top - i.bottom),
+                    AutoHidePolicy.getPolicy().getExpansionDuration() / 1000f, animationControler);
+            break;
+        default:
+            assert false;
         }
 
         firePropertyChange(PROPERTY_EXPANDED, false, true);
@@ -636,7 +616,8 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
         if (expandedComponent != null) {
             if (expandedComponent != comp) {
                 content.remove(expandedComponent);
-                content.add(comp, BorderLayout.CENTER); // 2005/12/08 back again in this order (JDIC workaround)
+                content.add(comp, BorderLayout.CENTER); // 2005/12/08 back again in this order (JDIC
+                                                        // workaround)
                 installHeavyWeightParentIfNeeded(selectedButton.getDockable());
                 expandedComponent = comp;
             }
@@ -646,68 +627,63 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
             expandedComponent = comp;
         }
 
-        /* // the workaround isn't needed anymore : we use the heavyweightTimer instead
-
-        if (!DockingPreferences.isLightWeightUsageEnabled()){
-        // this is a workaround : mouse listener doesn't work properly
-        // on AWT components (they grab the event even if they are 'under'
-        // our mouse grabber.
-        SwingUtilities.invokeLater(new Runnable(){
-        public void run(){
-        //                heavyPanel.requestFocus();
-        comp.requestFocus();
-        }
-        // by requesting focus, we can rely on the safer focusOwner property
-        // and use it to collapse thi panel (see FocusCollapser code below)
-        });
-        }*/
+        /*
+         * // the workaround isn't needed anymore : we use the heavyweightTimer instead
+         * 
+         * if (!DockingPreferences.isLightWeightUsageEnabled()){ // this is a workaround : mouse listener
+         * doesn't work properly // on AWT components (they grab the event even if they are 'under' // our
+         * mouse grabber. SwingUtilities.invokeLater(new Runnable(){ public void run(){ //
+         * heavyPanel.requestFocus(); comp.requestFocus(); } // by requesting focus, we can rely on the safer
+         * focusOwner property // and use it to collapse thi panel (see FocusCollapser code below) }); }
+         */
 
         titleBar.setDockable(selectedButton.getDockable());
         desk.installDockableDragSource(titleBar);
         switch (selectedButton.getZone()) {
-            case DockingConstants.INT_HIDE_TOP:
-                content.setBorder(expandFromTopBorder);
-                bottomDragger.setVisible(true);
-                // remove previous border
-                if (lastDragger != null && lastDragger != bottomDragger) {
-                    lastDragger.setVisible(false);
-                }
-                lastDragger = bottomDragger;
-                break;
-            case DockingConstants.INT_HIDE_BOTTOM:
-                content.setBorder(expandFromBottomBorder);
-                topDragger.setVisible(true);
-                if (lastDragger != null && lastDragger != topDragger) {
-                    lastDragger.setVisible(false);
-                }
-                lastDragger = topDragger;
-                break;
-            case DockingConstants.INT_HIDE_LEFT:
-                content.setBorder(expandFromLeftBorder);
-                rightDragger.setVisible(true);
-                if (lastDragger != null && lastDragger != rightDragger) {
-                    lastDragger.setVisible(false);
-                }
-                lastDragger = rightDragger;
-                break;
-            case DockingConstants.INT_HIDE_RIGHT:
-                content.setBorder(expandFromRightBorder);
-                leftDragger.setVisible(true);
-                if (lastDragger != null && lastDragger != leftDragger) {
-                    lastDragger.setVisible(false);
-                }
-                lastDragger = leftDragger;
-                break;
-            default:
-                assert false;
+        case DockingConstants.INT_HIDE_TOP:
+            content.setBorder(expandFromTopBorder);
+            bottomDragger.setVisible(true);
+            // remove previous border
+            if (lastDragger != null && lastDragger != bottomDragger) {
+                lastDragger.setVisible(false);
+            }
+            lastDragger = bottomDragger;
+            break;
+        case DockingConstants.INT_HIDE_BOTTOM:
+            content.setBorder(expandFromBottomBorder);
+            topDragger.setVisible(true);
+            if (lastDragger != null && lastDragger != topDragger) {
+                lastDragger.setVisible(false);
+            }
+            lastDragger = topDragger;
+            break;
+        case DockingConstants.INT_HIDE_LEFT:
+            content.setBorder(expandFromLeftBorder);
+            rightDragger.setVisible(true);
+            if (lastDragger != null && lastDragger != rightDragger) {
+                lastDragger.setVisible(false);
+            }
+            lastDragger = rightDragger;
+            break;
+        case DockingConstants.INT_HIDE_RIGHT:
+            content.setBorder(expandFromRightBorder);
+            leftDragger.setVisible(true);
+            if (lastDragger != null && lastDragger != leftDragger) {
+                lastDragger.setVisible(false);
+            }
+            lastDragger = leftDragger;
+            break;
+        default:
+            assert false;
         }
         revalidate();
         repaint();
     }
 
-    /** Calculates the insets needed around the center component.
-     * This is the sum of border sizes and bordercomponents sizes.
-     * */
+    /**
+     * Calculates the insets needed around the center component. This is the sum of border sizes and
+     * bordercomponents sizes.
+     */
     private Insets getComponentInsets() {
         Insets i = getInsets(); // borders
         Insets i2 = content.getInsets();
@@ -736,8 +712,7 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
     /** Collapse the expand panel (making it unvisible) */
     public void collapse() {
         if (selectedButton != null) {
-            savedDimensions.put(
-                    selectedButton, selectedButton.getDockable().getComponent().getSize());
+            savedDimensions.put(selectedButton, selectedButton.getDockable().getComponent().getSize());
             selectedButton.setSelected(false);
             firePropertyChange(PROPERTY_EXPANDED, true, false);
         }
@@ -776,10 +751,10 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
         return uiClassID;
     }
 
-    /** Clears the state of this expand panel.
-     *<p>
-     * This is useful when re-installing a desktop from readXml (for example,
-     * it resets dockable expand sizes)
+    /**
+     * Clears the state of this expand panel.
+     * <p>
+     * This is useful when re-installing a desktop from readXml (for example, it resets dockable expand sizes)
      */
     public void clear() {
         // clear
@@ -806,8 +781,9 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
     /** This class hides expansion implementation from API */
     private class ExpandControler implements MouseListener, ActionListener, PropertyChangeListener {
 
-        /* temporary button : the next to be selected after a mouseEntered event and
-         * triggered timer delay. */
+        /*
+         * temporary button : the next to be selected after a mouseEntered event and triggered timer delay.
+         */
         private AutoHideButton mouseEnteredButton;
 
         /** used to avoid bad interactions between focus listeners and expand controler */
@@ -864,14 +840,17 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
             }
         }
 
-        public void mousePressed(MouseEvent e) {}
+        public void mousePressed(MouseEvent e) {
+        }
 
-        public void mouseReleased(MouseEvent e) {}
+        public void mouseReleased(MouseEvent e) {
+        }
 
         public void propertyChange(PropertyChangeEvent e) {
-            /* triggered by autohide policy change*/
+            /* triggered by autohide policy change */
             if (e.getPropertyName().equals(AutoHidePolicy.PROPERTY_EXPAND_MODE)) {
-                if (AutoHidePolicy.getPolicy().getExpandMode() == AutoHidePolicy.ExpandMode.EXPAND_ON_ROLLOVER) {
+                if (AutoHidePolicy.getPolicy()
+                        .getExpandMode() == AutoHidePolicy.ExpandMode.EXPAND_ON_ROLLOVER) {
                     expansionTimer = new Timer(AutoHidePolicy.getPolicy().getRolloverTriggerDelay(), this);
                     isRolloverTimer = true;
                 } else {
@@ -880,7 +859,8 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
                     isRolloverTimer = false;
                 }
             } else if (e.getPropertyName().equals(AutoHidePolicy.PROPERTY_ROLLOVER_TRIGGER_DELAY)) {
-                if (AutoHidePolicy.getPolicy().getExpandMode() == AutoHidePolicy.ExpandMode.EXPAND_ON_ROLLOVER) {
+                if (AutoHidePolicy.getPolicy()
+                        .getExpandMode() == AutoHidePolicy.ExpandMode.EXPAND_ON_ROLLOVER) {
                     expansionTimer.setDelay(AutoHidePolicy.getPolicy().getRolloverTriggerDelay());
                 }
             }
@@ -903,7 +883,7 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
 
     private class DragListener implements MouseListener, MouseMotionListener {
 
-        /* inner class of expand panel*/
+        /* inner class of expand panel */
         int zone;
 
         DragListener(int zone) {
@@ -911,8 +891,9 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
         }
 
         public void mouseDragged(MouseEvent e) {
-            /* implement the drag effect on expand panel : a single border
-             * can be dragged (the one not overlapping the borders of the panel
+            /*
+             * implement the drag effect on expand panel : a single border can be dragged (the one not
+             * overlapping the borders of the panel
              */
 
             // new height/width (including borders)
@@ -926,82 +907,78 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
             Insets idesk = desk.getDockingPanelInsets();
 
             switch (zone) {
-                case DockingConstants.INT_HIDE_TOP:
-                    // drag from top to bottom : change the height of the panel
-                    newHeight = p.y - idesk.top + bottomDragger.getHeight() / 2 + insets.bottom + insets.top;
-                    newHeight = Math.max(10, Math.min(newHeight, desk.getHeight())); // clip
+            case DockingConstants.INT_HIDE_TOP:
+                // drag from top to bottom : change the height of the panel
+                newHeight = p.y - idesk.top + bottomDragger.getHeight() / 2 + insets.bottom + insets.top;
+                newHeight = Math.max(10, Math.min(newHeight, desk.getHeight())); // clip
 
-                    setSize(getWidth(), newHeight);
-                    invalidate();
-                    validate();
-                    repaint();
-                    break;
-                case DockingConstants.INT_HIDE_BOTTOM:
-                    newHeight = desk.getHeight()
-                            - idesk.bottom
-                            - p.y
-                            + topDragger.getHeight() / 2
-                            + insets.top
-                            + insets.bottom;
-                    int maxHeight = desk.getHeight() - topDragger.getHeight();
-                    if (newHeight > maxHeight) {
-                        newHeight = maxHeight;
-                    } else if (newHeight < 10) {
-                        newHeight = 10;
-                    }
-                    Rectangle bounds = getBounds();
-                    bounds.y = desk.getHeight() - idesk.bottom - newHeight;
-                    bounds.height = newHeight;
-                    setBounds(bounds);
-                    invalidate();
-                    validate();
-                    repaint();
-                    break;
-                case DockingConstants.INT_HIDE_LEFT:
-                    newWidth = p.x + rightDragger.getWidth() / 2 - idesk.left + insets.right + insets.left;
-                    int maxWidth = desk.getWidth() - rightDragger.getWidth();
-                    if (newWidth > maxWidth) {
-                        newWidth = maxWidth;
-                    } else if (newWidth < 10) {
-                        newWidth = 10;
-                    }
-                    setSize(newWidth, getHeight());
-                    invalidate();
-                    validate();
-                    repaint();
-                    break;
-                case DockingConstants.INT_HIDE_RIGHT:
-                    newWidth = desk.getWidth()
-                            - idesk.right
-                            - p.x
-                            + leftDragger.getWidth() / 2
-                            + insets.left
-                            + insets.right;
-                    maxWidth = desk.getWidth() - leftDragger.getWidth();
-                    if (newWidth > maxWidth) {
-                        newWidth = maxWidth;
-                    } else if (newWidth < 10) {
-                        newWidth = 10;
-                    }
-                    bounds = getBounds();
-                    bounds.x = desk.getWidth() - idesk.right - newWidth;
-                    bounds.width = newWidth;
-                    setBounds(bounds);
-                    invalidate();
-                    validate();
-                    repaint();
-                    break;
+                setSize(getWidth(), newHeight);
+                invalidate();
+                validate();
+                repaint();
+                break;
+            case DockingConstants.INT_HIDE_BOTTOM:
+                newHeight = desk.getHeight() - idesk.bottom - p.y + topDragger.getHeight() / 2 + insets.top
+                        + insets.bottom;
+                int maxHeight = desk.getHeight() - topDragger.getHeight();
+                if (newHeight > maxHeight) {
+                    newHeight = maxHeight;
+                } else if (newHeight < 10) {
+                    newHeight = 10;
+                }
+                Rectangle bounds = getBounds();
+                bounds.y = desk.getHeight() - idesk.bottom - newHeight;
+                bounds.height = newHeight;
+                setBounds(bounds);
+                invalidate();
+                validate();
+                repaint();
+                break;
+            case DockingConstants.INT_HIDE_LEFT:
+                newWidth = p.x + rightDragger.getWidth() / 2 - idesk.left + insets.right + insets.left;
+                int maxWidth = desk.getWidth() - rightDragger.getWidth();
+                if (newWidth > maxWidth) {
+                    newWidth = maxWidth;
+                } else if (newWidth < 10) {
+                    newWidth = 10;
+                }
+                setSize(newWidth, getHeight());
+                invalidate();
+                validate();
+                repaint();
+                break;
+            case DockingConstants.INT_HIDE_RIGHT:
+                newWidth = desk.getWidth() - idesk.right - p.x + leftDragger.getWidth() / 2 + insets.left
+                        + insets.right;
+                maxWidth = desk.getWidth() - leftDragger.getWidth();
+                if (newWidth > maxWidth) {
+                    newWidth = maxWidth;
+                } else if (newWidth < 10) {
+                    newWidth = 10;
+                }
+                bounds = getBounds();
+                bounds.x = desk.getWidth() - idesk.right - newWidth;
+                bounds.width = newWidth;
+                setBounds(bounds);
+                invalidate();
+                validate();
+                repaint();
+                break;
             }
             desk.repaint();
         }
 
-        public void mouseMoved(MouseEvent e) {}
+        public void mouseMoved(MouseEvent e) {
+        }
 
-        public void mouseClicked(MouseEvent e) {}
+        public void mouseClicked(MouseEvent e) {
+        }
 
-        public void mouseEntered(MouseEvent e) {}
+        public void mouseEntered(MouseEvent e) {
+        }
 
-        public void mouseExited(MouseEvent e) {}
+        public void mouseExited(MouseEvent e) {
+        }
 
         public void mousePressed(MouseEvent e) {
             shouldCollapse = false; // begining or drag

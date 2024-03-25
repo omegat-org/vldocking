@@ -25,13 +25,14 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-/** An utility class providing default implementation of usefull actions for pop-up
- * menus in tab container selectors.
- *<p>
+/**
+ * An utility class providing default implementation of usefull actions for pop-up menus in tab container
+ * selectors.
+ * <p>
  *
  * @author Lilian Chamontin, VLSolutions
  *
- *@update 2005/10/07 Lilian Chamontin : added the attach action for floating tabs
+ * @update 2005/10/07 Lilian Chamontin : added the attach action for floating tabs
  */
 @SuppressWarnings("unused")
 public class TabbedContainerActions {
@@ -52,10 +53,12 @@ public class TabbedContainerActions {
     private static final Icon FLOAT_ICON = UIManager.getIcon("DockTabbedPane.menu.float");
     private static final Icon ATTACH_ICON = UIManager.getIcon("DockTabbedPane.menu.attach");
 
-    private TabbedContainerActions() {}
+    private TabbedContainerActions() {
+    }
 
-    /** returns an action suitable for closing a dockable contained in a tab.
-     *<p>
+    /**
+     * returns an action suitable for closing a dockable contained in a tab.
+     * <p>
      * Action properties : The icon is provided, and also the standard localized "close" message.
      */
     public static Action createCloseAction(final Dockable dockable, final DockingDesktop desktop) {
@@ -77,8 +80,9 @@ public class TabbedContainerActions {
         return action;
     }
 
-    /** returns an action suitable for closing every dockable contained in a tab.
-     *<p>
+    /**
+     * returns an action suitable for closing every dockable contained in a tab.
+     * <p>
      * Action properties : The icon is provided, and also an unlocalized "Close all documents" message.
      */
     public static Action createCloseAllAction(final Dockable base, final DockingDesktop desktop) {
@@ -96,8 +100,9 @@ public class TabbedContainerActions {
         return action;
     }
 
-    /** returns an action suitable for closing every dockable contained in a tab excepted the current one.
-     *<p>
+    /**
+     * returns an action suitable for closing every dockable contained in a tab excepted the current one.
+     * <p>
      * Action properties : The icon is provided, and also an unlocalized "Close all other documents" message.
      */
     public static Action createCloseAllOtherAction(final Dockable exception, final DockingDesktop desktop) {
@@ -115,8 +120,9 @@ public class TabbedContainerActions {
         return action;
     }
 
-    /** returns an action suitable for maximizing a dockable contained in a tab.
-     *<p>
+    /**
+     * returns an action suitable for maximizing a dockable contained in a tab.
+     * <p>
      * Action properties : The icon is provided, and also a localized "Maximize" message.
      */
     public static Action createMaximizeTabAction(final Dockable dockable, final DockingDesktop desktop) {
@@ -138,8 +144,9 @@ public class TabbedContainerActions {
         return action;
     }
 
-    /** returns an action suitable for hiding a dockable contained in a tab.
-     *<p>
+    /**
+     * returns an action suitable for hiding a dockable contained in a tab.
+     * <p>
      * Action properties : The icon is provided, and also a localized "Iconify" message.
      */
     public static Action createHideTabAction(final Dockable dockable, final DockingDesktop desktop) {
@@ -161,8 +168,9 @@ public class TabbedContainerActions {
         return action;
     }
 
-    /** returns an action suitable for floating (detach) a dockable contained in a tab.
-     *<p>
+    /**
+     * returns an action suitable for floating (detach) a dockable contained in a tab.
+     * <p>
      * Action properties : The icon is provided, and a default "Detach" message.
      */
     public static Action createFloatTabAction(final Dockable dockable, final DockingDesktop desktop) {
@@ -184,9 +192,11 @@ public class TabbedContainerActions {
         return action;
     }
 
-    /** returns an action suitable for attaching a dockable contained in a floating tab.
-     *<p>
+    /**
+     * returns an action suitable for attaching a dockable contained in a floating tab.
+     * <p>
      * Action properties : The icon is provided, and a default "Attach" message.
+     * 
      * @since 2.0.1
      */
     public static Action createAttachTabAction(final Dockable dockable, final DockingDesktop desktop) {

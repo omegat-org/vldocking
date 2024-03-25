@@ -18,11 +18,12 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-/** General information about the current state of a dockable component.
+/**
+ * General information about the current state of a dockable component.
  * <p>
  * This class is a simple record of a dockable and its current display state.
- * <p> It is used together with DockableStateChangeEvents (and listeners) to
- * track changes of Dockable visibility.
+ * <p>
+ * It is used together with DockableStateChangeEvents (and listeners) to track changes of Dockable visibility.
  *
  *
  * @author Lilian Chamontin, vlsolutions.
@@ -39,7 +40,8 @@ public class DockableState implements Comparable {
 
     /** Possible locations of a dockable */
     public enum Location {
-        /** A constant describing a Dockable that is not visible.
+        /**
+         * A constant describing a Dockable that is not visible.
          *
          */
         CLOSED,
@@ -76,8 +78,8 @@ public class DockableState implements Comparable {
         position = new RelativeDockablePosition();
     }
 
-    public DockableState(
-            DockingDesktop desktop, Dockable dockable, Location location, RelativeDockablePosition position) {
+    public DockableState(DockingDesktop desktop, Dockable dockable, Location location,
+            RelativeDockablePosition position) {
         this.desktop = desktop;
         this.dockable = dockable;
         this.location = location;
@@ -92,12 +94,12 @@ public class DockableState implements Comparable {
         this.position = position;
     }
 
-    /** Comparable interface, used to sort components by name order.
-     * */
+    /**
+     * Comparable interface, used to sort components by name order.
+     */
     public int compareTo(Object object) {
         if (object instanceof DockableState) {
-            return dockable.getDockKey()
-                    .getName()
+            return dockable.getDockKey().getName()
                     .compareTo(((DockableState) object).dockable.getDockKey().getName());
         } else {
             return -1;
@@ -134,28 +136,31 @@ public class DockableState implements Comparable {
         return location == Location.MAXIMIZED;
     }
 
-    /** Returns the current location of the dockable (CLOSED, DOCKED, HIDDEN...).
+    /**
+     * Returns the current location of the dockable (CLOSED, DOCKED, HIDDEN...).
      */
     public Location getLocation() {
         return location;
     }
 
-    /** Returns the relative restore position of the dockable when it is not shown (auto-hide
-     * or closed).
+    /**
+     * Returns the relative restore position of the dockable when it is not shown (auto-hide or closed).
      * <P>
-     * Please note that this position is meaningless for visible components
-     * (as it is not automatically calculated at every move / resize of the dockable ).
+     * Please note that this position is meaningless for visible components (as it is not automatically
+     * calculated at every move / resize of the dockable ).
      *
-     * */
+     */
     public RelativeDockablePosition getPosition() {
         return position;
     }
 
     public String toString() {
-        return "DockableState [" + dockable.getDockKey() + ", state=" + location.name() + ", position=" + position;
+        return "DockableState [" + dockable.getDockKey() + ", state=" + location.name() + ", position="
+                + position;
     }
 
-    /** Returns the desktop currently using this dockable, or null if none
+    /**
+     * Returns the desktop currently using this dockable, or null if none
      *
      * @since 2.1
      */
@@ -163,30 +168,33 @@ public class DockableState implements Comparable {
         return desktop;
     }
 
-    /** Updates the desktop field (desktop using this dockable)
+    /**
+     * Updates the desktop field (desktop using this dockable)
+     * 
      * @since 2.1
      */
     public void setDesktop(DockingDesktop desktop) {
         this.desktop = desktop;
     }
 
-    /** Utility (compatibility) method used to associate an int to the Location enumeration
-     * (opposite to location.ordinal()
+    /**
+     * Utility (compatibility) method used to associate an int to the Location enumeration (opposite to
+     * location.ordinal()
      */
     public static Location getLocationFromInt(int state) {
         switch (state) {
-            case 0:
-                return Location.CLOSED;
-            case 1:
-                return Location.DOCKED;
-            case 2:
-                return Location.HIDDEN;
-            case 3:
-                return Location.MAXIMIZED;
-            case 4:
-                return Location.FLOATING;
-            default:
-                return null;
+        case 0:
+            return Location.CLOSED;
+        case 1:
+            return Location.DOCKED;
+        case 2:
+            return Location.HIDDEN;
+        case 3:
+            return Location.MAXIMIZED;
+        case 4:
+            return Location.FLOATING;
+        default:
+            return null;
         }
     }
 }

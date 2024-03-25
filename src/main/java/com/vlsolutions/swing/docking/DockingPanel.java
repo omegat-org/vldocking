@@ -33,10 +33,10 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import javax.swing.*;
 
-/** This class is responsible for the containment of a Dockable component.
+/**
+ * This class is responsible for the containment of a Dockable component.
  * <p>
- * Users of the VLDocking Framework should not call this class which is
- * a utility component of DockingDesktop.
+ * Users of the VLDocking Framework should not call this class which is a utility component of DockingDesktop.
  *
  * <p>
  * Please rely on DockingDesktop capabilities.
@@ -47,15 +47,15 @@ import javax.swing.*;
  */
 public class DockingPanel extends JPanel implements DockDropReceiver {
 
-    /**  @todo  see if we still need the DockDropReceiver */
+    /** @todo see if we still need the DockDropReceiver */
     private static final long serialVersionUID = 1L;
 
-    /** Javabeans constructor  */
+    /** Javabeans constructor */
     public DockingPanel() {
         super(new BorderLayout());
     }
 
-    /** act the same as a splitContainer : allow drop on the borders*/
+    /** act the same as a splitContainer : allow drop on the borders */
     public void processDockableDrag(DockDragEvent event) {
         scanContainer(event, false);
     }
@@ -81,11 +81,11 @@ public class DockingPanel extends JPanel implements DockDropReceiver {
         DockableState.Location nextState = DockableState.Location.DOCKED;
 
         if (dragContainer instanceof TabbedDockableContainer) {
-            event.setDockingAction(new DockingActionSplitDockableContainerEvent(
-                    event.getDesktop(), initialState, nextState, this, dragContainer, position, 0.5f));
+            event.setDockingAction(new DockingActionSplitDockableContainerEvent(event.getDesktop(),
+                    initialState, nextState, this, dragContainer, position, 0.5f));
         } else {
-            event.setDockingAction(new DockingActionSplitComponentEvent(
-                    event.getDesktop(), dockable, initialState, nextState, this, position, 0.5f));
+            event.setDockingAction(new DockingActionSplitComponentEvent(event.getDesktop(), dockable,
+                    initialState, nextState, this, position, 0.5f));
         }
         ((DockDragEvent) event).acceptDrag(shape);
     }
@@ -127,15 +127,16 @@ public class DockingPanel extends JPanel implements DockDropReceiver {
             if (drop) {
                 acceptDrop(event, DockingConstants.SPLIT_BOTTOM);
             } else {
-                Rectangle2D r2d =
-                        new Rectangle2D.Float(0, compBounds.height - bestHeight, compBounds.width, bestHeight);
+                Rectangle2D r2d = new Rectangle2D.Float(0, compBounds.height - bestHeight, compBounds.width,
+                        bestHeight);
                 acceptDrag(event, DockingConstants.SPLIT_BOTTOM, r2d);
             }
         } else { // right
             if (drop) {
                 acceptDrop(event, DockingConstants.SPLIT_RIGHT);
             } else {
-                Rectangle2D r2d = new Rectangle2D.Float(compBounds.width - bestWidth, 0, bestWidth, compBounds.height);
+                Rectangle2D r2d = new Rectangle2D.Float(compBounds.width - bestWidth, 0, bestWidth,
+                        compBounds.height);
                 acceptDrag(event, DockingConstants.SPLIT_RIGHT, r2d);
             }
         }

@@ -24,7 +24,8 @@ import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.JMenuItem;
 
-/** A simple menu item that applies a workspace to a given Docking context when selected .
+/**
+ * A simple menu item that applies a workspace to a given Docking context when selected .
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.1.3
@@ -72,17 +73,17 @@ public class WorkspaceMenuItem extends JMenuItem {
         return workspace;
     }
 
-    /** updates the workspace to be used by this menu item  */
+    /** updates the workspace to be used by this menu item */
     public void setWorkspace(Workspace workspace) {
         this.workspace = workspace;
     }
 
-    /** Returns the docking context used by this menu item  */
+    /** Returns the docking context used by this menu item */
     public DockingContext getDockingContext() {
         return ctx;
     }
 
-    /** Updates the docking context used by this menu item  */
+    /** Updates the docking context used by this menu item */
     public void setDockingContext(DockingContext ctx) {
         this.ctx = ctx;
     }

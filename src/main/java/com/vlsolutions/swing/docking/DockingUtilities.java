@@ -30,7 +30,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import javax.swing.*;
 
-/** Utility class implementing search/replace algorithms used by the framework.
+/**
+ * Utility class implementing search/replace algorithms used by the framework.
  * <p>
  * This class is not inteded for API users, it should be let to framework developpers.
  *
@@ -46,9 +47,11 @@ public class DockingUtilities {
 
     /** returns the first DockableContainer which is parent of this dockable component */
     public static DockableContainer findDockableContainer(Dockable dockable) {
-        if (dockable == null) return null;
+        if (dockable == null)
+            return null;
         Component comp = dockable.getComponent();
-        if (comp == null) return null;
+        if (comp == null)
+            return null;
 
         while (comp != null) {
             if (comp instanceof DockableContainer) {
@@ -61,9 +64,11 @@ public class DockingUtilities {
 
     /** returns the first DockableContainer which is parent of this dockable component */
     public static SingleDockableContainer findSingleDockableContainer(Dockable dockable) {
-        if (dockable == null) return null;
+        if (dockable == null)
+            return null;
         Component comp = dockable.getComponent();
-        if (comp == null) return null;
+        if (comp == null)
+            return null;
 
         while (comp != null) {
             if (comp instanceof SingleDockableContainer) {
@@ -74,20 +79,20 @@ public class DockingUtilities {
         return null;
     }
 
-    /** Returns the first TabbedDockableContainer which is parent of this dockable component, or
-     * null is there isn't any.
-     * */
+    /**
+     * Returns the first TabbedDockableContainer which is parent of this dockable component, or null is there
+     * isn't any.
+     */
     public static TabbedDockableContainer findTabbedDockableContainer(Dockable dockable) {
-        if (dockable == null) return null;
+        if (dockable == null)
+            return null;
         Component comp = dockable.getComponent();
-        if (comp == null) return null;
-        /*    while (comp != null){ //2005/10/10
-             if (comp instanceof TabbedDockableContainer){
-               return (TabbedDockableContainer) comp;
-             }
-             comp = comp.getParent();
-           }
-        */
+        if (comp == null)
+            return null;
+        /*
+         * while (comp != null){ //2005/10/10 if (comp instanceof TabbedDockableContainer){ return
+         * (TabbedDockableContainer) comp; } comp = comp.getParent(); }
+         */
         while (comp != null) {
             // new version to support compoundDockable : stop after the first parent of
             // the first SingleDockableContainer found
@@ -104,7 +109,8 @@ public class DockingUtilities {
         return null;
     }
 
-    private static void swapComponents(SplitContainer split1, SplitContainer split2, Component comp1, Component comp2) {
+    private static void swapComponents(SplitContainer split1, SplitContainer split2, Component comp1,
+            Component comp2) {
         boolean isLeft1 = split1.getLeftComponent() == comp1;
         int divider1 = split1.getDividerLocation();
         if (split1 == split2) {
@@ -220,13 +226,13 @@ public class DockingUtilities {
             } else {
                 throw new IllegalArgumentException("wrong hierarchy");
             }
-            //      SwingUtilities.invokeLater(new Runnable() {
-            //        public void run() {
+            // SwingUtilities.invokeLater(new Runnable() {
+            // public void run() {
             split.setDividerLocation(location);
             split.revalidate();
             split.doLayout();
-            //        }
-            //      });
+            // }
+            // });
         } else if (parent instanceof TabbedDockableContainer) { // 2005/07/12...
             // interface trick : we need to access the JTabbedPane internals
             // the newChild can be a dummy JComponent (when used in maximize/restore)
@@ -255,13 +261,14 @@ public class DockingUtilities {
         }
     }
 
-    /** Returns the split pane containing this dockable (if any), or null if this dockable
-     * isn't contained in a splitpane.
+    /**
+     * Returns the split pane containing this dockable (if any), or null if this dockable isn't contained in a
+     * splitpane.
      * <p>
-     * If the dockable is nested in a TabbedDockableContainer, the split pane returned will
-     * be the one containing the tabbed container (if any).
+     * If the dockable is nested in a TabbedDockableContainer, the split pane returned will be the one
+     * containing the tabbed container (if any).
      *
-     * */
+     */
     public static SplitContainer getSplitPane(Dockable dockable, int orientation) {
         Component comp = dockable.getComponent();
         boolean found = false;
@@ -275,8 +282,9 @@ public class DockingUtilities {
         return (SplitContainer) comp;
     }
 
-    /** A utility method to find the first single dockable container ancestor of the given component.
-     *<p>
+    /**
+     * A utility method to find the first single dockable container ancestor of the given component.
+     * <p>
      * This method may return null if no SingleDockableContainer ancestor is found.
      */
     public static SingleDockableContainer findSingleDockableContainerAncestor(Component component) {
@@ -287,7 +295,7 @@ public class DockingUtilities {
         return (SingleDockableContainer) parent;
     }
 
-    /** Utility method to find out if a component is heavyweight (of if it contains a heavyweight comp)*/
+    /** Utility method to find out if a component is heavyweight (of if it contains a heavyweight comp) */
     public static boolean isHeavyWeightComponent(Component comp) {
         if (comp instanceof Container) {
             Container c = (Container) comp;
@@ -315,7 +323,7 @@ public class DockingUtilities {
         }
     }
 
-    /** Returns the mouse location on screen or null if ran in an untrusted environement/ java 1.4  */
+    /** Returns the mouse location on screen or null if ran in an untrusted environement/ java 1.4 */
     public static Point getMouseLocation() {
         try {
             // Point mouseLocation = MouseInfo.getPointerInfo().getLocation();
@@ -381,7 +389,10 @@ public class DockingUtilities {
         ((Window) fdc).dispose();
     }
 
-    /** returns the root pane used by this detached dockable container, regardless of its type (frame or dialog)*/
+    /**
+     * returns the root pane used by this detached dockable container, regardless of its type (frame or
+     * dialog)
+     */
     public static JRootPane getRootPane(FloatingDockableContainer fdc) {
         if (fdc instanceof JFrame) {
             return ((JFrame) fdc).getRootPane();
@@ -396,9 +407,12 @@ public class DockingUtilities {
         ((Window) fdc).setBounds(bounds);
     }
 
-    /** Creates a list of all dockable children contained in the given compound dockable.
-     * <p> If the compound dockable contains another compound dockable this one is also added,
-     * along with its own children.
+    /**
+     * Creates a list of all dockable children contained in the given compound dockable.
+     * <p>
+     * If the compound dockable contains another compound dockable this one is also added, along with its own
+     * children.
+     * 
      * @return an ArrayList of Dockable
      */
     public static ArrayList<Dockable> findCompoundDockableChildren(CompoundDockable compoundDockable) {
@@ -452,8 +466,9 @@ public class DockingUtilities {
         return false;
     }
 
-    /** searches up the dockable container hierarchy and returns the first ancestor
-     * which is a CompoundDockable (or null if not found).
+    /**
+     * searches up the dockable container hierarchy and returns the first ancestor which is a CompoundDockable
+     * (or null if not found).
      */
     public static Container findCompoundAncestorContainer(Dockable dockable) {
         Container container = dockable.getComponent().getParent();
@@ -468,8 +483,9 @@ public class DockingUtilities {
         return null;
     }
 
-    /** searches up the dockable container hierarchy and returns the dockable state of the
-     * <b>last<b> (top most) ancestor which is a CompoundDockable (or null if not found).
+    /**
+     * searches up the dockable container hierarchy and returns the dockable state of the <b>last<b> (top
+     * most) ancestor which is a CompoundDockable (or null if not found).
      */
     public static DockableState.Location getTopMostAncestorContainerState(Dockable dockable) {
         Container container = dockable.getComponent().getParent();
@@ -489,8 +505,9 @@ public class DockingUtilities {
         return null;
     }
 
-    /** Returns a DockableState value corresponding to this component or null if not found.
-     *<p>
+    /**
+     * Returns a DockableState value corresponding to this component or null if not found.
+     * <p>
      * Two states are currently managed : docked and floating (not hidden/maximized/closed).
      */
     public static DockableState.Location getDockableLocationFromHierarchy(Component comp) {

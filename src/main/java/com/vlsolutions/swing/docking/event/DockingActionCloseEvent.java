@@ -22,14 +22,16 @@ import com.vlsolutions.swing.docking.Dockable;
 import com.vlsolutions.swing.docking.DockableState;
 import com.vlsolutions.swing.docking.DockingDesktop;
 
-/** A DockingActionEvent describing the closing of a dockable
+/**
+ * A DockingActionEvent describing the closing of a dockable
  *
  * @author Lilian Chamontin, VLSolutions
  * @since 2.1
  */
 public class DockingActionCloseEvent extends DockingActionDockableEvent {
 
-    public DockingActionCloseEvent(DockingDesktop desktop, Dockable dockable, DockableState.Location initialLocation) {
+    public DockingActionCloseEvent(DockingDesktop desktop, Dockable dockable,
+            DockableState.Location initialLocation) {
         super(desktop, dockable, initialLocation, DockableState.Location.CLOSED, ACTION_CLOSE);
     }
 
