@@ -149,3 +149,13 @@ spotbugsMain {
     }
     finalizedBy(spotbugsMainReport)
 }
+
+spotless {
+    java {
+        target("src/*/java/**/*.java")
+        palantirJavaFormat()
+        importOrder()
+        removeUnusedImports()
+        formatAnnotations()
+    }
+}
