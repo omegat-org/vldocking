@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -20,14 +20,14 @@ package com.vlsolutions.swing.toolbars;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import java.awt.FlowLayout;
 
 /** The container for toolbar panels.
  *<p>
@@ -49,159 +49,160 @@ import java.awt.FlowLayout;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class ToolBarContainer extends JPanel {
 
-	private static final long serialVersionUID = 1L;
-	private Map componentsByContraints = new HashMap(); // this is private in borderlayout, so we need to keep a copy here
-	private Map contraintsByComponents = new HashMap();
+    private static final long serialVersionUID = 1L;
+    private Map componentsByContraints =
+            new HashMap(); // this is private in borderlayout, so we need to keep a copy here
+    private Map contraintsByComponents = new HashMap();
 
-	private Map toolBarsByName = new HashMap();
+    private Map toolBarsByName = new HashMap();
 
-	public ToolBarContainer() {
-		setLayout(new BorderLayout());
-	}
+    public ToolBarContainer() {
+        setLayout(new BorderLayout());
+    }
 
-	/** Registers a new ToolBar.
-	 *<p>
-	 * Registering is used when reading a xml configuration
-	 */
-	public void registerToolBar(VLToolBar toolbar) {
-		if(toolbar.getName() == null) {
-			throw new IllegalArgumentException("This toolbar hasn't got a name : cannot be registered");
-		}
-		toolBarsByName.put(toolbar.getName(), toolbar);
-	}
+    /** Registers a new ToolBar.
+     *<p>
+     * Registering is used when reading a xml configuration
+     */
+    public void registerToolBar(VLToolBar toolbar) {
+        if (toolbar.getName() == null) {
+            throw new IllegalArgumentException("This toolbar hasn't got a name : cannot be registered");
+        }
+        toolBarsByName.put(toolbar.getName(), toolbar);
+    }
 
-	/** Unregisters a ToolBar.
-	 *<p>
-	 * Registering is used when reading a xml configuration
-	 */
-	public void unregisterToolBar(VLToolBar toolbar) {
-		if(toolbar.getName() == null) {
-			return;
-		}
-		toolBarsByName.remove(toolbar.getName());
-	}
+    /** Unregisters a ToolBar.
+     *<p>
+     * Registering is used when reading a xml configuration
+     */
+    public void unregisterToolBar(VLToolBar toolbar) {
+        if (toolbar.getName() == null) {
+            return;
+        }
+        toolBarsByName.remove(toolbar.getName());
+    }
 
-	/** Returns the registered toolbar associated with the given name, or null if not found
-	 */
-	public VLToolBar getToolBarByName(String name) {
-		return (VLToolBar) toolBarsByName.get(name);
-	}
+    /** Returns the registered toolbar associated with the given name, or null if not found
+     */
+    public VLToolBar getToolBarByName(String name) {
+        return (VLToolBar) toolBarsByName.get(name);
+    }
 
-	/** Returns the list of currently registered toolbars.
-	 *
-	 *<p> (eturns a new list at each invocation.)
-	 */
-	public List getRegisteredToolBars() {
-		return new ArrayList(toolBarsByName.values());
-	}
+    /** Returns the list of currently registered toolbars.
+     *
+     *<p> (eturns a new list at each invocation.)
+     */
+    public List getRegisteredToolBars() {
+        return new ArrayList(toolBarsByName.values());
+    }
 
-	/** Overriden to track component constraints  */
-	public void add(Component comp, Object constraints) {
-		super.add(comp, constraints);
-		componentsByContraints.put(constraints, comp);
-		contraintsByComponents.put(comp, constraints);
-		if(comp instanceof ToolBarPanel) {
-			ToolBarPanel panel = (ToolBarPanel) comp;
-			if(constraints.equals(BorderLayout.EAST) || constraints.equals(BorderLayout.WEST)) {
-				panel.setOrientation(SwingConstants.VERTICAL);
-			}
-			// install the UI border
-			if(constraints.equals(BorderLayout.NORTH)) {
-				panel.setBorder(UIManager.getBorder("ToolBarPanel.topBorder"));
-			} else if(constraints.equals(BorderLayout.WEST)) {
-				panel.setBorder(UIManager.getBorder("ToolBarPanel.leftBorder"));
-			} else if(constraints.equals(BorderLayout.EAST)) {
-				panel.setBorder(UIManager.getBorder("ToolBarPanel.rightBorder"));
-			} else if(constraints.equals(BorderLayout.SOUTH)) {
-				panel.setBorder(UIManager.getBorder("ToolBarPanel.bottomBorder"));
-			}
-		}
-	}
+    /** Overriden to track component constraints  */
+    public void add(Component comp, Object constraints) {
+        super.add(comp, constraints);
+        componentsByContraints.put(constraints, comp);
+        contraintsByComponents.put(comp, constraints);
+        if (comp instanceof ToolBarPanel) {
+            ToolBarPanel panel = (ToolBarPanel) comp;
+            if (constraints.equals(BorderLayout.EAST) || constraints.equals(BorderLayout.WEST)) {
+                panel.setOrientation(SwingConstants.VERTICAL);
+            }
+            // install the UI border
+            if (constraints.equals(BorderLayout.NORTH)) {
+                panel.setBorder(UIManager.getBorder("ToolBarPanel.topBorder"));
+            } else if (constraints.equals(BorderLayout.WEST)) {
+                panel.setBorder(UIManager.getBorder("ToolBarPanel.leftBorder"));
+            } else if (constraints.equals(BorderLayout.EAST)) {
+                panel.setBorder(UIManager.getBorder("ToolBarPanel.rightBorder"));
+            } else if (constraints.equals(BorderLayout.SOUTH)) {
+                panel.setBorder(UIManager.getBorder("ToolBarPanel.bottomBorder"));
+            }
+        }
+    }
 
-	/** Overriden to keep track of component constraints  */
-	public void remove(Component comp) {
-		super.remove(comp);
-		Object constraints = contraintsByComponents.remove(comp);
-		componentsByContraints.remove(constraints);
-	}
+    /** Overriden to keep track of component constraints  */
+    public void remove(Component comp) {
+        super.remove(comp);
+        Object constraints = contraintsByComponents.remove(comp);
+        componentsByContraints.remove(constraints);
+    }
 
-	/** Overriden to keep track of component constraints  */
-	public void remove(int index) {
-		Component comp = getComponent(index);
-		super.remove(index);
-		Object constraints = contraintsByComponents.remove(comp);
-		componentsByContraints.remove(constraints);
-	}
+    /** Overriden to keep track of component constraints  */
+    public void remove(int index) {
+        Component comp = getComponent(index);
+        super.remove(index);
+        Object constraints = contraintsByComponents.remove(comp);
+        componentsByContraints.remove(constraints);
+    }
 
-	/** Overriden to keep track of component constraints  */
-	public void removeAll() {
-		super.removeAll();
-		componentsByContraints.clear();
-		contraintsByComponents.clear();
-	}
+    /** Overriden to keep track of component constraints  */
+    public void removeAll() {
+        super.removeAll();
+        componentsByContraints.clear();
+        contraintsByComponents.clear();
+    }
 
-	/** Returns the component for a given BorderLayout constraints */
-	public Component getComponentAt(Object constraints) {
-		return (Component) componentsByContraints.get(constraints);
-	}
+    /** Returns the component for a given BorderLayout constraints */
+    public Component getComponentAt(Object constraints) {
+        return (Component) componentsByContraints.get(constraints);
+    }
 
-	/** Returns the ToolBarPanel for a given BorderLayout constraints  */
-	public ToolBarPanel getToolBarPanelAt(Object constraints) {
-		return (ToolBarPanel) getComponentAt(constraints);
-	}
+    /** Returns the ToolBarPanel for a given BorderLayout constraints  */
+    public ToolBarPanel getToolBarPanelAt(Object constraints) {
+        return (ToolBarPanel) getComponentAt(constraints);
+    }
 
-	/** Returns the BorderLayout constraints of the given component */
-	public Object getConstraints(Component comp) {
-		return contraintsByComponents.get(comp);
-	}
+    /** Returns the BorderLayout constraints of the given component */
+    public Object getConstraints(Component comp) {
+        return contraintsByComponents.get(comp);
+    }
 
-	/** Creates a default ToolBarContainer with preinstalled toolbar panels on the borders with
-	 * the LEADING alignment.
-	 *<p>
-	 * The toolbarPanels are then accessible with getToolBarPanelAt(constraints) where constraints values
-	 * are BorderLayout.NORTH, EAST, WEST and SOUTH.
-	 */
-	public static ToolBarContainer createDefaultContainer(boolean topToolbar, boolean leftToolBar, boolean bottomToolBar, boolean rightToolBar) {
-		return createDefaultContainer(topToolbar, leftToolBar, bottomToolBar, rightToolBar, FlowLayout.LEADING);
-	}
+    /** Creates a default ToolBarContainer with preinstalled toolbar panels on the borders with
+     * the LEADING alignment.
+     *<p>
+     * The toolbarPanels are then accessible with getToolBarPanelAt(constraints) where constraints values
+     * are BorderLayout.NORTH, EAST, WEST and SOUTH.
+     */
+    public static ToolBarContainer createDefaultContainer(
+            boolean topToolbar, boolean leftToolBar, boolean bottomToolBar, boolean rightToolBar) {
+        return createDefaultContainer(topToolbar, leftToolBar, bottomToolBar, rightToolBar, FlowLayout.LEADING);
+    }
 
-	/** Creates a default ToolBarContainer with preinstalled toolbar panels on the borders with
-	 * the specified alignment
-	 * The value of the alignment argument must be one of
-	 * <code>FlowLayout.LEFT</code>, <code>FlowLayout.RIGHT</code>,
-	 * <code>FlowLayout.CENTER</code>, <code>FlowLayout.LEADING</code>, or
-	 * <code>FlowLayout.TRAILING</code>.
-	 *<p>
-	 * The toolbarPanels are then accessible with getToolBarPanelAt(constraints) where constraints values
-	 * are BorderLayout.NORTH, EAST, WEST and SOUTH.
-	 *
-	 *@author KDMurthy, Marathon Project.
-	 */
-	public static ToolBarContainer createDefaultContainer(boolean topToolbar, boolean leftToolBar, boolean bottomToolBar, boolean rightToolBar, int alignment) {
+    /** Creates a default ToolBarContainer with preinstalled toolbar panels on the borders with
+     * the specified alignment
+     * The value of the alignment argument must be one of
+     * <code>FlowLayout.LEFT</code>, <code>FlowLayout.RIGHT</code>,
+     * <code>FlowLayout.CENTER</code>, <code>FlowLayout.LEADING</code>, or
+     * <code>FlowLayout.TRAILING</code>.
+     *<p>
+     * The toolbarPanels are then accessible with getToolBarPanelAt(constraints) where constraints values
+     * are BorderLayout.NORTH, EAST, WEST and SOUTH.
+     *
+     *@author KDMurthy, Marathon Project.
+     */
+    public static ToolBarContainer createDefaultContainer(
+            boolean topToolbar, boolean leftToolBar, boolean bottomToolBar, boolean rightToolBar, int alignment) {
 
-		ToolBarContainer container = new ToolBarContainer();
-		if(topToolbar) {
-			ToolBarPanel panel = new ToolBarPanel(alignment);
-			panel.setVisible(false);
-			container.add(panel, BorderLayout.NORTH);
-		}
-		if(leftToolBar) {
-			ToolBarPanel panel = new ToolBarPanel(alignment);
-			panel.setVisible(false);
-			container.add(panel, BorderLayout.WEST);
-		}
-		if(bottomToolBar) {
-			ToolBarPanel panel = new ToolBarPanel(alignment);
-			panel.setVisible(false);
-			container.add(panel, BorderLayout.SOUTH);
-		}
-		if(rightToolBar) {
-			ToolBarPanel panel = new ToolBarPanel(alignment);
-			panel.setVisible(false);
-			container.add(panel, BorderLayout.EAST);
-		}
-		return container;
-
-	}
-
+        ToolBarContainer container = new ToolBarContainer();
+        if (topToolbar) {
+            ToolBarPanel panel = new ToolBarPanel(alignment);
+            panel.setVisible(false);
+            container.add(panel, BorderLayout.NORTH);
+        }
+        if (leftToolBar) {
+            ToolBarPanel panel = new ToolBarPanel(alignment);
+            panel.setVisible(false);
+            container.add(panel, BorderLayout.WEST);
+        }
+        if (bottomToolBar) {
+            ToolBarPanel panel = new ToolBarPanel(alignment);
+            panel.setVisible(false);
+            container.add(panel, BorderLayout.SOUTH);
+        }
+        if (rightToolBar) {
+            ToolBarPanel panel = new ToolBarPanel(alignment);
+            panel.setVisible(false);
+            container.add(panel, BorderLayout.EAST);
+        }
+        return container;
+    }
 }

@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -25,24 +25,24 @@ package com.vlsolutions.swing.docking;
  */
 public class DragControlerFactory {
 
-	private static DragControlerFactory instance;
+    private static DragControlerFactory instance;
 
-	public DragControler createDragControler(DockingDesktop desktop) {
-		if(DockingPreferences.isLightWeightUsageEnabled()) {
-			return new LightWeightDragControler(desktop);
-		} else {
-			return new HeavyWeightDragControler(desktop);
-		}
-	}
+    public DragControler createDragControler(DockingDesktop desktop) {
+        if (DockingPreferences.isLightWeightUsageEnabled()) {
+            return new LightWeightDragControler(desktop);
+        } else {
+            return new HeavyWeightDragControler(desktop);
+        }
+    }
 
-	public static DragControlerFactory getInstance() {
-		if(instance == null) {
-			instance = new DragControlerFactory();
-		}
-		return instance;
-	}
+    public static DragControlerFactory getInstance() {
+        if (instance == null) {
+            instance = new DragControlerFactory();
+        }
+        return instance;
+    }
 
-	public static void setInstance(DragControlerFactory instance) {
-		DragControlerFactory.instance = instance;
-	}
+    public static void setInstance(DragControlerFactory instance) {
+        DragControlerFactory.instance = instance;
+    }
 }

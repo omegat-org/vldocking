@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -45,39 +45,38 @@ import com.vlsolutions.swing.docking.*;
  * */
 public class DockableStateWillChangeEvent {
 
-	private DockableState currentState, futureState;
+    private DockableState currentState, futureState;
 
-	private boolean isAccepted;
+    private boolean isAccepted;
 
-	public DockableStateWillChangeEvent(DockableState currentState, DockableState futureState) {
-		this.currentState = currentState;
-		this.futureState = futureState;
-		this.isAccepted = true;
-	}
+    public DockableStateWillChangeEvent(DockableState currentState, DockableState futureState) {
+        this.currentState = currentState;
+        this.futureState = futureState;
+        this.isAccepted = true;
+    }
 
-	/** this method will return null when the event is triggered for initial docking
-	 * */
-	public DockableState getCurrentState() {
-		return currentState;
-	}
+    /** this method will return null when the event is triggered for initial docking
+     * */
+    public DockableState getCurrentState() {
+        return currentState;
+    }
 
-	/** Returns the future (proposed) state of the dockable. if cancel() is called on the event, 
-	 * this state change will be vetoed.
-	 *@see #cancel()
-	 */
-	public DockableState getFutureState() {
-		return futureState;
-	}
+    /** Returns the future (proposed) state of the dockable. if cancel() is called on the event,
+     * this state change will be vetoed.
+     *@see #cancel()
+     */
+    public DockableState getFutureState() {
+        return futureState;
+    }
 
-	/** Refuse the change of dockable state.
-	 * <P> The docking action is cancelled.
-	 *  */
-	public void cancel() {
-		isAccepted = false;
-	}
+    /** Refuse the change of dockable state.
+     * <P> The docking action is cancelled.
+     *  */
+    public void cancel() {
+        isAccepted = false;
+    }
 
-	public boolean isAccepted() {
-		return isAccepted;
-	}
-
+    public boolean isAccepted() {
+        return isAccepted;
+    }
 }

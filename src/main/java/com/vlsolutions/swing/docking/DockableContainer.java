@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -38,23 +38,21 @@ package com.vlsolutions.swing.docking;
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
  */
-
 public interface DockableContainer {
 
-	/** Invoked once after creation, in order to let this component register
-	 * its DockableDragSources to the DockingDesktop, and have a reference of this
-	 * Desktop.
-	 *
-	 * <P> basic implementation use a single DragSource, and thus calls
-	 * desk.installDockableDragSource(dragSource).
-	 *
-	 *
-	 * */
-	public void installDocking(DockingDesktop desktop);
+    /** Invoked once after creation, in order to let this component register
+     * its DockableDragSources to the DockingDesktop, and have a reference of this
+     * Desktop.
+     *
+     * <P> basic implementation use a single DragSource, and thus calls
+     * desk.installDockableDragSource(dragSource).
+     *
+     *
+     * */
+    public void installDocking(DockingDesktop desktop);
 
-	/** Called once, when the dockablecontainer is no longer used by the desktop,
-	 * in order to releases resources and listeners taken on <code>installDocking()<code>.
-	 *  */
-	public void uninstallDocking(DockingDesktop desktop);
-
+    /** Called once, when the dockablecontainer is no longer used by the desktop,
+     * in order to releases resources and listeners taken on <code>installDocking()<code>.
+     *  */
+    public void uninstallDocking(DockingDesktop desktop);
 }

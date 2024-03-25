@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -39,10 +39,9 @@ package com.vlsolutions.swing.docking.event;
  * */
 public interface DockableStateWillChangeListener {
 
-	/** invoked before a dockable state change.
-	 * @param event  a vetoable state change event.
-	 *
-	 */
-	public void dockableStateWillChange(DockableStateWillChangeEvent event);
-
+    /** invoked before a dockable state change.
+     * @param event  a vetoable state change event.
+     *
+     */
+    public void dockableStateWillChange(DockableStateWillChangeEvent event);
 }

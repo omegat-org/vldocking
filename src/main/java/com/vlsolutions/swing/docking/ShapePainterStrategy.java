@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -25,21 +25,21 @@ package com.vlsolutions.swing.docking;
  */
 interface ShapePainterStrategy {
 
-	/** show the drag cursor */
-	public void showDragCursor();
+    /** show the drag cursor */
+    public void showDragCursor();
 
-	/** show the stop-drag cursor  (drag not enabled)*/
-	public void showStopDragCursor();
+    /** show the stop-drag cursor  (drag not enabled)*/
+    public void showStopDragCursor();
 
-	/** show the stop-drag cursor  (drag not enabled)*/
-	public void showSwapDragCursor();
+    /** show the stop-drag cursor  (drag not enabled)*/
+    public void showSwapDragCursor();
 
-	/** show the float (detached) cursor  */
-	public void showFloatCursor();
+    /** show the float (detached) cursor  */
+    public void showFloatCursor();
 
-	public void repaint();
+    public void repaint();
 
-	public void startDrag(DockableDragSource source);
+    public void startDrag(DockableDragSource source);
 
-	public void endDrag();
+    public void endDrag();
 }

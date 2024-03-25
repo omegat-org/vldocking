@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -27,8 +27,7 @@ import javax.swing.JComponent;
  */
 class MaximizedComponentReplacer extends JComponent {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public MaximizedComponentReplacer() {}
-
+    public MaximizedComponentReplacer() {}
 }

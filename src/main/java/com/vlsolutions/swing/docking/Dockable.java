@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -61,12 +61,11 @@ import java.awt.*;
  * */
 public interface Dockable {
 
-	/** returns the unique key identifying the docked element */
-	public DockKey getDockKey();
+    /** returns the unique key identifying the docked element */
+    public DockKey getDockKey();
 
-	/** returns the component wrapped.
-	 *
-	 *  */
-	public Component getComponent();
-
+    /** returns the component wrapped.
+     *
+     *  */
+    public Component getComponent();
 }

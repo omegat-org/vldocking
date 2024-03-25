@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -42,22 +42,21 @@ import com.vlsolutions.swing.docking.*;
  * */
 public class DockableStateChangeEvent {
 
-	private DockableState previousState, newState;
+    private DockableState previousState, newState;
 
-	public DockableStateChangeEvent(DockableState previousState, DockableState newState) {
-		this.previousState = previousState;
-		this.newState = newState;
-	}
+    public DockableStateChangeEvent(DockableState previousState, DockableState newState) {
+        this.previousState = previousState;
+        this.newState = newState;
+    }
 
-	/** returns the previous state of the dockable, or null if the component
-	 * wasn't known to the docking desktop before. */
-	public DockableState getPreviousState() {
-		return previousState;
-	}
+    /** returns the previous state of the dockable, or null if the component
+     * wasn't known to the docking desktop before. */
+    public DockableState getPreviousState() {
+        return previousState;
+    }
 
-	/** returns the new state of the dockable */
-	public DockableState getNewState() {
-		return newState;
-	}
-
+    /** returns the new state of the dockable */
+    public DockableState getNewState() {
+        return newState;
+    }
 }

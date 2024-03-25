@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -39,27 +39,25 @@ import java.awt.*;
  * @author Lilian Chamontin, vlsolutions.
  * @version 1.0
  */
-
 public interface DockableDragSource {
 
-	/** Notifies this source that a drag operation has begun.
-	 * <P> The source may reject the drag according to internal conditions (in that case
-	 * this method shall return <code>false</code>) or to wrong mouse position .
-	 *
-	 * @return true if drag operation is accepted (i.e the zone pointed by <code>p</code> refers to
-	 * a draggable component), false otherwise.
-	 * */
-	public boolean startDragComponent(Point p);
+    /** Notifies this source that a drag operation has begun.
+     * <P> The source may reject the drag according to internal conditions (in that case
+     * this method shall return <code>false</code>) or to wrong mouse position .
+     *
+     * @return true if drag operation is accepted (i.e the zone pointed by <code>p</code> refers to
+     * a draggable component), false otherwise.
+     * */
+    public boolean startDragComponent(Point p);
 
-	/** Returns the <code>Dockable</code> component this source is for */
-	public Dockable getDockable();
+    /** Returns the <code>Dockable</code> component this source is for */
+    public Dockable getDockable();
 
-	/** returns the DockableContainer responsible for displaying the associated dockable */
-	public Container getDockableContainer();
+    /** returns the DockableContainer responsible for displaying the associated dockable */
+    public Container getDockableContainer();
 
-	/** notifies the source when the drag operation has ended (by a drop or cancelled) 
-	 * @since 2.1.3
-	 */
-	public void endDragComponent(boolean dropped);
-
+    /** notifies the source when the drag operation has ended (by a drop or cancelled)
+     * @since 2.1.3
+     */
+    public void endDragComponent(boolean dropped);
 }

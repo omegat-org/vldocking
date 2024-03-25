@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -40,34 +40,33 @@ import com.vlsolutions.swing.docking.event.*;
  * */
 public interface DockDropReceiver {
 
-	/** The component is notified of a drag operation.
-	 *
-	 * <p>
-	 * This method is used to give a visual clue of dropping capability
-	 * (for example, mouse cursor change, painting a shadow of future component position)
-	 *
-	 *
-	 * <p>
-	 * These clues are transmitted via the event's methods.
-	 *
-	 * @see DockDragEvent
-	 * @see DockDropEvent
-	 *
-	 * */
-	public void processDockableDrag(DockDragEvent event);
+    /** The component is notified of a drag operation.
+     *
+     * <p>
+     * This method is used to give a visual clue of dropping capability
+     * (for example, mouse cursor change, painting a shadow of future component position)
+     *
+     *
+     * <p>
+     * These clues are transmitted via the event's methods.
+     *
+     * @see DockDragEvent
+     * @see DockDropEvent
+     *
+     * */
+    public void processDockableDrag(DockDragEvent event);
 
-	/** The component is requested to perform a docking drop action.
-	 * <p>
-	 *  This method is called only after a successful {@link #processDockableDrag(DockDragEvent)}
-	 * <p>
-	 * The parameters provided for the drop are the same than those of the last drag
-	 * (in order to avoid an allowed last drag followed by a rejected drop).
-	 * <p>
-	 * On event acceptation ( {@link DockDropEvent#acceptDrop() } , the source component
-	 * will be removed from its container, so the DropReceiver <b>must</b> add the
-	 * component to its own hierarchy otherwise
-	 * the component would be lost (from a user's point of view).
-	 * */
-	public void processDockableDrop(DockDropEvent event);
-
+    /** The component is requested to perform a docking drop action.
+     * <p>
+     *  This method is called only after a successful {@link #processDockableDrag(DockDragEvent)}
+     * <p>
+     * The parameters provided for the drop are the same than those of the last drag
+     * (in order to avoid an allowed last drag followed by a rejected drop).
+     * <p>
+     * On event acceptation ( {@link DockDropEvent#acceptDrop() } , the source component
+     * will be removed from its container, so the DropReceiver <b>must</b> add the
+     * component to its own hierarchy otherwise
+     * the component would be lost (from a user's point of view).
+     * */
+    public void processDockableDrop(DockDropEvent event);
 }

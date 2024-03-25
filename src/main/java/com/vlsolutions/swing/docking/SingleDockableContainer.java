@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -33,6 +33,6 @@ package com.vlsolutions.swing.docking;
  */
 public interface SingleDockableContainer extends DockableContainer {
 
-	/** Returns the dockable this container is displaying */
-	public Dockable getDockable();
+    /** Returns the dockable this container is displaying */
+    public Dockable getDockable();
 }

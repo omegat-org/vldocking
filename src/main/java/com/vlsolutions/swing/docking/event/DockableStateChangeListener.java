@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -41,7 +41,7 @@ package com.vlsolutions.swing.docking.event;
  * */
 public interface DockableStateChangeListener {
 
-	/** this method will be called after a dockable component has changed of state
-	 * (closed, hidden, docked) */
-	public void dockableStateChanged(DockableStateChangeEvent event);
+    /** this method will be called after a dockable component has changed of state
+     * (closed, hidden, docked) */
+    public void dockableStateChanged(DockableStateChangeEvent event);
 }

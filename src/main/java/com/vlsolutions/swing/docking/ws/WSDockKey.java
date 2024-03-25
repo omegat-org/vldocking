@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -22,7 +22,7 @@ import com.vlsolutions.swing.docking.DockingConstants;
 
 /** Defines a key associated to a dockable in a workspace.
  *
- * The internal "key" will have to match the one of a DockKey when the 
+ * The internal "key" will have to match the one of a DockKey when the
  * worspace is applied to a DockingContext.
  *
  * <p> example :
@@ -30,50 +30,49 @@ import com.vlsolutions.swing.docking.DockingConstants;
  * than your corresponding WSDockKey will be wsdk = new WSDockKey("testDockable");
  * <p>
  *  Design note : We use this class insted of DockKey because sometimes dockkeys are lazily
- *  created (at dockable creation) and thus aren't already available when specifying a 
+ *  created (at dockable creation) and thus aren't already available when specifying a
  *  workspace.
- *  
+ *
  * @author Lilian Chamontin, VLSolutions
  */
 public class WSDockKey {
 
-	private String key; // must match DockKey#key
+    private String key; // must match DockKey#key
 
-	private DockingConstants.Hide autoHideBorder;
+    private DockingConstants.Hide autoHideBorder;
 
-	public WSDockKey(String key) {
-		this.key = key;
-	}
+    public WSDockKey(String key) {
+        this.key = key;
+    }
 
-	public String toString() {
-		return key;
-	}
+    public String toString() {
+        return key;
+    }
 
-	/** returns this object's hashcode */
-	public int hashCode() {
-		return key.hashCode();
-	}
+    /** returns this object's hashcode */
+    public int hashCode() {
+        return key.hashCode();
+    }
 
-	public boolean equals(Object o) {
-		if(o instanceof WSDockKey) {
-			return key.equals(((WSDockKey) o).key);
-		}
-		return false;
-	}
+    public boolean equals(Object o) {
+        if (o instanceof WSDockKey) {
+            return key.equals(((WSDockKey) o).key);
+        }
+        return false;
+    }
 
-	/** returns the inner key of this object (which must match a DockKey's 'key' instance variable) */
-	public String getKey() {
-		return key;
-	}
+    /** returns the inner key of this object (which must match a DockKey's 'key' instance variable) */
+    public String getKey() {
+        return key;
+    }
 
-	/** Returns the autohide border of this dockable, or null if not set*/
-	public DockingConstants.Hide getAutoHideBorder() {
-		return autoHideBorder;
-	}
+    /** Returns the autohide border of this dockable, or null if not set*/
+    public DockingConstants.Hide getAutoHideBorder() {
+        return autoHideBorder;
+    }
 
-	/** Updates the autohide border property */
-	public void setAutoHideBorder(DockingConstants.Hide border) {
-		this.autoHideBorder = border;
-	}
-
+    /** Updates the autohide border property */
+    public void setAutoHideBorder(DockingConstants.Hide border) {
+        this.autoHideBorder = border;
+    }
 }

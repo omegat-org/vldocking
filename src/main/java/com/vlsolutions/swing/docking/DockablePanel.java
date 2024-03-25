@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -18,8 +18,8 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /** A basic implementation of Dockable.
  * <p>
@@ -34,37 +34,36 @@ import java.awt.*;
  */
 public class DockablePanel extends JPanel implements Dockable {
 
-	private static final long serialVersionUID = 1L;
-	private DockKey key;
+    private static final long serialVersionUID = 1L;
+    private DockKey key;
 
-	public DockablePanel() {
-		setLayout(new BorderLayout());
-	}
+    public DockablePanel() {
+        setLayout(new BorderLayout());
+    }
 
-	public DockablePanel(Component contained, DockKey key) {
-		setLayout(new BorderLayout());
-		add(contained, BorderLayout.CENTER);
-		this.key = key;
-	}
+    public DockablePanel(Component contained, DockKey key) {
+        setLayout(new BorderLayout());
+        add(contained, BorderLayout.CENTER);
+        this.key = key;
+    }
 
-	public DockKey getDockKey() {
-		return key;
-	}
+    public DockKey getDockKey() {
+        return key;
+    }
 
-	public void setDockKey(DockKey key) {
-		this.key = key;
-	}
+    public void setDockKey(DockKey key) {
+        this.key = key;
+    }
 
-	public Component getComponent() {
-		return this;
-	}
+    public Component getComponent() {
+        return this;
+    }
 
-	/** Removes all contained components (normally no more than one), and
-	 * put this <code>comp</code> on the center area of the BorderLayout.
-	 *  */
-	public void setComponent(Component comp) {
-		removeAll();
-		add(comp, BorderLayout.CENTER);
-	}
-
+    /** Removes all contained components (normally no more than one), and
+     * put this <code>comp</code> on the center area of the BorderLayout.
+     *  */
+    public void setComponent(Component comp) {
+        removeAll();
+        add(comp, BorderLayout.CENTER);
+    }
 }

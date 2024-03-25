@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -32,9 +32,8 @@ package com.vlsolutions.swing.docking.animation;
  * */
 public interface AnimationListener {
 
-	/** This method is invoked when the animation state change.
-	 * <P> Changes are relative to animation start, sequence(frame) and end.
-	 * */
-	public void animation(AnimationEvent e);
-
+    /** This method is invoked when the animation state change.
+     * <P> Changes are relative to animation start, sequence(frame) and end.
+     * */
+    public void animation(AnimationEvent e);
 }
