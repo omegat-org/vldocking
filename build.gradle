@@ -153,9 +153,7 @@ spotbugsMain {
 spotless {
     java {
         target("src/*/java/**/*.java")
-        palantirJavaFormat()
-        importOrder()
+        eclipse().configFile file("${rootDir}/config/spotless/eclipse-formatting.xml")
         removeUnusedImports()
-        formatAnnotations()
     }
 }
