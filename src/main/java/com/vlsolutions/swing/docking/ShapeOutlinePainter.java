@@ -7,7 +7,7 @@ import java.awt.*;
  */
 class ShapeOutlinePainter {
 
-    private Color innerColor = new Color(64, 64, 64);
+    private final Color innerColor = new Color(64, 64, 64);
 
     public void paintShape(Graphics2D g2, Shape s) {
         Composite old = g2.getComposite();

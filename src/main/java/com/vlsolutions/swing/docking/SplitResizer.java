@@ -38,7 +38,7 @@ class SplitResizer implements Runnable {
             // clamp resizing to the half width/height of the splitpane
             int maxWidth = split.getWidth() / 2;
             int maxHeight = split.getHeight() / 2;
-            if (location < 0) { //meaning it's a resize of the opposite component
+            if (location < 0) { // meaning it's a resize of the opposite component
                 if (split.getOrientation() == JSplitPane.HORIZONTAL_SPLIT) {
                     location = Math.max(maxWidth, split.getWidth() + location);
                 } else {

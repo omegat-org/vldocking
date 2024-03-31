@@ -328,4 +328,3 @@ public class SplitContainer extends JSplitPane implements DockDropReceiver {
         }
     }
 }
-
