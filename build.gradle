@@ -1,12 +1,18 @@
+import com.github.spotbugs.snom.Confidence
+
 plugins {
     id 'java-library'
     id 'maven-publish'
     id 'signing'
+    id 'checkstyle'
     id 'jacoco'
+    alias(libs.plugins.spotless)
+    alias(libs.plugins.spotbugs)
     alias(libs.plugins.nexus.publish)
 }
 
-version = '3.0.5-2'
+group = 'org.omegat'
+version = '3.0.6-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -70,6 +76,11 @@ publishing {
                         email = 'info@omegat.org'
                     }
                 }
+                scm {
+                    connection.set("scm:git:git://github.com/omegat-org/vldocking.git")
+                    developerConnection.set("scm:git:git://github.com/omegat-org/vldocking.git")
+                    url.set("https://github.com/omegat-org/vldocking")
+                }
             }
         }
     }
@@ -84,14 +95,65 @@ signing {
 def sonatypeUsername = project.hasProperty("sonatypeUsername")? project.property('sonatypeUsername') : System.getenv('SONATYPE_USER')
 def sonatypePassword = project.hasProperty("sonatypePassword")? project.property('sonatypePassword') : System.getenv('SONATYPE_PASS')
 if (sonatypeUsername != null && sonatypePassword != null) {
-    nexusPublishing {
-        repositories{
-            sonatype {
-                nexusUrl.set(new URI("https://s01.oss.sonatype.org/service/local/"))
-                snapshotRepositoryUrl.set(new URI("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-                username.set(sonatypeUsername)
-                password.set(sonatypePassword)
+    nexusPublishing.repositories{
+        sonatype {
+            nexusUrl.set(new URI("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(new URI("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username.set(sonatypeUsername)
+            password.set(sonatypePassword)
+
+        }
+    }
+}
+
+def envIsCi = project.hasProperty('envIsCi') as Boolean
+
+spotbugs {
+    reportLevel = Confidence.valueOf('HIGH')
+}
+
+tasks.register('spotbugsMainReport') {
+    def reportFile = file("build/reports/spotbugs/main.txt")
+    doLast {
+        if (reportFile.exists()) {
+            println()
+            reportFile.readLines().forEach {
+                println(it)
             }
         }
+    }
+    group = 'verification'
+}
+
+tasks.register('spotbugsTestReport') {
+    def reportFile = file("build/reports/spotbugs/test.txt")
+    doLast {
+        if (reportFile.exists()) {
+            println()
+            reportFile.readLines().forEach {
+                println(it)
+            }
+        }
+    }
+    group = 'verification'
+}
+
+spotbugsMain {
+    if (envIsCi) {
+        extraArgs = ['-longBugCodes']
+        jvmArgs = ['-Duser.language=en']
+    }
+    reports {
+        text.required = envIsCi
+        html.required = !envIsCi
+    }
+    finalizedBy(spotbugsMainReport)
+}
+
+spotless {
+    java {
+        target("src/*/java/**/*.java")
+        eclipse().configFile file("${rootDir}/config/spotless/eclipse-formatting.xml")
+        removeUnusedImports()
     }
 }
