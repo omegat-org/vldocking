@@ -21,6 +21,7 @@ repositories {
 dependencies {
     implementation(libs.slf4j.api)
     testImplementation(libs.junit4)
+    testImplementation(libs.assertj.swing.junit)
     testRuntimeOnly(libs.logback)
 }
 

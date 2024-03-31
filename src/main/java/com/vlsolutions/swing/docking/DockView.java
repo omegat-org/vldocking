@@ -104,8 +104,7 @@ public class DockView extends JPanel implements DockDropReceiver, SingleDockable
      * A {@link #setDockable(Dockable)} call is requiered for this constructor to be usefull.
      */
     public DockView() {
-        super(new BorderLayout());
-        add(title, BorderLayout.NORTH);
+        this(null);
     }
 
     /**
@@ -115,8 +114,7 @@ public class DockView extends JPanel implements DockDropReceiver, SingleDockable
      *            the dockable to show
      */
     public DockView(Dockable dockable) {
-        this();
-        setDockable(dockable);
+        this(dockable, true);
     }
 
     /**
@@ -128,10 +126,13 @@ public class DockView extends JPanel implements DockDropReceiver, SingleDockable
     public DockView(Dockable dockable, boolean showTitle) {
         super(new BorderLayout());
         add(title, BorderLayout.NORTH);
+        setName("DockView");
+        if (dockable != null) {
+            setDockable(dockable);
+        }
         if (!showTitle) {
             title.setVisible(false);
         }
-        setDockable(dockable);
     }
 
     /**

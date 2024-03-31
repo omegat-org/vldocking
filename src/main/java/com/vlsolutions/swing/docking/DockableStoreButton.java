@@ -50,10 +50,12 @@ public class DockableStoreButton extends JButton implements DockDropReceiver, Do
     public DockableStoreButton(String emptyText) {
         super(emptyText);
         this.emptyText = emptyText;
+        setName("DockableStoreButton");
         updateButtonText();
     }
 
     public DockableStoreButton() {
+        setName("DockableStoreButton");
         updateButtonText();
     }
 

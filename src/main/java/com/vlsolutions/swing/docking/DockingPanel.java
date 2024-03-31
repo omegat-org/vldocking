@@ -53,6 +53,7 @@ public class DockingPanel extends JPanel implements DockDropReceiver {
     /** Javabeans constructor */
     public DockingPanel() {
         super(new BorderLayout());
+        setName("DockingPanel");
     }
 
     /** act the same as a splitContainer : allow drop on the borders */

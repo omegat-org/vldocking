@@ -66,7 +66,7 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
     private boolean isExpanding = false;
     // true during animation phase, will be used to avoid concurrent animations (@todo)
 
-    private HashMap<Component, Dimension> savedDimensions = new HashMap(); // Component/Dimension
+    private final HashMap<Component, Dimension> savedDimensions = new HashMap(); // Component/Dimension
 
     ExpandControler controler = new ExpandControler(); // hide event listener
 
@@ -87,7 +87,7 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
 
     private JPanel lastDragger; // last used dragger
 
-    private JPanel content = new JPanel(new BorderLayout()); // content displayed (user component)
+    private final JPanel content = new JPanel(new BorderLayout()); // content displayed (user component)
 
     private Panel heavyPanel; // used only when mixing lightweight and heavyweight components
 
@@ -109,14 +109,14 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
     /** Used by the collapse timer */
     private long lastTimeMouseWasIn = 0;
 
-    private boolean canUseMouseInfo = DockingUtilities.canUseMouseInfo();
+    private final boolean canUseMouseInfo = DockingUtilities.canUseMouseInfo();
 
-    private FocusCollapser collapser = new FocusCollapser(); // 2006/12/19
+    private final FocusCollapser collapser = new FocusCollapser(); // 2006/12/19
 
     /**
      * Timer used to collapse the expand panel (when mouse is out of bounds). (only for java > 1.5)
      */
-    private javax.swing.Timer collapseTimer // 2005/11/01
+    private final javax.swing.Timer collapseTimer // 2005/11/01
             = new javax.swing.Timer(250, new ActionListener() {
 
                 // timer used to hide the expanded panel when mouse is out too long
@@ -158,7 +158,7 @@ public class AutoHideExpandPanel extends JPanel implements SingleDockableContain
 
     public AutoHideExpandPanel() {
         super(new BorderLayout());
-
+        setName("AutoHideExpandPanel");
         if (!DockingPreferences.isLightWeightUsageEnabled()) {
             this.heavyPanel = new Panel(new BorderLayout());
         }
