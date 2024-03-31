@@ -165,26 +165,26 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
      */
     public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
         if (isVisible) {
-            if(isEnabled) {
-                if(isPressed) {
-                    if(pressedIcon != null) {
+            if (isEnabled) {
+                if (isPressed) {
+                    if (pressedIcon != null) {
                         pressedIcon.paintIcon(c, g, x, y);
                     } else {
                         defaultIcon.paintIcon(c, g, x + 1, y + 1);
                     }
-                } else if(isRollover) {
-                    if(rolloverIcon != null) {
+                } else if (isRollover) {
+                    if (rolloverIcon != null) {
                         rolloverIcon.paintIcon(c, g, x, y);
                     } else {
                         defaultIcon.paintIcon(c, g, x - 1, y - 1); // "push" effect
                     }
                 } else { // just the default
-                    if(defaultIcon != null) {
+                    if (defaultIcon != null) {
                         defaultIcon.paintIcon(c, g, x, y);
                     }
                 }
             } else { // disabled
-                if(disabledIcon == null) {
+                if (disabledIcon == null) {
                     disabledIcon = createDisabledIcon();
                 }
                 disabledIcon.paintIcon(c, g, x, y);
@@ -256,12 +256,16 @@ public class SmartIconJButton implements Icon, PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         // track changes in the Action
         String prop = evt.getPropertyName();
-        if (prop.equals(AbstractAction.SHORT_DESCRIPTION)) {
+        switch (prop) {
+        case AbstractAction.SHORT_DESCRIPTION:
             setTooltipText((String) evt.getNewValue());
-        } else if (prop.equals(AbstractAction.SMALL_ICON)) {
+            break;
+        case AbstractAction.SMALL_ICON:
             setIcon((Icon) evt.getNewValue());
-        } else if (prop.equals("enabled")) {
-            setEnabled(((Boolean) evt.getNewValue()).booleanValue());
+            break;
+        case "enabled":
+            setEnabled((Boolean) evt.getNewValue());
+            break;
         }
     }
 }

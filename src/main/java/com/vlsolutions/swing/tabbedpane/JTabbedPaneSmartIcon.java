@@ -30,6 +30,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
@@ -43,19 +44,19 @@ import javax.swing.UIManager;
  * label, an icon and a tooltip), we have to rely on tricks to bypass them.
  *
  * @author Lilian Chamontin, VLSolutions
- * @update 2005/11/01 Lilian Chamontin : fixed NPE when otherIcons == null (tabs without smart icons)
- * @update 2005/11/08 Lilian Chamontin : fixed bug related to event management when multiple other-icons are
- *         used (big thanks to Emmanuel GAUVRIT).
- * @update 2005/11/21 Lilian Chamontin : enhanced width calculation of the icon size.
+ * update 2005/11/01 Lilian Chamontin : fixed NPE when otherIcons == null (tabs without smart icons)
+ * update 2005/11/08 Lilian Chamontin : fixed bug related to event
+ *         management when multiple other-icons are used (big thanks to Emmanuel GAUVRIT).
+ * update 2005/11/21 Lilian Chamontin : enhanced width calculation of the icon size.
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class JTabbedPaneSmartIcon implements Icon, Cloneable {
 
     /*
-     * Implementation : This icon is larger than standard icons : it also paints the tab title and optional
-     * buttons. Inner Event management (with JTabbedPaneSmartIconManager) allows simulation of action on the
+     * Implementation: This icon is larger than standard
+     * icons: it also paints the tab title and optional buttons.
+     * Inner Event management (with JTabbedPaneSmartIconManager) allows simulation of action on the
      * buttons.
-     *
      */
 
     /** The traditional tab selector icon */
@@ -103,7 +104,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     /* The container this icon is for (required to calculate proper widths and heights) */
     private JTabbedPane container;
 
-    private int inBetweenOtherIconsGap;
+    private final int inBetweenOtherIconsGap;
 
     /** Constructs a new smart icon with a given set of additional buttons */
     public JTabbedPaneSmartIcon(Icon icon, String label, SmartIconJButton[] otherIcons) {
@@ -122,7 +123,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         } catch (AWTError ignored) {
         }
         if (hint == null) {
-            hint = new RenderingHints(null);         
+            hint = new RenderingHints(null);
         }
         defaultHints = hint;
     }
@@ -145,8 +146,8 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     public Object clone() {
         try {
             return super.clone();
-        } catch (CloneNotSupportedException ignore) {
-            ignore.printStackTrace();
+        } catch (CloneNotSupportedException ignored) {
+            ignored.printStackTrace();
             return null;
         }
     }
@@ -157,6 +158,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
     }
 
     /** Return the tooltip of this icon */
+    @SuppressWarnings("unused")
     public String getTooltipText() {
         return this.tooltipText;
     }
@@ -253,7 +255,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         } else {
             savedHints.clear();
         }
-        if (hintsToSave.size() == 0) {
+        if (hintsToSave.isEmpty()) {
             return savedHints;
         }
         /* RenderingHints.keySet() returns Set */
@@ -357,7 +359,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         if (pressedButton != null && pressedButton.isEnabled()) {
             pressedButton.setPressed(false);
             final SmartIconJButton btn = findButtonAt(e.getPoint());
-            if (btn == pressedButton) {
+            if (btn != null && btn == pressedButton) {
                 btn.fireAction(new ActionEvent(e.getSource(), ActionEvent.ACTION_PERFORMED, ""));
                 return true;
             }
@@ -378,7 +380,6 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
             localTooltipText = tooltipText;
             return true;
         }
-        rolloverButton = null;
         return false;
     }
 
@@ -398,7 +399,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
                     this.localTooltipText = tip;
                     shouldRepaint = true;
                 }
-            } else if (localTooltipText != tooltipText) {
+            } else if (!Objects.equals(localTooltipText, tooltipText)) {
                 this.localTooltipText = tooltipText;
                 shouldRepaint = true;
             }
