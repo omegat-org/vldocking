@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import java.awt.Dimension;
 
-
 public class DockingSplitDesktopTest extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
@@ -43,17 +42,18 @@ public class DockingSplitDesktopTest extends AssertJSwingJUnitTestCase {
         window.panel("myJTablePanel").table().requireCellValue(TableCell.row(0).column(0), "");
         window.panel("myJTablePanel").table().requireColumnCount(5);
 
-        window.panel("DockingPanel").panel(new PanelMatcher("DockView", 0))
-                .panel("DockViewTitleBar").label("TitleLabel").requireText("The tree");
-        window.panel("DockingPanel").panel(new PanelMatcher("DockView", 1))
-                .panel("DockViewTitleBar").label("TitleLabel").requireText("The Grid of Buttons");
-        window.panel("DockingPanel").panel(new PanelMatcher("DockView", 2))
-                .panel("DockViewTitleBar").label("TitleLabel").requireText("The table");
+        window.panel("DockingPanel").panel(new PanelMatcher("DockView", 0)).panel("DockViewTitleBar")
+                .label("TitleLabel").requireText("The tree");
+        window.panel("DockingPanel").panel(new PanelMatcher("DockView", 1)).panel("DockViewTitleBar")
+                .label("TitleLabel").requireText("The Grid of Buttons");
+        window.panel("DockingPanel").panel(new PanelMatcher("DockView", 2)).panel("DockViewTitleBar")
+                .label("TitleLabel").requireText("The table");
 
-        window.panel("DockingPanel").panel(new PanelMatcher("DockView", 2))
-                .panel("DockViewTitleBar").button("DockButton").click();
+        window.panel("DockingPanel").panel(new PanelMatcher("DockView", 2)).panel("DockViewTitleBar")
+                .button("DockButton").click();
         window.panel("AutoHideButtonPanel").label(new AutoHideButtonMatcher("AutoHideButton", 0)).click();
-        window.panel("AutoHideExpandPanel").panel("DockViewTitleBar").label("TitleLabel").requireText("The table");
+        window.panel("AutoHideExpandPanel").panel("DockViewTitleBar").label("TitleLabel")
+                .requireText("The table");
         window.panel("AutoHideExpandPanel").panel("DockViewTitleBar").button("DockButton").click();
     }
 

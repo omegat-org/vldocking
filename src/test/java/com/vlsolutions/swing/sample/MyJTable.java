@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-
 class MyJTable extends JPanel implements Dockable {
     JTable table = new JTable();
     DockKey key = new DockKey("table");

@@ -59,7 +59,7 @@ public class AutoHideButtonPanel extends JPanel {
         boolean isHorizontal = (border == DockingConstants.INT_HIDE_TOP)
                 || (border == DockingConstants.INT_HIDE_BOTTOM);
         setLayout(new AutoHideBorderLayout(isHorizontal));
-    	setName("AutoHideButtonPanel");
+        setName("AutoHideButtonPanel");
 
         firePropertyChange("borderzone", -1, border);
     }

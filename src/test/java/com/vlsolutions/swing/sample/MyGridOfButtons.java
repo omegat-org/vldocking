@@ -6,7 +6,6 @@ import com.vlsolutions.swing.docking.Dockable;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class MyGridOfButtons extends JPanel implements Dockable {
 
     DockKey key = new DockKey("gridOfButtons");
@@ -22,7 +21,7 @@ public class MyGridOfButtons extends JPanel implements Dockable {
                 add(btn);
             }
         }
-        setPreferredSize(new Dimension(200,300));
+        setPreferredSize(new Dimension(200, 300));
         key.setName("The Grid of Buttons");
         key.setCloseEnabled(false);
         key.setFloatEnabled(true);

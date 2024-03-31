@@ -48,7 +48,7 @@ public class DockablePanel extends JPanel implements Dockable {
         setName("DockablePanel");
     }
 
-   public DockKey getDockKey() {
+    public DockKey getDockKey() {
         return key;
     }
 

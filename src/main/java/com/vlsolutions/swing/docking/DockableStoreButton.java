@@ -55,9 +55,9 @@ public class DockableStoreButton extends JButton implements DockDropReceiver, Do
     }
 
     public DockableStoreButton() {
-    	setName("DockableStoreButton");
-		updateButtonText();
-	}
+        setName("DockableStoreButton");
+        updateButtonText();
+    }
 
     /**
      * when a dockable is dragged above this button, the button stores it as its new target dockable.

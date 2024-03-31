@@ -5,7 +5,6 @@ import com.vlsolutions.swing.docking.DockingDesktop;
 
 import javax.swing.*;
 
-
 public class MySplitDockApp extends JFrame {
     MyTextEditor editorPanel = new MyTextEditor();
     MyTree treePanel = new MyTree();
@@ -25,7 +24,7 @@ public class MySplitDockApp extends JFrame {
     public static void main(String[] args) {
         MySplitDockApp frame = new MySplitDockApp();
         frame.setName("parent");
-        frame.setSize(800,600);
+        frame.setSize(800, 600);
         frame.validate();
         // in the event dispatch thread
         SwingUtilities.invokeLater(() -> frame.setVisible(true));

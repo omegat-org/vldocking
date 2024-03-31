@@ -273,7 +273,7 @@ public class DockViewTitleBar extends JPanel implements DockableDragSource {
      */
     public DockViewTitleBar(Dockable dockable) {
         setDockable(dockable);
-        
+
         setName("DockViewTitleBar");
         titleLabel.setName("TitleLabel");
 
