@@ -289,6 +289,7 @@ public class DockKey {
      * @see #getKey()
      * @deprecated use getKey instead
      */
+    @Deprecated
     public String getDockName() {
         return getKey();
     }
@@ -297,6 +298,7 @@ public class DockKey {
      * @see #setKey(String)
      * @deprecated use setKey instead
      */
+    @Deprecated
     public void setDockName(String name) {
         setKey(name);
     }

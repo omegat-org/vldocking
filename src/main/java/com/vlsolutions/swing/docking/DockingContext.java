@@ -117,7 +117,7 @@ public class DockingContext {
             Window w = (Window) it.next();
             boolean ancestor = false;
             for (int i = 0; i < desktops.size(); i++) {
-                DockingDesktop desk = (DockingDesktop) desktops.get(i);
+                DockingDesktop desk = desktops.get(i);
                 if (w.isAncestorOf(desk)) {
                     ancestor = true;
                     break;
@@ -288,9 +288,8 @@ public class DockingContext {
      */
     public void readXML(InputStream in) throws ParserConfigurationException, IOException, SAXException {
         // remove all dockable states
-
         for (int i = 0; i < desktops.size(); i++) {
-            DockingDesktop desk = (DockingDesktop) desktops.get(i);
+            DockingDesktop desk = desktops.get(i);
             desk.clear();
         }
 

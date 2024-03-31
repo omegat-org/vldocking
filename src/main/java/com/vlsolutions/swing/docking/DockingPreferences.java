@@ -121,7 +121,7 @@ public class DockingPreferences {
         DockingUISettings.getInstance().installUI();
         UIManager.put("DockView.singleDockableBorder", new ShadowBorder());
         UIManager.put("DockView.tabbedDockableBorder", new ShadowBorder(false));
-        UIManager.put("TabbedDockableContainer.tabPlacement", new Integer(SwingConstants.BOTTOM));
+        UIManager.put("TabbedDockableContainer.tabPlacement", SwingConstants.BOTTOM);
     }
 
     /**
@@ -148,7 +148,7 @@ public class DockingPreferences {
                 .createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerFlatSingleBorder);
         UIManager.put("DockView.singleDockableBorder", flatSingleBorder);
         UIManager.put("DockView.tabbedDockableBorder", null);
-        UIManager.put("TabbedDockableContainer.tabPlacement", new Integer(SwingConstants.TOP));
+        UIManager.put("TabbedDockableContainer.tabPlacement", SwingConstants.TOP);
     }
 
     /**
@@ -167,7 +167,7 @@ public class DockingPreferences {
         UIManager.put("DockView.singleDockableBorder", innerFlatSingleBorder);
         // BorderFactory.createLineBorder(shadow));
         UIManager.put("DockView.tabbedDockableBorder", null);
-        UIManager.put("TabbedDockableContainer.tabPlacement", new Integer(SwingConstants.TOP));
+        UIManager.put("TabbedDockableContainer.tabPlacement", SwingConstants.TOP);
 
         UIManager.put("SplitContainer.drawDotsDelimitors", Boolean.TRUE);
     }
@@ -181,7 +181,7 @@ public class DockingPreferences {
 
         // UIManager.put("DockView.singleDockableBorder", null);
         UIManager.put("DockView.tabbedDockableBorder", null);
-        UIManager.put("TabbedDockableContainer.tabPlacement", new Integer(SwingConstants.TOP));
+        UIManager.put("TabbedDockableContainer.tabPlacement", SwingConstants.TOP);
 
         UIManager.put("SplitContainer.drawDotsDelimitors", Boolean.FALSE);
         UIManager.put("SplitContainer.hImage", horizontalTile);

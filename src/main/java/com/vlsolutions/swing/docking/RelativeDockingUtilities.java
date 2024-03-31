@@ -309,6 +309,7 @@ class RelativeDockingUtilities {
      * 
      * @deprecated use getInsertionDockingAction / applyDockingAction instead
      */
+    @Deprecated
     public static SingleDockableContainer insertDockable(Container relativeAncestorContainer,
             Dockable dockable, RelativeDockablePosition position) {
 
