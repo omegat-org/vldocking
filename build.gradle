@@ -149,3 +149,11 @@ spotbugsMain {
     }
     finalizedBy(spotbugsMainReport)
 }
+
+spotless {
+    java {
+        target("src/*/java/**/*.java")
+        eclipse().configFile file("${rootDir}/config/spotless/eclipse-formatting.xml")
+        removeUnusedImports()
+    }
+}

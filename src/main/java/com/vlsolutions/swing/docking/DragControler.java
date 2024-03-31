@@ -1,7 +1,7 @@
 /*
     VLDocking Framework 3.0
     Copyright Lilian Chamontin, 2004-2013
-    
+
     www.vldocking.com
     vldocking@googlegroups.com
 ------------------------------------------------------------------------
@@ -22,21 +22,21 @@ import java.awt.Shape;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-/** This interface defines the features required for a drag controler.
+/**
+ * This interface defines the features required for a drag controler.
  *
  * @since 3.0
  * @author Lilian Chamontin, vlsolutions.
  */
 public interface DragControler extends MouseListener, MouseMotionListener {
 
-	public void cancelDrag();
+    public void cancelDrag();
 
-	public Dockable getDockable();
+    public Dockable getDockable();
 
-	public DockDropReceiver getDropReceiver();
+    public DockDropReceiver getDropReceiver();
 
-	public Shape getDropShape();
+    public Shape getDropShape();
 
-	public boolean isFloatingShape();
-
+    public boolean isFloatingShape();
 }
