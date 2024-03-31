@@ -124,7 +124,7 @@ public class JTabbedPaneSmartIcon implements Icon, Cloneable {
         if (hint == null) {
             hint = new RenderingHints(null);         
         }
-        defaultHint = hint;
+        defaultHints = hint;
     }
 
     public SmartIconJButton getSmartButton(int index) {
