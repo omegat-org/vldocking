@@ -9,8 +9,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 * Add GitHub Actions CI
 * Add SpotBugs and SpotLess code quality assurance
-* Style: spotless apply (#8)
-* feat: test UI behavior (#7)
+* Style: spotless code format applied (#8)
+* feat: test UI behavior with Assertj-Swing-JUnit (#7)
 * refactor: annotate deprecations, avoid access to internal class of other class(#6)
 * refactor: avoid redundant casts (#6)
 
@@ -50,7 +50,7 @@ All notable changes to this project will be documented in this file.
 
 ## [v3.0.5]
 * Fork original project for OmegaT-org
-* 
+ 
 ## v3.0.4
 * Carsten Madsen released v3.0.4
 
