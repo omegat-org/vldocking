@@ -174,45 +174,37 @@ this position or  construct a new position (look at the RelativeDockingPosition 
 
 And here are some images showing the effects of those methods :
 
-<table>
-  <tr>
-    <th>Split</th>
-    <td rowspan="2">
-<pre lang="java">
+![Split](frame3.jpg){ align=right width=200 }
+```java title="Split"
         desk.addDockable(editorPanel);
         desk.split(editorPanel, treePanel, DockingConstants.SPLIT_LEFT);
         desk.split(editorPanel, buttonGrid, DockingConstants.SPLIT_RIGHT);
         desk.split(buttonGrid, tablePanel, DockingConstants.SPLIT_BOTTOM);
-</pre>
-    </td>
-  </tr> <tr><td markdown="1"> ![](frame3.jpg) </td></tr>
-  <tr>
-    <th>Split and Tab</th>
-    <td rowspan="2">
-<pre lang="java">
+```
+
+
+![](frame4.jpg){ align=right width=200 }
+```java title="Split and Tab"
+
         desk.addDockable(editorPanel);
         desk.split(editorPanel, treePanel, DockingConstants.SPLIT_LEFT);
         desk.split(editorPanel, buttonGrid, DockingConstants.SPLIT_RIGHT);
         desk.createTab(treePanel, tablePanel, 1);
-</pre>
-    </td>
-	</tr>
-  <tr><td markdown="1"> ![](frame4.jpg) </td></tr>
-  <tr>
-    <th>Split and Auto-Hide</th>
-    <td rowspan="2">
-<pre lang="java">
+```
+
+
+![](frame5.jpg){ align=right width=200 }
+```java title="Split and Auto-Hide"
+
         desk.addDockable(editorPanel);
         // the tree panel is auto-hidden and will be restored (docked)
         // on the left of the DockingDesktop
         desk.addHiddenDockable(treePanel, RelativeDockablePosition.LEFT);
         desk.split(editorPanel, buttonGrid, DockingConstants.SPLIT_RIGHT);
         desk.split(editorPanel, tablePanel, DockingConstants.SPLIT_LEFT);
-</pre>
-    </td>
-  </tr>
-  <tr><td markdown="1"> ![](frame5.jpg) </td></tr>
-</table>
+```
+
+
 
 ## The Dockable Containers
 

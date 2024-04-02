@@ -1,6 +1,7 @@
 site_name: VLDocking library
 repo_url: https://github.com/omegat-org/vldocking
 docs_dir: wiki
+
 nav:
   - 1. Getting started: 'tutorial1.md'
   - 1a. And now... Docking!: 'tutorial1page2.md'
@@ -15,6 +16,9 @@ nav:
   - 10. Compound dockables: 'tutorial10.md'
   - 11. Multi-desktop applications: 'tutorial11.md'
   - 12. Anchored dockables: 'tutorial12.md'
+
+plugins:
+  - glightbox
 
 theme:
   name: material
