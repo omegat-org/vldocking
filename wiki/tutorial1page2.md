@@ -185,11 +185,7 @@ And here are some images showing the effects of those methods :
         desk.split(buttonGrid, tablePanel, DockingConstants.SPLIT_BOTTOM);
 </pre>
     </td>
-  </tr>
-  <tr><td><figure markdown="span">
-  ![](frame3.jpg){ width="300" }
-</figure>
-</td></tr>
+  </tr> <tr><td markdown="1"> ![](frame3.jpg) </td></tr>
   <tr>
     <th>Split and Tab</th>
     <td rowspan="2">
@@ -201,10 +197,7 @@ And here are some images showing the effects of those methods :
 </pre>
     </td>
 	</tr>
-  <tr><td><figure markdown="span">
-  ![](frame4.jpg){ width="300" }
-    </figure>
-  </td></tr>
+  <tr><td markdown="1"> ![](frame4.jpg) </td></tr>
   <tr>
     <th>Split and Auto-Hide</th>
     <td rowspan="2">
@@ -218,10 +211,7 @@ And here are some images showing the effects of those methods :
 </pre>
     </td>
   </tr>
-  <tr><td><figure markdown="span">
-  ![](frame5.jpg){ width="300" }
-    </figure>
-  </td></tr>
+  <tr><td markdown="1"> ![](frame5.jpg) </td></tr>
 </table>
 
 ## The Dockable Containers
