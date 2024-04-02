@@ -158,3 +158,22 @@ spotless {
         removeUnusedImports()
     }
 }
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    group = 'verification'
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
+tasks.jacocoTestCoverageVerification {
+    dependsOn(tasks.test)
+    violationRules {
+        rule {
+            element = 'CLASS'
+            limit { minimum = 0.20 }
+        }
+    }
+}
