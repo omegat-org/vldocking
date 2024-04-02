@@ -2,7 +2,7 @@
 
 ## And now... Docking !
 
-Here is the receipe to transform our application into a docking-enabled application :
+Here is the recipe to transform our application into a docking-enabled application :
 
 * Have the GUI blocks (our four components) implement the Dockable interface
 * Install a DockingDesktop on our Frame
@@ -12,7 +12,7 @@ So let's start...
 
 ## Implement the Dockable interface
 
-The Dockable interface is simple : you just have two methods :
+The Dockable interface is simple: you just have two methods :
 
 ```java
     public DockKey getDockKey();
@@ -186,7 +186,10 @@ And here are some images showing the effects of those methods :
 </pre>
     </td>
   </tr>
-  <tr><td><img src="frame3.jpg"/></td></tr>
+  <tr><td><figure markdown="span">
+  ![](frame3.jpg){ width="300" }
+</figure>
+</td></tr>
   <tr>
     <th>Split and Tab</th>
     <td rowspan="2">
@@ -198,7 +201,10 @@ And here are some images showing the effects of those methods :
 </pre>
     </td>
 	</tr>
-  <tr><td><img src="frame4.jpg"/></td></tr>
+  <tr><td><figure markdown="span">
+  ![](frame4.jpg){ width="300" }
+    </figure>
+  </td></tr>
   <tr>
     <th>Split and Auto-Hide</th>
     <td rowspan="2">
@@ -212,13 +218,16 @@ And here are some images showing the effects of those methods :
 </pre>
     </td>
   </tr>
-  <tr><td><img src="frame5.jpg"/></td></tr>
+  <tr><td><figure markdown="span">
+  ![](frame5.jpg){ width="300" }
+    </figure>
+  </td></tr>
 </table>
 
 ## The Dockable Containers
 
 You can see from the screenshots, or from your personal tests, that your dockables have
-been decorated : They all have a title bar with buttons, and a nice shadow border
+been decorated: They all have a title bar with buttons, and a nice shadow border
 around them (Docking 1.1 style) or a simpler flat border (Docking 2.0 style). 
 
 
@@ -241,4 +250,4 @@ many Dockables on tabs, with always one Dockable selected and visible, on top of
 
 ----
 
-Next : [Lesson 2 - Customizing the desktop layout, display and docking behaviour](tutorial2.md)
+Next: [Lesson 2 - Customizing the desktop layout, display and docking behaviour](tutorial2.md)
