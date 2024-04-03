@@ -143,7 +143,7 @@ The following code will disable the close and auto-hide features of our MyTextEd
             add(jsp, BorderLayout.CENTER);
 
             key.setName("The Text Area");
-            key.setToolTip("This is the text area tooltip");
+            key.setTooltip("This is the text area tooltip");
             key.setIcon(new ImageIcon(getClass().getResource("textArea16.gif")));
 
             // turn off autohide and close features

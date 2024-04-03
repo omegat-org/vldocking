@@ -19,6 +19,8 @@ public class MyTextEditor extends JPanel implements Dockable {
         jsp.setPreferredSize(new Dimension(300, 400));
         add(jsp, BorderLayout.CENTER);
         key.setName("The Text Area");
+        key.setTooltip("This is the text area tooltip");
+        key.setIcon(new ImageIcon(getClass().getResource("textArea16.gif")));
         key.setCloseEnabled(false);
         key.setMaximizeEnabled(false);
         key.setAutoHideEnabled(false);
