@@ -18,7 +18,7 @@ public class MyTree extends JPanel implements Dockable {
         jsp.setName("myTreeScrollPane");
         jsp.setPreferredSize(new Dimension(200, 200));
         add(jsp, BorderLayout.CENTER);
-        key.setName("The tree");
+        key.setName("Tree");
         key.setCloseEnabled(false);
         key.setAutoHideEnabled(false);
     }

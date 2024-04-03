@@ -20,7 +20,7 @@ class MyJTable extends JPanel implements Dockable {
         jsp.setName("myJTableScrollPane");
         jsp.setPreferredSize(new Dimension(200, 200));
         add(jsp, BorderLayout.CENTER);
-        key.setName("The table");
+        key.setName("Table");
         key.setAutoHideEnabled(true);
         key.setCloseEnabled(false);
         key.setMaximizeEnabled(false);
