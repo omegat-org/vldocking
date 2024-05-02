@@ -5,6 +5,7 @@ import com.vlsolutions.swing.docking.Dockable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class MyTextEditor extends JPanel implements Dockable {
     DockKey key = new DockKey("textEditor");
@@ -20,10 +21,11 @@ public class MyTextEditor extends JPanel implements Dockable {
         add(jsp, BorderLayout.CENTER);
         key.setName("The Text Area");
         key.setTooltip("This is the text area tooltip");
-        key.setIcon(new ImageIcon(getClass().getResource("textArea16.gif")));
+        key.setIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("textArea16.png"))));
+        // turn off autohide, maximize and close features
         key.setCloseEnabled(false);
-        key.setMaximizeEnabled(false);
         key.setAutoHideEnabled(false);
+        key.setMaximizeEnabled(false);
     }
 
     @Override
