@@ -1,12 +1,22 @@
 package com.vlsolutions.swing.docking;
 
 import com.vlsolutions.swing.TestBase;
+import com.vlsolutions.swing.sample.MySplitDockApp;
 import org.assertj.swing.data.TableCell;
+import org.assertj.swing.fixture.FrameFixture;
 import org.junit.Test;
 
 import javax.swing.SwingUtilities;
 
 public class DockingSplitDesktopTest extends TestBase {
+
+    @Override
+    protected void onSetUp() {
+        application = createDockedApplication(MySplitDockApp.class);
+        window = new FrameFixture(robot(), application);
+        window.show();
+    }
+
     @Test
     public void testDockableSplitDesktop() {
         SwingUtilities.invokeLater(() -> application.setVisible(true));

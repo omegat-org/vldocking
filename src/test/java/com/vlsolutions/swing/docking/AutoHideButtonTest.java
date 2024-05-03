@@ -1,11 +1,20 @@
 package com.vlsolutions.swing.docking;
 
 import com.vlsolutions.swing.TestBase;
+import com.vlsolutions.swing.sample.MySplitDockApp;
+import org.assertj.swing.fixture.FrameFixture;
 import org.junit.Test;
 
 import javax.swing.*;
 
 public class AutoHideButtonTest extends TestBase {
+
+    @Override
+    protected void onSetUp() {
+        application = createDockedApplication(MySplitDockApp.class);
+        window = new FrameFixture(robot(), application);
+        window.show();
+    }
 
     @Test
     public void testAutoHideButton() {

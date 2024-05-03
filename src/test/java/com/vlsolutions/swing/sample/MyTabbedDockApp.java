@@ -4,19 +4,19 @@ import com.vlsolutions.swing.docking.DockingConstants;
 
 import javax.swing.*;
 
-public class MySplitDockApp extends DockedApplication {
+public class MyTabbedDockApp extends DockedApplication {
 
-    public MySplitDockApp() {
+    public MyTabbedDockApp() {
         desk.addDockable(editorPanel);
         desk.split(editorPanel, treePanel, DockingConstants.SPLIT_LEFT);
         desk.split(editorPanel, buttonGrid, DockingConstants.SPLIT_RIGHT);
-        desk.split(buttonGrid, tablePanel, DockingConstants.SPLIT_BOTTOM);
+        desk.createTab(buttonGrid, tablePanel, 0, true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         getContentPane().add(desk);
     }
 
     public static void main(String[] args) {
-        MySplitDockApp frame = new MySplitDockApp();
+        MyTabbedDockApp frame = new MyTabbedDockApp();
         frame.setName("parent");
         frame.setSize(800, 600);
         frame.validate();

@@ -1,6 +1,6 @@
 package com.vlsolutions.swing;
 
-import com.vlsolutions.swing.sample.MySplitDockApp;
+import com.vlsolutions.swing.sample.DockedApplication;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -9,22 +9,19 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import javax.swing.*;
 import java.awt.*;
 
-public class TestBase extends AssertJSwingJUnitTestCase {
+public abstract class TestBase extends AssertJSwingJUnitTestCase {
 
     protected FrameFixture window;
-    protected MySplitDockApp application;
+    protected DockedApplication application;
 
-    @Override
-    protected void onSetUp() {
-        application = GuiActionRunner.execute(() -> {
-            MySplitDockApp frame = new MySplitDockApp();
+    protected DockedApplication createDockedApplication(Class<? extends DockedApplication> clazz) {
+        return GuiActionRunner.execute(() -> {
+            DockedApplication frame = clazz.getDeclaredConstructor().newInstance();
             frame.setPreferredSize(new Dimension(800, 600));
             frame.setMinimumSize(new Dimension(800, 600));
             frame.validate();
             return frame;
         });
-        window = new FrameFixture(robot(), application);
-        window.show();
     }
 
     protected static class AutoHideButtonMatcher extends GenericTypeMatcher<JLabel> {
