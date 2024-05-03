@@ -43,12 +43,6 @@ sourcesJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-jar {
-    manifest {
-        attributes("Automatic-Module-Name": "org.omegat.vldocking")
-    }
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) { publication ->
