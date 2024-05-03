@@ -20,10 +20,6 @@ jobs:
     - uses: gradle/wrapper-validation-action@v2
       name: validate gradle wrapper
     - uses: gradle/actions/setup-gradle@v3
-      with:
-        build-scan-publish: true
-        build-scan-terms-of-service-url: https://gradle.com/terms-of-service
-        build-scan-terms-of-service-agree: yes
       name: Setup Gradle
       id: setup-gradle
     - name: Run gradle build
