@@ -19,14 +19,17 @@ You can read the complete license here :
 package com.vlsolutions.swing.docking.ui;
 
 import com.vlsolutions.swing.toolbars.ToolBarPanelBorder;
+
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
@@ -35,10 +38,10 @@ import javax.swing.border.Border;
  * <p>
  * There are two ways of modifying the look and feel of the docking framework :
  * <ul>
- * <li>provide a subclass of DockingUISettings and override the installXXX methods
- * <li>directly put UI properties (UIManager.put(key,value)) awaited by the desktop UI delegates. Those are
- * described below.
+ * <li>provide a subclass of DockingUISettings and override the getDefaults(UIDefaults table) method.
+ * <li>directly put UI properties (UIManager.put(key,value)) awaited by the desktop UI delegates.
  * </ul>
+ * The UI properteis are described below.
  * <table border="1">
  * <tr>
  * <th>UI property</th>
@@ -578,12 +581,6 @@ public class DockingUISettings {
     /** Field for installing settings only once */
     protected boolean isSettingsInstalled = false;
 
-    private Color shadow = UIManager.getColor("controlShadow");
-    private Color highlight = UIManager.getColor("controlLtHighlight");
-
-    @SuppressWarnings("unused")
-    private Color darkShadow = UIManager.getColor("controlDkShadow");
-
     public DockingUISettings() {
     }
 
@@ -615,21 +612,43 @@ public class DockingUISettings {
      */
     public void installUI() {
         if (!isSettingsInstalled) {
-            installColors();
-            installAutoHideSettings();
-            installBorderSettings();
-            installDockViewSettings();
-            installDockViewTitleBarSettings();
-            installSplitContainerSettings();
-            installCloseableTabs();
-            installTabbedContainerSettings();
-            installIcons();
-            installAccelerators();
-            installDesktopSettings();
-            installFloatingSettings();
-            installToolBarSettings();
+            installUI(getDefaults());
             isSettingsInstalled = true;
         }
+    }
+
+    protected UIDefaults getDefaults(UIDefaults table) {
+        getColors(table); // should call getColors first.
+        getAutoHideSettings(table);
+        getBorderSettings(table);
+        getDockViewSettings(table);
+        getDockViewTitleBarSettings(table);
+        getSplitContainerSettings(table);
+        getCloseableTabs(table);
+        getTabbedContainerSettings(table);
+        getIcons(table);
+        getAccelerators(table);
+        getDesktopSettings(table);
+        getFloatingSettings(table);
+        getToolBarSettings(table);
+        return table;
+    }
+
+    protected void installUI(UIDefaults table) {
+        installColors(table);
+        installAutoHideSettings(table);
+        installBorderSettings(table);
+        installDockViewSettings(table);
+        installDockViewTitleBarSettings(table);
+        installSplitContainerSettings(table);
+        installCloseableTabs(table);
+        installTabbedContainerSettings(table);
+        installIcons(table);
+        installAccelerators(table);
+        installDesktopSettings(table);
+        installFloatingSettings(table);
+        installToolBarSettings(table);
+        isSettingsInstalled = true;
     }
 
     /**
@@ -643,329 +662,536 @@ public class DockingUISettings {
      * Calling this method after SwingUtilities.updateComponentTreeUI(topLevelComponent) is unspecified (some
      * things will be updated, others not).
      */
+    @Deprecated
     public void updateUI() {
         isSettingsInstalled = false;
         installUI();
     }
 
     /** installs the borders */
+    @Deprecated
     public void installBorderSettings() {
-        // this is for the "flat style" (comment this line, or put a FALSE to
-        // revert to "shadow style"
-
-        // flat style is the default (outside : empty 1 pix / inside :
-        // hightlight-top-left + shadow-bottom-right
-
-        Border innerFlatSingleBorder = BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 0, 0, highlight),
-                BorderFactory.createMatteBorder(0, 0, 1, 1, shadow));
-
-        Border flatSingleBorder = BorderFactory
-                .createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerFlatSingleBorder);
-        UIManager.put("DockView.singleDockableBorder", flatSingleBorder);
-        UIManager.put("DockView.tabbedDockableBorder", null);
-        UIManager.put("DockView.maximizedDockableBorder", null);
+        installBorderSettings(getDefaults());
     }
 
     /** installs the autohide related properties */
+    @Deprecated
     public void installAutoHideSettings() {
-        UIManager.put("AutoHideButtonUI", "com.vlsolutions.swing.docking.ui.AutoHideButtonUI");
-        UIManager.put("AutoHideButtonPanelUI", "com.vlsolutions.swing.docking.ui.AutoHideButtonPanelUI");
-        UIManager.put("AutoHideExpandPanelUI", "com.vlsolutions.swing.docking.ui.AutoHideExpandPanelUI");
+        installAutoHideSettings(getDefaults());
+    }
 
-        UIManager.put("AutoHideButton.expandBorderTop", BorderFactory.createCompoundBorder(
+    @Deprecated
+    public void installDockViewSettings() {
+        installDockViewSettings(getDefaults());
+    }
+
+    @Deprecated
+    public void installDockViewTitleBarSettings() {
+        installDockViewTitleBarSettings(getDefaults());
+    }
+
+    /** installs the splitpanes related properties */
+    @Deprecated
+    public void installSplitContainerSettings() {
+        installSplitContainerSettings(getDefaults());
+    }
+
+    /** installs the tabbed pane related properties */
+    @Deprecated
+    public void installTabbedContainerSettings() {
+        installTabbedContainerSettings(getDefaults());
+    }
+
+    @Deprecated
+    public void installCloseableTabs() {
+        installCloseableTabs(getDefaults());
+    }
+
+    /** installs icons used by the framework */
+    @Deprecated
+    public void installIcons() {
+        installIcons(getDefaults());
+    }
+
+    /** installs the eyboard shortcuts */
+    @Deprecated
+    public void installAccelerators() {
+        installAccelerators(getDefaults());
+    }
+
+    /** installs the DockinDesktop related properties */
+    @Deprecated
+    public void installDesktopSettings() {
+        installDesktopSettings(getDefaults());
+    }
+
+    /** installs the FloatingDialog related properties */
+    @Deprecated
+    public void installFloatingSettings() {
+        installFloatingSettings(getDefaults());
+    }
+
+    /** installs the toolbar related properties */
+    @Deprecated
+    public void installToolBarSettings() {
+        installToolBarSettings(getDefaults());
+    }
+
+    // ==== Private methods
+
+    private UIDefaults getDefaults() {
+        return getDefaults(UIManager.getDefaults());
+    }
+
+    private void getBorderSettings(UIDefaults table) {
+        // this is for the "flat style" (comment this line, or put a FALSE to
+        // revert to "shadow style"
+
+        // flat style is the default
+        // (outside: empty 1 pix /
+        // inside: highlight-top-left + shadow-bottom-right
+        if (table.get("DockView.singleDockableBorder") == null) {
+            final Color shadow = table.getColor("VLDocking.shadow");
+            final Color highlight = table.getColor("VLDocking.highlight");
+
+            Border innerFlatSingleBorder = BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(1, 1, 0, 0, highlight),
+                    BorderFactory.createMatteBorder(0, 0, 1, 1, shadow));
+            Border flatSingleBorder = BorderFactory
+                    .createCompoundBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1), innerFlatSingleBorder);
+
+            table.put("DockView.singleDockableBorder", flatSingleBorder);
+            table.put("DockView.tabbedDockableBorder", null);
+            table.put("DockView.maximizedDockableBorder", null);
+        }
+    }
+
+    private void installBorderSettings(UIDefaults table) {
+        putValue(table, "DockView.singleDockableBorder");
+        putValue(table, "DockView.tabbedDockableBorder");
+        putValue(table, "DockView.maximizedDockableBorder");
+    }
+
+    private void getAutoHideSettings(UIDefaults table) {
+        table.putIfAbsent("AutoHideButtonUI", "com.vlsolutions.swing.docking.ui.AutoHideButtonUI");
+        table.putIfAbsent("AutoHideButtonPanelUI", "com.vlsolutions.swing.docking.ui.AutoHideButtonPanelUI");
+        table.putIfAbsent("AutoHideExpandPanelUI", "com.vlsolutions.swing.docking.ui.AutoHideExpandPanelUI");
+
+        final Color shadow = table.getColor("VLDocking.shadow");
+        final Color highlight = table.getColor("VLDocking.highlight");
+
+        table.putIfAbsent("AutoHideButton.expandBorderTop", BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, shadow),
                         BorderFactory.createMatteBorder(1, 1, 0, 1, highlight)),
                 BorderFactory.createEmptyBorder(0, 6, 0, 6)));
-        UIManager.put("AutoHideButton.expandBorderBottom", BorderFactory.createCompoundBorder(
+        table.putIfAbsent("AutoHideButton.expandBorderBottom", BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 1, 1, 1, shadow),
                         BorderFactory.createMatteBorder(0, 1, 1, 1, highlight)),
                 BorderFactory.createEmptyBorder(0, 6, 0, 6)));
-        UIManager.put("AutoHideButton.expandBorderLeft", BorderFactory.createCompoundBorder(
+        table.putIfAbsent("AutoHideButton.expandBorderLeft", BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, shadow),
                         BorderFactory.createMatteBorder(1, 1, 1, 0, highlight)),
                 BorderFactory.createEmptyBorder(6, 0, 6, 0)));
-        UIManager.put("AutoHideButton.expandBorderRight", BorderFactory.createCompoundBorder(
+        table.putIfAbsent("AutoHideButton.expandBorderRight", BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, shadow),
                         BorderFactory.createMatteBorder(1, 0, 1, 1, highlight)),
                 BorderFactory.createEmptyBorder(6, 0, 6, 0)));
 
-        UIManager.put("AutoHideButtonPanel.topBorder",
+        table.putIfAbsent("AutoHideButtonPanel.topBorder",
                 BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0),
                         BorderFactory.createMatteBorder(0, 0, 1, 0, shadow)));
-        UIManager.put("AutoHideButtonPanel.bottomBorder",
+        table.putIfAbsent("AutoHideButtonPanel.bottomBorder",
                 BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 1, 0),
                         BorderFactory.createMatteBorder(1, 0, 0, 0, shadow)));
 
-        UIManager.put("AutoHideButtonPanel.leftBorder",
+        table.putIfAbsent("AutoHideButtonPanel.leftBorder",
                 BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 1, 0, 1),
                         BorderFactory.createMatteBorder(0, 0, 0, 1, shadow)));
-        UIManager.put("AutoHideButtonPanel.rightBorder",
+        table.putIfAbsent("AutoHideButtonPanel.rightBorder",
                 BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 1, 0, 1),
                         BorderFactory.createMatteBorder(0, 1, 0, 0, shadow)));
 
-        UIManager.put("AutoHideButton.font", UIManager.get("MenuItem.font")); // 2006/01/23
+        table.putIfAbsent("AutoHideButton.font", table.get("MenuItem.font")); // 2006/01/23
+    }
+
+    private void installAutoHideSettings(UIDefaults table) {
+        putValue(table, "AutoHideButtonUI");
+        putValue(table, "AutoHideButtonPanelUI");
+        putValue(table, "AutoHideExpandPanelUI");
+        putValue(table, "AutoHideButton.expandBorderTop");
+        putValue(table, "AutoHideButton.expandBorderBottom");
+
+        putValue(table, "AutoHideButton.expandBorderLeft");
+        putValue(table, "AutoHideButton.expandBorderRight");
+        putValue(table, "AutoHideButtonPanel.topBorder");
+        putValue(table, "AutoHideButtonPanel.bottomBorder");
+        putValue(table, "AutoHideButtonPanel.leftBorder");
+        putValue(table, "AutoHideButtonPanel.rightBorder");
+        putValue(table, "AutoHideButton.font");
+    }
+
+    private void getDockViewSettings(UIDefaults table) {
+        table.putIfAbsent("DockViewUI", "com.vlsolutions.swing.docking.ui.DockViewUI");
+        table.putIfAbsent("DetachedDockViewUI", "com.vlsolutions.swing.docking.ui.DetachedDockViewUI");
     }
 
     /** installs the DockView related properties */
-    public void installDockViewSettings() {
-        UIManager.put("DockViewUI", "com.vlsolutions.swing.docking.ui.DockViewUI");
-        UIManager.put("DetachedDockViewUI", "com.vlsolutions.swing.docking.ui.DetachedDockViewUI");
+    private void installDockViewSettings(UIDefaults table) {
+        putValue(table, "DockViewUI");
+        putValue(table, "DetachedDockViewUI");
     }
 
     /** installs the DockVieTitleBar related properties */
-    public void installDockViewTitleBarSettings() {
-        UIManager.put("DockViewTitleBarUI", "com.vlsolutions.swing.docking.ui.DockViewTitleBarUI");
+    private void getDockViewTitleBarSettings(UIDefaults table) {
+        table.putIfAbsent("DockViewTitleBarUI", "com.vlsolutions.swing.docking.ui.DockViewTitleBarUI");
 
-        UIManager.put("DockViewTitleBar.height", 20);
-        UIManager.put("DockViewTitleBar.closeButtonText",
-                UIManager.getString("InternalFrameTitlePane.closeButtonText"));
-        UIManager.put("DockViewTitleBar.minimizeButtonText",
-                UIManager.getString("InternalFrameTitlePane.minimizeButtonText"));
-        UIManager.put("DockViewTitleBar.restoreButtonText",
-                UIManager.getString("InternalFrameTitlePane.restoreButtonText"));
-        UIManager.put("DockViewTitleBar.maximizeButtonText",
-                UIManager.getString("InternalFrameTitlePane.maximizeButtonText"));
-        UIManager.put("DockViewTitleBar.floatButtonText", "Detach");
-        UIManager.put("DockViewTitleBar.attachButtonText", "Attach");
+        table.putIfAbsent("DockViewTitleBar.height", 20);
+        table.putIfAbsent("DockViewTitleBar.closeButtonText",
+                table.getString("InternalFrameTitlePane.closeButtonText"));
+        table.putIfAbsent("DockViewTitleBar.minimizeButtonText",
+                table.getString("InternalFrameTitlePane.minimizeButtonText"));
+        table.putIfAbsent("DockViewTitleBar.restoreButtonText",
+                table.getString("InternalFrameTitlePane.restoreButtonText"));
+        table.putIfAbsent("DockViewTitleBar.maximizeButtonText",
+                table.getString("InternalFrameTitlePane.maximizeButtonText"));
+        table.putIfAbsent("DockViewTitleBar.floatButtonText", "Detach");
+        table.putIfAbsent("DockViewTitleBar.attachButtonText", "Attach");
 
         // font to be used in the title bar
-        UIManager.put("DockViewTitleBar.titleFont", UIManager.get("InternalFrame.titleFont"));
+        table.putIfAbsent("DockViewTitleBar.titleFont", table.get("InternalFrame.titleFont"));
 
         // are buttons displayed or just accessible from the contextual menu ?
         // setting one of these flags to false hide the button from the title
         // bar
         // setting to true not necessarily shows the button, as it then depends
         // on the DockKey allowed states.
-        UIManager.put("DockViewTitleBar.isCloseButtonDisplayed", Boolean.TRUE);
-        UIManager.put("DockViewTitleBar.isHideButtonDisplayed", Boolean.TRUE);
-        UIManager.put("DockViewTitleBar.isDockButtonDisplayed", Boolean.TRUE);
-        UIManager.put("DockViewTitleBar.isMaximizeButtonDisplayed", Boolean.TRUE);
-        UIManager.put("DockViewTitleBar.isRestoreButtonDisplayed", Boolean.TRUE);
-        UIManager.put("DockViewTitleBar.isFloatButtonDisplayed", Boolean.TRUE);
-        UIManager.put("DockViewTitleBar.isAttachButtonDisplayed", Boolean.TRUE);
+        table.putIfAbsent("DockViewTitleBar.isCloseButtonDisplayed", Boolean.TRUE);
+        table.putIfAbsent("DockViewTitleBar.isHideButtonDisplayed", Boolean.TRUE);
+        table.putIfAbsent("DockViewTitleBar.isDockButtonDisplayed", Boolean.TRUE);
+        table.putIfAbsent("DockViewTitleBar.isMaximizeButtonDisplayed", Boolean.TRUE);
+        table.putIfAbsent("DockViewTitleBar.isRestoreButtonDisplayed", Boolean.TRUE);
+        table.putIfAbsent("DockViewTitleBar.isFloatButtonDisplayed", Boolean.TRUE);
+        table.putIfAbsent("DockViewTitleBar.isAttachButtonDisplayed", Boolean.TRUE);
 
-        UIManager.put("DockViewTitleBar.border", BorderFactory.createMatteBorder(0, 0, 1, 0, shadow));
+        if (table.get("DockViewTitleBar.border") == null) {
+            final Color shadow = table.getColor("controlShadow");
+            table.put("DockViewTitleBar.border", BorderFactory.createMatteBorder(0, 0, 1, 0, shadow));
+        }
     }
 
-    /** installs the splitpanes related properties */
-    public void installSplitContainerSettings() {
-        UIManager.put("DockingSplitPaneUI", "com.vlsolutions.swing.docking.ui.DockingSplitPaneUI");
-        UIManager.put("SplitContainer.dividerSize", 4);
-        UIManager.put("SplitContainer.isResizingEnabled", Boolean.TRUE); // 2007/08/11
+    private void installDockViewTitleBarSettings(UIDefaults table) {
+        putValue(table, "DockViewTitleBarUI");
+        putValue(table, "DockViewTitleBar.height");
+        putValue(table, "DockViewTitleBar.closeButtonText");
+        putValue(table, "DockViewTitleBar.minimizeButtonText");
+        putValue(table, "DockViewTitleBar.restoreButtonText");
+        putValue(table, "DockViewTitleBar.maximizeButtonText");
+        putValue(table, "DockViewTitleBar.floatButtonText");
+        putValue(table, "DockViewTitleBar.attachButtonText");
+        putValue(table, "DockViewTitleBar.titleFont");
+        putValue(table, "DockViewTitleBar.isCloseButtonDisplayed");
+        putValue(table, "DockViewTitleBar.isHideButtonDisplayed");
+        putValue(table, "DockViewTitleBar.isDockButtonDisplayed");
+        putValue(table, "DockViewTitleBar.isMaximizeButtonDisplayed");
+        putValue(table, "DockViewTitleBar.isRestoreButtonDisplayed");
+        putValue(table, "DockViewTitleBar.isFloatButtonDisplayed");
+        putValue(table, "DockViewTitleBar.isAttachButtonDisplayed");
+        putValue(table, "DockViewTitleBar.border");
     }
 
-    /** installs the tabbed pane related properties */
-    public void installTabbedContainerSettings() {
-        @SuppressWarnings("unused")
-        final String prefix = "/com/vldocking/swing/docking/";
-        UIManager.put("TabbedDockableContainer.tabPlacement", SwingConstants.TOP);
+    private void getSplitContainerSettings(UIDefaults table) {
+        table.putIfAbsent("DockingSplitPaneUI", "com.vlsolutions.swing.docking.ui.DockingSplitPaneUI");
+        table.putIfAbsent("SplitContainer.dividerSize", 4);
+        table.putIfAbsent("SplitContainer.isResizingEnabled", Boolean.TRUE); // 2007/08/11
+    }
 
-        UIManager.put("DockTabbedPane.closeButtonText",
-                UIManager.getString("InternalFrameTitlePane.closeButtonText"));
-        UIManager.put("DockTabbedPane.minimizeButtonText",
-                UIManager.getString("InternalFrameTitlePane.minimizeButtonText"));
-        UIManager.put("DockTabbedPane.restoreButtonText",
-                UIManager.getString("InternalFrameTitlePane.restoreButtonText"));
-        UIManager.put("DockTabbedPane.maximizeButtonText",
-                UIManager.getString("InternalFrameTitlePane.maximizeButtonText"));
-        UIManager.put("DockTabbedPane.floatButtonText", "Detach");
-        UIManager.put("DockTabbedPane.attachButtonText", "Attach"); // 2005/10/07
+    private void installSplitContainerSettings(UIDefaults table) {
+        putValue(table, "DockingSplitPaneUI");
+        putValue(table, "SplitContainer.dividerSize");
+        putValue(table, "SplitContainer.isResizingEnabled");
+    }
 
-        UIManager.put("JTabbedPaneSmartIcon.font", UIManager.getFont("TabbedPane.font")); // 2006/01/23
+    private void getTabbedContainerSettings(UIDefaults table) {
+        table.putIfAbsent("TabbedDockableContainer.tabPlacement", SwingConstants.TOP);
+
+        table.putIfAbsent("DockTabbedPane.closeButtonText",
+                table.getString("InternalFrameTitlePane.closeButtonText"));
+        table.putIfAbsent("DockTabbedPane.minimizeButtonText",
+                table.getString("InternalFrameTitlePane.minimizeButtonText"));
+        table.putIfAbsent("DockTabbedPane.restoreButtonText",
+                table.getString("InternalFrameTitlePane.restoreButtonText"));
+        table.putIfAbsent("DockTabbedPane.maximizeButtonText",
+                table.getString("InternalFrameTitlePane.maximizeButtonText"));
+        table.putIfAbsent("DockTabbedPane.floatButtonText", "Detach");
+        table.putIfAbsent("DockTabbedPane.attachButtonText", "Attach"); // 2005/10/07
+
+        table.putIfAbsent("JTabbedPaneSmartIcon.font", table.getFont("TabbedPane.font")); // 2006/01/23
 
         // set to true to set focus directly into a tabbed component when it
         // becomes
         // selected
-        UIManager.put("TabbedContainer.requestFocusOnTabSelection", Boolean.FALSE);
+        table.putIfAbsent("TabbedContainer.requestFocusOnTabSelection", Boolean.FALSE);
+    }
+
+    private void installTabbedContainerSettings(UIDefaults table) {
+        putValue(table, "TabbedDockableContainer.tabPlacement");
+        putValue(table, "DockTabbedPane.closeButtonText");
+        putValue(table, "DockTabbedPane.minimizeButtonText");
+        putValue(table, "DockTabbedPane.restoreButtonText");
+        putValue(table, "DockTabbedPane.maximizeButtonText");
+        putValue(table, "DockTabbedPane.floatButtonText");
+        putValue(table, "DockTabbedPane.attachButtonText");
+        putValue(table, "DockTabbedPane.titleFont");
+        putValue(table, "TabbedContainer.requestFocusOnTabSelection");
+    }
+
+    private void getCloseableTabs(UIDefaults table) {
+        // this one is already provided by the look and feel
+        // UIManager.put("TabbedPane.textIconGap", new Integer(4));
+        table.putIfAbsent("TabbedPane.otherIconsGap", 8);
+        table.putIfAbsent("TabbedPane.inBetweenOtherIconsGap", 4);
+        table.putIfAbsent("TabbedPane.alternateTabIcons", Boolean.FALSE);
     }
 
     /** installs the closable tabs properties */
-    public void installCloseableTabs() {
-        // this one is already provided by the look and feel
-        // UIManager.put("TabbedPane.textIconGap", new Integer(4));
-        UIManager.put("TabbedPane.otherIconsGap", 8);
-        UIManager.put("TabbedPane.inBetweenOtherIconsGap", 4);
-        UIManager.put("TabbedPane.alternateTabIcons", Boolean.FALSE);
+    private void installCloseableTabs(UIDefaults table) {
+        putValue(table, "TabbedPane.otherIconsGap");
+        putValue(table, "TabbedPane.inBetweenOtherIconsGap");
+        putValue(table, "TabbedPane.alternateTabIcons");
     }
 
-    /** installs icons used by the framework */
-    @SuppressWarnings("unused")
-    public void installIcons() {
-        final String prefix = "/com/vlsolutions/swing/docking/";
-        Icon closeIcon = new ImageIcon(getClass().getResource(prefix + "close16v2.png"));
-        Icon closeRolloverIcon = new ImageIcon(getClass().getResource(prefix + "close16v2rollover.png"));
-        Icon closePressedIcon = new ImageIcon(getClass().getResource(prefix + "close16v2pressed.png"));
+    private void getIcons(UIDefaults table) {
+        setIcon(table, "DockViewTitleBar.close", "close16v2.png");
+        setIcon(table, "DockViewTitleBar.close.rollover", "close16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.close.pressed", "close16v2pressed.png");
+        setIcon(table, "DockViewTitleBar.closeTab", "close16tab.png");
+        setIcon(table, "DockViewTitleBar.closeTab.rollover", "close16tabRollover.png");
+        setIcon(table, "DockViewTitleBar.closeTab.pressed", "close16tabPressed.png");
 
-        Icon closeTabIcon = new ImageIcon(getClass().getResource(prefix + "close16tab.png"));
-        Icon closeTabRolloverIcon = new ImageIcon(getClass().getResource(prefix + "close16tabRollover.png"));
-        Icon closeTabPressedIcon = new ImageIcon(getClass().getResource(prefix + "close16tabPressed.png"));
+        setIcon(table, "DockViewTitleBar.dock", "dock16v2.png");
+        setIcon(table, "DockViewTitleBar.dock.rollover", "dock16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.dock.pressed", "dock16v2pressed.png");
 
-        Icon hideIcon = new ImageIcon(getClass().getResource(prefix + "hide16v2.png"));
-        Icon hideRolloverIcon = new ImageIcon(getClass().getResource(prefix + "hide16v2rollover.png"));
-        Icon maximizeIcon = new ImageIcon(getClass().getResource(prefix + "maximize16v2.png"));
-        Icon maximizeRolloverIcon = new ImageIcon(
-                getClass().getResource(prefix + "maximize16v2rollover.png"));
-        Icon restoreIcon = new ImageIcon(getClass().getResource(prefix + "restore16v2.png"));
-        Icon restoreRolloverIcon = new ImageIcon(getClass().getResource(prefix + "restore16v2rollover.png"));
-        Icon dockRolloverIcon = new ImageIcon(getClass().getResource(prefix + "dock16v2rollover.png"));
+        setIcon(table, "DockViewTitleBar.hide", "hide16v2.png");
+        setIcon(table, "DockViewTitleBar.hide.rollover", "hide16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.hide.pressed", "hide16v2pressed.png");
 
-        Icon floatIcon = new ImageIcon(getClass().getResource(prefix + "float16v2.png"));
-        Icon floatRolloverIcon = new ImageIcon(getClass().getResource(prefix + "float16v2rollover.png"));
-        Icon floatPressedIcon = new ImageIcon(getClass().getResource(prefix + "float16v2pressed.png"));
+        setIcon(table, "DockViewTitleBar.maximize", "maximize16v2.png");
+        setIcon(table, "DockViewTitleBar.maximize.pressed", "maximize16v2pressed.png");
+        setIcon(table, "DockViewTitleBar.maximize.rollover", "maximize16v2rollover.png");
 
-        Icon attachIcon = new ImageIcon(getClass().getResource(prefix + "attach16v2.png"));
-        Icon attachRolloverIcon = new ImageIcon(getClass().getResource(prefix + "attach16v2rollover.png"));
-        Icon attachPressedIcon = new ImageIcon(getClass().getResource(prefix + "attach16v2pressed.png"));
+        setIcon(table, "DockViewTitleBar.restore", "restore16v2.png");
+        setIcon(table, "DockViewTitleBar.restore.pressed", "restore16v2pressed.png");
+        setIcon(table, "DockViewTitleBar.restore.rollover", "restore16v2rollover.png");
 
-        UIManager.put("DockViewTitleBar.close", closeIcon);
-        UIManager.put("DockViewTitleBar.close.rollover", closeRolloverIcon);
-        UIManager.put("DockViewTitleBar.close.pressed", closePressedIcon);
-        UIManager.put("DockViewTitleBar.closeTab", closeTabIcon);
-        UIManager.put("DockViewTitleBar.closeTab.rollover", closeTabRolloverIcon);
-        UIManager.put("DockViewTitleBar.closeTab.pressed", closeTabPressedIcon);
+        setIcon(table, "DockViewTitleBar.float", "float16v2.png");
+        setIcon(table, "DockViewTitleBar.float.rollover", "float16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.float.pressed", "float16v2pressed.png");
 
-        UIManager.put("DockViewTitleBar.dock",
-                new ImageIcon(getClass().getResource(prefix + "dock16v2.png")));
-        UIManager.put("DockViewTitleBar.dock.rollover", dockRolloverIcon);
-        UIManager.put("DockViewTitleBar.dock.pressed",
-                new ImageIcon(getClass().getResource(prefix + "dock16v2pressed.png")));
+        setIcon(table, "DockViewTitleBar.attach", "attach16v2.png");
+        setIcon(table, "DockViewTitleBar.attach.rollover", "attach16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.attach.pressed", "attach16v2pressed.png");
 
-        UIManager.put("DockViewTitleBar.hide", hideIcon);
-        UIManager.put("DockViewTitleBar.hide.rollover", hideRolloverIcon);
-        UIManager.put("DockViewTitleBar.hide.pressed",
-                new ImageIcon(getClass().getResource(prefix + "hide16v2pressed.png")));
+        setIcon(table, "DockViewTitleBar.menu.close", "close16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.menu.hide", "hide16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.menu.maximize", "maximize16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.menu.restore", "restore16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.menu.dock", "dock16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.menu.float", "float16v2rollover.png");
+        setIcon(table, "DockViewTitleBar.menu.attach", "attach16v2rollover.png");
 
-        UIManager.put("DockViewTitleBar.maximize", maximizeIcon);
-        UIManager.put("DockViewTitleBar.maximize.pressed",
-                new ImageIcon(getClass().getResource(prefix + "maximize16v2pressed.png")));
-        UIManager.put("DockViewTitleBar.maximize.rollover", maximizeRolloverIcon);
+        setIcon(table, "DockTabbedPane.close", "close16v2.png");
+        setIcon(table, "DockTabbedPane.close.rollover", "close16v2rollover.png");
+        setIcon(table, "DockTabbedPane.close.pressed", "close16v2pressed.png");
 
-        UIManager.put("DockViewTitleBar.restore", restoreIcon);
-        UIManager.put("DockViewTitleBar.restore.pressed",
-                new ImageIcon(getClass().getResource(prefix + "restore16v2pressed.png")));
-        UIManager.put("DockViewTitleBar.restore.rollover", restoreRolloverIcon);
+        // table.putIfAbsent("DockTabbedPane.unselected_close", null); // 2005/11/14
+        setIcon(table, "DockTabbedPane.unselected_close.rollover", "close16v2rollover.png");
+        setIcon(table, "DockTabbedPane.unselected_close.pressed", "close16v2pressed.png");
 
-        UIManager.put("DockViewTitleBar.float", floatIcon);
-        UIManager.put("DockViewTitleBar.float.rollover", floatRolloverIcon);
-        UIManager.put("DockViewTitleBar.float.pressed", floatPressedIcon);
-
-        UIManager.put("DockViewTitleBar.attach", attachIcon);
-        UIManager.put("DockViewTitleBar.attach.rollover", attachRolloverIcon);
-        UIManager.put("DockViewTitleBar.attach.pressed", attachPressedIcon);
-
-        UIManager.put("DockViewTitleBar.menu.close", closeRolloverIcon);
-        UIManager.put("DockViewTitleBar.menu.hide", hideRolloverIcon);
-        UIManager.put("DockViewTitleBar.menu.maximize", maximizeRolloverIcon);
-        UIManager.put("DockViewTitleBar.menu.restore", restoreRolloverIcon);
-        UIManager.put("DockViewTitleBar.menu.dock", dockRolloverIcon);
-        UIManager.put("DockViewTitleBar.menu.float", floatRolloverIcon);
-        UIManager.put("DockViewTitleBar.menu.attach", attachRolloverIcon);
-
-        UIManager.put("DockTabbedPane.close", closeIcon);
-        UIManager.put("DockTabbedPane.close.rollover", closeRolloverIcon);
-        UIManager.put("DockTabbedPane.close.pressed", closePressedIcon);
-
-        UIManager.put("DockTabbedPane.unselected_close", null); // 2005/11/14
-        UIManager.put("DockTabbedPane.unselected_close.rollover", closeRolloverIcon);
-        UIManager.put("DockTabbedPane.unselected_close.pressed", closePressedIcon);
-
-        UIManager.put("DockTabbedPane.menu.close", closeRolloverIcon);
-        UIManager.put("DockTabbedPane.menu.hide", hideRolloverIcon);
-        UIManager.put("DockTabbedPane.menu.maximize", maximizeRolloverIcon);
-        UIManager.put("DockTabbedPane.menu.float", floatRolloverIcon);
-        UIManager.put("DockTabbedPane.closeAll",
-                new ImageIcon(getClass().getResource(prefix + "closeAll16.png")));
-        UIManager.put("DockTabbedPane.closeAllOther",
-                new ImageIcon(getClass().getResource(prefix + "closeAllOther16.png")));
-        UIManager.put("DockTabbedPane.menu.attach", attachRolloverIcon); // 2005/10/07
+        setIcon(table, "DockTabbedPane.menu.close", "close16v2rollover.png");
+        setIcon(table, "DockTabbedPane.menu.hide", "hide16v2rollover.png");
+        setIcon(table, "DockTabbedPane.menu.maximize", "maximize16v2rollover.png");
+        setIcon(table, "DockTabbedPane.menu.float", "float16v2rollover.png");
+        setIcon(table, "DockTabbedPane.closeAll", "closeAll16.png");
+        setIcon(table, "DockTabbedPane.closeAllOther", "closeAllOther16.png");
+        setIcon(table, "DockTabbedPane.menu.attach", "attach16v2rollover.png");
     }
 
-    /** installs the eyboard shortcuts */
-    public void installAccelerators() {
+    private void installIcons(UIDefaults table) {
+        putValue(table, "DockViewTitleBar.close");
+        putValue(table, "DockViewTitleBar.close.rollover");
+        putValue(table, "DockViewTitleBar.close.pressed");
+        putValue(table, "DockViewTitleBar.closeTab");
+        putValue(table, "DockViewTitleBar.closeTab.rollover");
+        putValue(table, "DockViewTitleBar.closeTab.pressed");
+        putValue(table, "DockViewTitleBar.dock");
+        putValue(table, "DockViewTitleBar.dock.rollover");
+        putValue(table, "DockViewTitleBar.dock.pressed");
+        putValue(table, "DockViewTitleBar.hide");
+        putValue(table, "DockViewTitleBar.hide.rollover");
+        putValue(table, "DockViewTitleBar.hide.pressed");
+        putValue(table, "DockViewTitleBar.maximize");
+        putValue(table, "DockViewTitleBar.maximize.pressed");
+        putValue(table, "DockViewTitleBar.maximize.rollover");
+        putValue(table, "DockViewTitleBar.restore");
+        putValue(table, "DockViewTitleBar.restore.pressed");
+        putValue(table, "DockViewTitleBar.restore.rollover");
+        putValue(table, "DockViewTitleBar.float");
+        putValue(table, "DockViewTitleBar.float.rollover");
+        putValue(table, "DockViewTitleBar.float.pressed");
+        putValue(table, "DockViewTitleBar.attach");
+        putValue(table, "DockViewTitleBar.attach.rollover");
+        putValue(table, "DockViewTitleBar.attach.pressed");
+        putValue(table, "DockViewTitleBar.menu.close");
+        putValue(table, "DockViewTitleBar.menu.hide");
+        putValue(table, "DockViewTitleBar.menu.maximize");
+        putValue(table, "DockViewTitleBar.menu.restore");
+        putValue(table, "DockViewTitleBar.menu.dock");
+        putValue(table, "DockViewTitleBar.menu.float");
+        putValue(table, "DockViewTitleBar.menu.attach");
+        putValue(table, "DockTabbedPane.close");
+        putValue(table, "DockTabbedPane.close.rollover");
+        putValue(table, "DockTabbedPane.close.pressed");
+        putValue(table, "DockTabbedPane.unselected_close");
+        putValue(table, "DockTabbedPane.unselected_close.rollover");
+        putValue(table, "DockTabbedPane.unselected_close.pressed");
+        putValue(table, "DockTabbedPane.menu.close");
+        putValue(table, "DockTabbedPane.menu.hide");
+        putValue(table, "DockTabbedPane.menu.maximize");
+        putValue(table, "DockTabbedPane.menu.float");
+        putValue(table, "DockTabbedPane.closeAll");
+        putValue(table, "DockTabbedPane.closeAllOther");
+        putValue(table, "DockTabbedPane.menu.attach");
+    }
 
-        int MENU_SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-        // this returns CTRL_MASK or META_MASK depending on the platform
-        // (win/mac os)
-
-        UIManager.put("DockingDesktop.closeActionAccelerator",
-                KeyStroke.getKeyStroke(KeyEvent.VK_F4, MENU_SHORTCUT_MASK));
+    private void getAccelerators(UIDefaults table) {
+        final int mask = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+        setAccelerators(table, "DockingDesktop.closeActionAccelerator", KeyEvent.VK_F4, mask);
         // toggle maximize/restore
-        UIManager.put("DockingDesktop.maximizeActionAccelerator",
-                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, KeyEvent.SHIFT_DOWN_MASK));
-
+        setAccelerators(table, "DockingDesktop.maximizeActionAccelerator", KeyEvent.VK_ESCAPE,
+                KeyEvent.SHIFT_DOWN_MASK);
         // toggle autohide/dock
-        UIManager.put("DockingDesktop.dockActionAccelerator",
-                KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, MENU_SHORTCUT_MASK));
-
-        UIManager.put("DockingDesktop.floatActionAccelerator",
-                KeyStroke.getKeyStroke(KeyEvent.VK_F5, MENU_SHORTCUT_MASK));
+        setAccelerators(table, "DockingDesktop.dockActionAccelerator", KeyEvent.VK_BACK_SPACE, mask);
+        setAccelerators(table, "DockingDesktop.floatActionAccelerator", KeyEvent.VK_F5, mask);
     }
 
-    /** installs the DockinDesktop related properties */
-    public void installDesktopSettings() {
-        UIManager.put("DockingDesktop.notificationColor", Color.ORANGE);
-        UIManager.put("DockingDesktop.notificationBlinkCount", 5);
-        UIManager.put("DragControler.stopDragCursor",
-                new ImageIcon(getClass().getResource("/com/vlsolutions/swing/docking/stopdragcursor.gif"))
-                        .getImage());
-
-        UIManager.put("DragControler.detachCursor",
-                new ImageIcon(getClass().getResource("/com/vlsolutions/swing/docking/detachCursor.png"))
-                        .getImage());
-
-        UIManager.put("DragControler.dragCursor",
-                new ImageIcon(getClass().getResource("/com/vlsolutions/swing/docking/dragcursor.gif"))
-                        .getImage());
-
-        UIManager.put("DragControler.swapDragCursor",
-                new ImageIcon(getClass().getResource("/com/vlsolutions/swing/docking/swapdragcursor.gif"))
-                        .getImage());
-
-        UIManager.put("DragControler.isDragAndDropEnabled", Boolean.TRUE);
-
-        UIManager.put("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
+    private void installAccelerators(UIDefaults table) {
+        putValue(table, "DockingDesktop.closeActionAccelerator");
+        putValue(table, "DockingDesktop.maximizeActionAccelerator");
+        putValue(table, "DockingDesktop.dockActionAccelerator");
+        putValue(table, "DockingDesktop.floatActionAccelerator");
     }
 
-    /** installs the FloatingDialog related properties */
-    public void installFloatingSettings() {
-
-        // Border border = BorderFactory.createMatteBorder(1,1,1,1, darkShadow);
-        // Border titleBorder = BorderFactory.createMatteBorder(0,0,1,0,
-        // highlight);
-
-        Border border = null; // BorderFactory.createEmptyBorder(1,1,1,1);
-        Border titleBorder = null; // BorderFactory.createMatteBorder(0,0,1,0,
-        // shadow);
-
-        UIManager.put("FloatingDialog.dialogBorder", border);
-        UIManager.put("FloatingDialog.titleBorder", titleBorder);
-
-        UIManager.put("FloatingContainer.followParentWindow", Boolean.TRUE);
-        UIManager.put("FloatingContainer.paintDragShape", Boolean.TRUE);
+    private void getDesktopSettings(UIDefaults table) {
+        table.putIfAbsent("DockingDesktop.notificationColor", Color.ORANGE);
+        table.putIfAbsent("DockingDesktop.notificationBlinkCount", 5);
+        setImage(table, "DragControler.stopDragCursor", "stopdragcursor.gif");
+        setImage(table, "DragControler.detachCursor", "detachCursor.png");
+        setImage(table, "DragControler.dragCursor", "dragcursor.gif");
+        setImage(table, "DragControler.swapDragCursor", "swapdragcursor.gif");
+        table.putIfAbsent("DragControler.isDragAndDropEnabled", Boolean.TRUE);
+        table.putIfAbsent("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
     }
 
-    /** installs the toolbar related properties */
-    public void installToolBarSettings() {
-        UIManager.put("ToolBarGripperUI", "com.vlsolutions.swing.toolbars.ToolBarGripperUI");
+    private void installDesktopSettings(UIDefaults table) {
+        putValue(table, "DockingDesktop.notificationColor");
+        putValue(table, "DockingDesktop.notificationBlinkCount");
+        putValue(table, "DragControler.stopDragCursor");
+        putValue(table, "DragControler.detachCursor");
+        putValue(table, "DragControler.dragCursor");
+        putValue(table, "DragControler.swapDragCursor");
+        putValue(table, "DragControler.isDragAndDropEnabled");
+        putValue(table, "DragControler.paintBackgroundUnderDragRect");
+    }
+
+    private void getFloatingSettings(UIDefaults table) {
+        // Because these values are null in default, don't override
+        // - table.put("FloatingDialog.dialogBorder", null);
+        // - table.put("FloatingDialog.titleBorder", null);
+        table.putIfAbsent("FloatingContainer.followParentWindow", Boolean.TRUE);
+        table.putIfAbsent("FloatingContainer.paintDragShape", Boolean.TRUE);
+    }
+
+    private void installFloatingSettings(UIDefaults table) {
+        putValue(table, "FloatingDialog.dialogBorder");
+        putValue(table, "FloatingDialog.titleBorder");
+        putValue(table, "FloatingContainer.followParentWindow");
+        putValue(table, "FloatingContainer.paintDragShape");
+    }
+
+    private void getToolBarSettings(UIDefaults table) {
+        table.putIfAbsent("ToolBarGripperUI", "com.vlsolutions.swing.toolbars.ToolBarGripperUI");
         // borders to use with toolbarpanels depending on their position
-        UIManager.put("ToolBarPanel.topBorder", new ToolBarPanelBorder(ToolBarPanelBorder.TOP_PANEL));
-        UIManager.put("ToolBarPanel.leftBorder", new ToolBarPanelBorder(ToolBarPanelBorder.LEFT_PANEL));
-        UIManager.put("ToolBarPanel.bottomBorder", new ToolBarPanelBorder(ToolBarPanelBorder.BOTTOM_PANEL));
-        UIManager.put("ToolBarPanel.rightBorder", new ToolBarPanelBorder(ToolBarPanelBorder.RIGHT_PANEL));
+        setBorder(table, "ToolBarPanel.topBorder", ToolBarPanelBorder.TOP_PANEL);
+        setBorder(table, "ToolBarPanel.leftBorder", ToolBarPanelBorder.LEFT_PANEL);
+        setBorder(table, "ToolBarPanel.bottomBorder", ToolBarPanelBorder.BOTTOM_PANEL);
+        setBorder(table, "ToolBarPanel.rightBorder", ToolBarPanelBorder.RIGHT_PANEL);
     }
 
-    private void installColors() {
-        Color shadow = UIManager.getColor("controlShadow");
-        Color highlight = UIManager.getColor("controlLtHighlight");
-        if (shadow == null) {
-            shadow = Color.GRAY;
-        }
-        if (highlight == null) {
-            highlight = shadow.brighter();
-        }
+    private void installToolBarSettings(UIDefaults table) {
+        putValue(table, "ToolBarGripperUI");
+        putValue(table, "ToolBarPanel.topBorder");
+        putValue(table, "ToolBarPanel.leftBorder");
+        putValue(table, "ToolBarPanel.bottomBorder");
+        putValue(table, "ToolBarPanel.rightBorder");
+    }
 
-        UIManager.put("VLDocking.shadow", shadow);
-        UIManager.put("VLDocking.highlight", highlight);
+    private void getColors(UIDefaults table) {
+        if (table.get("VLDocking.shadow") == null) {
+            Color shadow = table.getColor("controlShadow");
+            if (shadow == null) {
+                shadow = Color.GRAY;
+            }
+            table.put("VLDocking.shadow", shadow);
+        }
+        if (table.get("VLDocking.highlight") == null) {
+            Color highlight = table.getColor("controlLtHighlight");
+            if (highlight == null) {
+                highlight = table.getColor("VLDocking.shadow").brighter();
+            }
+            table.put("VLDocking.highlight", highlight);
+        }
+    }
+
+    private void installColors(UIDefaults table) {
+        putValue(table, "VLDocking.shadow");
+        putValue(table, "VLDocking.highlight");
+    }
+
+    private void putValue(UIDefaults table, String key) {
+        UIManager.put(key, table.get(key));
+    }
+
+    private void setBorder(UIDefaults table, String key, int border) {
+        if (table.get(key) == null) {
+            table.put(key, new ToolBarPanelBorder(border));
+        }
+    }
+
+    private void setAccelerators(UIDefaults table, String key, int keyEvent, int mask) {
+        if (table.get(key) == null) {
+            table.put(key, KeyStroke.getKeyStroke(keyEvent, mask));
+        }
+    }
+
+    private void setIcon(UIDefaults table, String key, String resName) {
+        if (table.get(key) == null) {
+            table.put(key, getIconByName(resName));
+        }
+    }
+
+    private void setImage(UIDefaults table, String key, String resName) {
+        if (table.get(key) == null) {
+            table.put(key, getImageByName(resName));
+        }
+    }
+
+    private ImageIcon getIconByName(String resName) {
+        final String prefix = "/com/vlsolutions/swing/docking/";
+        return new ImageIcon(Objects.requireNonNull(getClass().getResource(prefix + resName)));
+    }
+
+    private Image getImageByName(String resName) {
+        return getIconByName(resName).getImage();
     }
 }
