@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## Added
+* Respect `UIDefauls` table configuration defined in `LookAndFeel` class.(#11)
+* Allow a customizion by inheriting `DockingUISettings` class and overide `getDefaults` method.(#11)
+
 ### Fixed
 * Avoid NPE when drag-n-drop with null hints (#9)
 
@@ -13,6 +17,7 @@ All notable changes to this project will be documented in this file.
 * feat: test UI behavior with Assertj-Swing-JUnit (#7)
 * refactor: annotate deprecations, avoid access to internal class of other class(#6)
 * refactor: avoid redundant casts (#6)
+* refactor: avoid redundant final for static method.(#11)
 
 ## [v3.0.5-2]
 * chore: use nexus-publish plugin to release
