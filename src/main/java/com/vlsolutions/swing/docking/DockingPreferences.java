@@ -45,11 +45,11 @@ public class DockingPreferences {
     private static boolean isLightWeightUsageEnabled = true;
     private static boolean isSingleHeavyWeightComponent = false;
 
-    /** private stuff : use static methods only */
+    /** private stuff: use static methods only */
     private DockingPreferences() {
     }
 
-    public static final AutoHidePolicy getAutoHidePolicy() {
+    public static AutoHidePolicy getAutoHidePolicy() {
         return AutoHidePolicy.getPolicy();
     }
 
@@ -111,12 +111,14 @@ public class DockingPreferences {
     /**
      * Facade method used to allow mixing of lightweight and heavyweight components in the desktop.
      */
+    @SuppressWarnings("unused")
     public static void initHeavyWeightUsage(boolean isSingleHeavyWeightComponent) {
         initHeavyWeightUsage();
         setSingleHeavyWeightComponent(isSingleHeavyWeightComponent);
     }
 
     /** Convenience method to use the VLDocking 1.0 layout and border style (with shadows around dockables) */
+    @SuppressWarnings("unused")
     public static void setShadowDesktopStyle() {
         DockingUISettings.getInstance().installUI();
         UIManager.put("DockView.singleDockableBorder", new ShadowBorder());
@@ -132,6 +134,7 @@ public class DockingPreferences {
      * This style is the new default one, so there is no need to call this method unless you want to swap
      * dynamically between desktop styles.
      */
+    @SuppressWarnings("unused")
     public static void setFlatDesktopStyle() {
         DockingUISettings.getInstance().installUI();
 
@@ -154,6 +157,7 @@ public class DockingPreferences {
     /**
      * Another docking style with ligh dots between dockables.
      */
+    @SuppressWarnings("unused")
     public static void setDottedDesktopStyle() {
         DockingUISettings.getInstance().installUI();
 
@@ -175,6 +179,7 @@ public class DockingPreferences {
     /**
      * Another docking style with custom tiles between dockables.
      */
+    @SuppressWarnings("unused")
     public static void setCustomSplitDesktopStyle(BufferedImage horizontalTile, BufferedImage verticalTile) {
 
         DockingUISettings.getInstance().installUI();
