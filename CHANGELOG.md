@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 * feat: test UI behavior with Assertj-Swing-JUnit (#7)
 * refactor: annotate deprecations, avoid access to internal class of other class(#6)
 * refactor: avoid redundant casts (#6)
+* refactor: DockingDesktop class not to initialize in static context(#12)
 
 ## [v3.0.5-2]
 * chore: use nexus-publish plugin to release

@@ -47,7 +47,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -60,10 +59,7 @@ import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
@@ -91,7 +87,7 @@ import org.xml.sax.SAXNotRecognizedException;
 /**
  * The DockingDesktop is the main class of the VLDocking Framework.
  * <P>
- * It is the equivalent of what is JDesktopPane for JInternalWindow : a JLayeredPane customized to include :
+ * It is the equivalent of what is JDesktopPane for JInternalWindow: a JLayeredPane customized to include :
  * <UL>
  * <LI>Four auto-hide borders used to show Dockable iconified as buttons.
  * <LI>A nested containment hierarchy (made of JSplitPanes) with drag and drop (dock) capabilities.
@@ -105,23 +101,29 @@ import org.xml.sax.SAXNotRecognizedException;
  * @author Lilian Chamontin, VLSolutions.
  * @version 2.0
  *
- * @update 2005/10/06 Lilian Chamontin : added support for dnd to floatables
- * @update 2005/10/07 Lilian Chamontin : cancel drag operation with ESCAPE key
- * @update 2005/11/08 Lilian Chamontin : added support for global width/height drop (in split method)
- * @update 2005/11/14 Lilian Chamontin : reworked setFloating methods.
- * @update 2005/12/08 Lilian Chamontin : fixed a bug related to multiple desktop usage (when moving a window
- *         after the desktop has been removed from hierarchy, the listeners were still invoked and caused a
- *         NPE in moveFloatingWindows).
- *
- * @update 2006/12/01 Lilian Chamontin : fixed a NPE when closing a window with some floating children
- *         remaining
- * @update 2006/12/19 Lilian Chamontin : fixed a memory leak issue due to keyboard focus manager handling
- * @update 2007/03/19 reformulate addHiddenDockable tests to support closed dockables.
- * @update 2007/08/11 added safety check to avoid creating tabs on a maximized component
- * @update 2008/07/05 fixed a NPE occuring when saving workspace and a tabbed component was still maximized
+ *          <ul>
+ *          <li>update 2005/10/06 Lilian Chamontin : added support for dnd to floatables</li>
+ *          <li>update 2005/10/07 Lilian Chamontin : cancel drag operation with ESCAPE key</li>
+ *          <li>update 2005/11/08 Lilian Chamontin : added support for global width/height drop (in split
+ *          method)</li>
+ *          <li>update 2005/11/14 Lilian Chamontin : reworked setFloating methods.</li>
+ *          <li>update 2005/12/08 Lilian Chamontin : fixed a bug related to multiple desktop usage (when
+ *          moving a window</li> after the desktop has been removed from hierarchy, the listeners were still
+ *          invoked and caused a NPE in moveFloatingWindows).</li>
+ *          <li>update 2006/12/01 Lilian Chamontin : fixed a NPE when closing a window with some floating
+ *          children remaining</li>
+ *          <li>update 2006/12/19 Lilian Chamontin : fixed a memory leak issue due to keyboard focus manager
+ *          handling</li>
+ *          <li>update 2007/03/19 reformulate addHiddenDockable tests to support closed dockables.</li>
+ *          <li>update 2007/08/11 added safety check to avoid creating tabs on a maximized component</li>
+ *          <li>update 2008/07/05 fixed a NPE occuring when saving workspace and a tabbed component was still
+ *          maximized</li>
+ *          </ul>
  */
 @SuppressWarnings({ "rawtypes", "unchecked", "unused" })
 public class DockingDesktop extends JLayeredPane {
+
+    private static final boolean DEBUG = false;
 
     private static final long serialVersionUID = 1L;
     private static final String CURRENT_VERSION_NUMBER = "2.1.5";
@@ -129,41 +131,31 @@ public class DockingDesktop extends JLayeredPane {
 
     private static final Logger log = LoggerFactory.getLogger(DockingDesktop.class);
 
-    static {
-        // install UI settings if not already done
-        DockingUISettings.getInstance().installUI();
-    }
-
     /** contextual data that can be shared by multiple desktops */
     private DockingContext context;
 
     /** panel containing autohidepanels on borders and dockingpanel at center */
-    private JPanel contentPane = new JPanel(new DockingBorderLayout());
+    private final JPanel contentPane;
 
     /** main central container for dockables */
-    protected DockingPanel dockingPanel = new DockingPanel();
+    protected DockingPanel dockingPanel;
 
     /** container responsible for auto-hidden components expansion */
-    protected AutoHideExpandPanel expandPanel = createAutoHideExpandPanel();
+    protected AutoHideExpandPanel expandPanel;
 
     /** panel used to display autohide buttons */
-    protected AutoHideButtonPanel topBorderPane = new AutoHideButtonPanel(expandPanel,
-            DockingConstants.INT_HIDE_TOP);
+    protected AutoHideButtonPanel topBorderPane;
     /** panel used to display autohide buttons */
-    protected AutoHideButtonPanel leftBorderPane = new AutoHideButtonPanel(expandPanel,
-            DockingConstants.INT_HIDE_LEFT);
+    protected AutoHideButtonPanel leftBorderPane;
     /** panel used to display autohide buttons */
-    protected AutoHideButtonPanel bottomBorderPane = new AutoHideButtonPanel(expandPanel,
-            DockingConstants.INT_HIDE_BOTTOM);
+    protected AutoHideButtonPanel bottomBorderPane;
     /** panel used to display autohide buttons */
-    protected AutoHideButtonPanel rightBorderPane = new AutoHideButtonPanel(expandPanel,
-            DockingConstants.INT_HIDE_RIGHT);
+    protected AutoHideButtonPanel rightBorderPane;
 
     /** array containing the border panes */
-    protected AutoHideButtonPanel[] borderPanes = { topBorderPane, leftBorderPane, bottomBorderPane,
-            rightBorderPane };
+    protected AutoHideButtonPanel[] borderPanes;
 
-    private HashMap<DockKey, AutoHideButton> autoHideButtons = new HashMap(); // key
+    private final Map<DockKey, AutoHideButton> autoHideButtons = new HashMap(); // key
     // :
     // DockKey
     // /
@@ -171,48 +163,31 @@ public class DockingDesktop extends JLayeredPane {
     // :
     // AutoHideButton
 
-    private DragControler dragControler;
+    private final DragControler dragControler;
 
     /** a component used to track position of the current maximized component */
-    private MaximizedComponentReplacer dummyMaximedReplacer = new MaximizedComponentReplacer(); // 2007/01/18
+    private final MaximizedComponentReplacer dummyMaximedReplacer;
     // new JLabel();
 
     /** the current maximized component */
     private Component maximizedComponent;
     /**
-     * a flag set when adding a maximized component : true is this one is heavyweight Only used with
-     * heavyweight support AND singleHeavyWeightComponent
+     * a flag set when adding a maximized component: true, this one is heavyweight Only used with heavyweight
+     * support AND singleHeavyWeightComponent
      */
     private boolean currentMaximizedComponentIsHeavyWeight = false;
 
-    private JComponent mouseMotionGrabber = new JComponent() {
-
-        private static final long serialVersionUID = 1L;
-        // component used to grab mouse events under the expansion panel
-        // only visible (and active) when expansion panel is visible
-    };
+    private final JComponent mouseMotionGrabber;
 
     /**
      * this timer is only used when the java version is < 1.5 (version>=1.5 uses the MouseInfo component)
      */
-    private javax.swing.Timer mouseOutOfExpandedPanelTimer = new javax.swing.Timer(1000,
-            new ActionListener() {
-
-                // timer used to hide the expanded panel when mouse is out too
-                // long
-                public void actionPerformed(ActionEvent actionEvent) {
-                    if (!expandPanel.isActive() && expandPanel.shouldCollapse()) {
-                        // do not hide it if it has got the focus
-                        // or if a non-collapsible operation is occuring
-                        expandPanel.collapse();
-                    }
-                }
-            });
+    private final javax.swing.Timer mouseOutOfExpandedPanelTimer;
 
     /** groups of tabs (used to re-tab autohidden dockable) */
     protected HashMap<Dockable, LinkedList<Dockable>> tabbedGroups = new HashMap(); // <Dockable>/<LinkedList<Dockable>
 
-    private FocusHandler focusHandler = new FocusHandler();
+    private final FocusHandler focusHandler = new FocusHandler();
 
     /** return state for floating dockables */
     protected HashMap<Dockable, DockableState> previousFloatingDockableStates = new HashMap(); // key
@@ -223,13 +198,13 @@ public class DockingDesktop extends JLayeredPane {
     // state
 
     /**
-     * Unique name for this desktop : used since 2.1 to support multiple desktops
+     * Unique name for this desktop: used since 2.1 to support multiple desktops
      */
     private String desktopName;
 
     // 2005/10/10 added support for moving the floating dialogs with the frame
     private Point lastWindowLocation = null;
-    private ComponentAdapter windowMovementListener = new ComponentAdapter() {
+    private final ComponentAdapter windowMovementListener = new ComponentAdapter() {
 
         public void componentMoved(ComponentEvent e) {
             moveFloatingWindows();
@@ -244,8 +219,8 @@ public class DockingDesktop extends JLayeredPane {
         }
     };
 
-    /** Action used for keyboard binding : closes the current dockable */
-    private AbstractAction closeAction = new AbstractAction() {
+    /** Action used for keyboard binding: closes the current dockable */
+    private final AbstractAction closeAction = new AbstractAction() {
 
         private static final long serialVersionUID = 1L;
 
@@ -265,8 +240,8 @@ public class DockingDesktop extends JLayeredPane {
         }
     };
 
-    /** Action used for keyboard binding : maximize/restore the current dockable */
-    private AbstractAction maximizeAction = new AbstractAction() {
+    /** Action used for keyboard binding: maximize/restore the current dockable */
+    private final AbstractAction maximizeAction = new AbstractAction() {
 
         private static final long serialVersionUID = 1L;
 
@@ -286,7 +261,7 @@ public class DockingDesktop extends JLayeredPane {
     };
 
     /** Action used for keyboard binding : autohide/dock the current dockable */
-    private AbstractAction dockAction = new AbstractAction() {
+    private final AbstractAction dockAction = new AbstractAction() {
 
         private static final long serialVersionUID = 1L;
 
@@ -306,7 +281,7 @@ public class DockingDesktop extends JLayeredPane {
     };
 
     /** Action used for keyboard binding : float/attach the current dockable */
-    private AbstractAction floatAction = new AbstractAction() {
+    private final AbstractAction floatAction = new AbstractAction() {
 
         private static final long serialVersionUID = 1L;
 
@@ -326,7 +301,7 @@ public class DockingDesktop extends JLayeredPane {
     };
 
     /** Action used for keyboard binding : cancel the current operation */
-    private AbstractAction cancelAction = new AbstractAction() {
+    private final AbstractAction cancelAction = new AbstractAction() {
 
         private static final long serialVersionUID = 1L;
 
@@ -355,40 +330,59 @@ public class DockingDesktop extends JLayeredPane {
      * Constructs a DockingDesktop with a given name (suitable for multiple-desktop applications).
      */
     public DockingDesktop(String desktopName, DockingContext context) {
-        setDesktopName(desktopName);
-        if (context == null) {
-            this.context = new DockingContext(); // initial (single desktop)
-            // context
-        } else {
-            this.context = context; // shared context issued from another
-            // dekstop
-        }
+        // install UI settings if not already done
+        DockingUISettings.getInstance().installUI();
 
+        setDesktopName(desktopName);
+        this.context = Objects.requireNonNullElseGet(context, DockingContext::new); // shared context issued
+                                                                                    // from another
         this.context.addDesktop(this);
 
         this.dragControler = DragControlerFactory.getInstance().createDragControler(this);
 
-        //
-        // add(contentPane, BorderLayout.CENTER);
-
+        expandPanel = createAutoHideExpandPanel();
+        topBorderPane = new AutoHideButtonPanel(expandPanel, DockingConstants.INT_HIDE_TOP);
         topBorderPane.setVisible(false);
+        leftBorderPane = new AutoHideButtonPanel(expandPanel, DockingConstants.INT_HIDE_LEFT);
         leftBorderPane.setVisible(false);
+        bottomBorderPane = new AutoHideButtonPanel(expandPanel, DockingConstants.INT_HIDE_BOTTOM);
         bottomBorderPane.setVisible(false);
+        rightBorderPane = new AutoHideButtonPanel(expandPanel, DockingConstants.INT_HIDE_RIGHT);
         rightBorderPane.setVisible(false);
+        borderPanes = new AutoHideButtonPanel[] { topBorderPane, leftBorderPane, bottomBorderPane,
+                rightBorderPane };
+        contentPane = new JPanel(new DockingBorderLayout());
         contentPane.add(topBorderPane, BorderLayout.NORTH);
         contentPane.add(leftBorderPane, BorderLayout.WEST);
         contentPane.add(bottomBorderPane, BorderLayout.SOUTH);
         contentPane.add(rightBorderPane, BorderLayout.EAST);
+        dockingPanel = new DockingPanel();
         contentPane.add(dockingPanel, BorderLayout.CENTER);
+        dummyMaximedReplacer = new MaximizedComponentReplacer();
 
         installBorders();
 
         add(contentPane, DEFAULT_LAYER);
+        mouseMotionGrabber = new JComponent() {
+
+            private static final long serialVersionUID = 1L;
+            // component used to grab mouse events under the expansion panel
+            // only visible (and active) when expansion panel is visible
+        };
         mouseMotionGrabber.setVisible(false);
 
+        // timer used to hide the expanded panel when mouse is out too
+        // long
+        mouseOutOfExpandedPanelTimer = new javax.swing.Timer(1000, actionEvent -> {
+            if (!expandPanel.isActive() && expandPanel.shouldCollapse()) {
+                // do not hide it if it has got the focus
+                // or if a non-collapsible operation is occuring
+                expandPanel.collapse();
+            }
+        });
         mouseMotionGrabber.addMouseListener(new MouseAdapter() {
 
-            boolean canUseMouseInfo = DockingUtilities.canUseMouseInfo();
+            final boolean canUseMouseInfo = DockingUtilities.canUseMouseInfo();
 
             public void mouseEntered(MouseEvent e) {
                 // means that the mouse is not above the expanded panel
@@ -471,16 +465,7 @@ public class DockingDesktop extends JLayeredPane {
         dockingPanel.addComponentListener(resizeListener);
 
         expandPanel.addPropertyChangeListener(AutoHideExpandPanel.PROPERTY_EXPANDED,
-                new PropertyChangeListener() {
-
-                    public void propertyChange(PropertyChangeEvent e) {
-                        if (e.getNewValue().equals(Boolean.TRUE)) {
-                            mouseMotionGrabber.setVisible(true);
-                        } else {
-                            mouseMotionGrabber.setVisible(false);
-                        }
-                    }
-                });
+                e -> mouseMotionGrabber.setVisible(e.getNewValue().equals(Boolean.TRUE)));
 
         mouseOutOfExpandedPanelTimer.setRepeats(false); // avoid loops
 
@@ -527,10 +512,7 @@ public class DockingDesktop extends JLayeredPane {
                 KeyboardFocusManager.getCurrentKeyboardFocusManager()
                         .removePropertyChangeListener("focusOwner", focusHandler); // 2006/12/19
 
-                if (event == null || event.getAncestorParent() == null) {
-                    // 2006/12/01 protection againts NPE
-                    return;
-                } else {
+                if (event != null && event.getAncestorParent() != null) {
                     Window w = SwingUtilities.getWindowAncestor(event.getAncestorParent());
                     if (w != null) { // 2007/03/07 hope it helps with desktops
                         // on JDialogs
@@ -626,10 +608,8 @@ public class DockingDesktop extends JLayeredPane {
     }
 
     /**
-     * Returns the docking panel used by this desktop.
-     *
-     * Usage of this method should be limited to VLDocking extensions (simple users shouldn't rely on the
-     * underlying DockingPanel existence)
+     * Returns the docking panel used by this desktop. Usage of this method should be limited to VLDocking
+     * extensions (simple users shouldn't rely on the underlying DockingPanel existence)
      */
     DockingPanel getDockingPanel() {
         /* package protected method */
@@ -653,7 +633,7 @@ public class DockingDesktop extends JLayeredPane {
     }
 
     /**
-     * Unregisters the dockable, which can be garbage collected (no longer used by the docking desktop.
+     * Unregisters the dockable, which can be garbage collected (no longer used by the docking desktop.)
      * <p>
      * As of version 2.1, this method call is forwarded to the DockingContext
      */
@@ -664,7 +644,7 @@ public class DockingDesktop extends JLayeredPane {
 
     /**
      * Returns a String containing the version of the docking framework in the format M.m.r where M is the
-     * major , m the minor and r the release.
+     * major, m the minor and r the release.
      *
      * @since 2.0
      */
@@ -687,8 +667,8 @@ public class DockingDesktop extends JLayeredPane {
      * @param base
      *            the reference dockable
      * @param dockable
-     *            a dockable to add at the same position than <code>base</code>. if base is not already child
-     *            of a tabbedpane, a new tabbedpane will be created and inserted at base's location.
+     *            a dockable to add at the same position instead of <code>base</code>. if base is not already
+     *            child of a tabbedpane, a new tabbedpane will be created and inserted at base's location.
      * @param order
      *            the tab order of view in its tabbed pane.
      *
@@ -703,7 +683,7 @@ public class DockingDesktop extends JLayeredPane {
      * Optional added tab selection.
      *
      * @param base
-     *            an existing dockable, either displayed in a DockableContainer or in a
+     *            the existing dockable, either displayed in a DockableContainer or in a
      *            TabbedDockableContainer.
      *            <P>
      *            If base is displayed by a DockableContainer, this container will be replaced by a
@@ -746,15 +726,7 @@ public class DockingDesktop extends JLayeredPane {
 
         // currentState might be null CLOSED HIDDEN DOCKED FLOATING
 
-        DockableState newState = null; // 2005/10/06 - support for floatable
-        // tabs : the future state can be docked
-        // or floating
-        if (base.getDockKey().getLocation() == DockableState.Location.FLOATING) {
-            RelativeDockablePosition position = new RelativeDockablePosition(dockingPanel, dockable);
-            newState = new DockableState(this, dockable, base.getDockKey().getLocation(), position);
-        } else {
-            newState = new DockableState(this, dockable, base.getDockKey().getLocation());
-        }
+        DockableState newState = getDockableState(base, dockable);
 
         DockableStateWillChangeEvent dswe = new DockableStateWillChangeEvent(currentState, newState);
         DockingActionEvent dae = new DockingActionCreateTabEvent(this, dockable, currentLocation,
@@ -786,27 +758,20 @@ public class DockingDesktop extends JLayeredPane {
             // done earlier (in dropRemove() )
         }
 
-        // if ( currentState != null && (!currentState.isFloating()) &&
-        // newState.isFloating()){
-        if (currentState != null && currentState.isFloating() && newState.isFloating()) {
-            // this case is when dragging a floating dockable into another
-            // floating window
-            Window w = SwingUtilities.getWindowAncestor(dockable.getComponent());
-            Window w2 = SwingUtilities.getWindowAncestor(base.getComponent());
-            if (w == null) {
-                // the dockable has already been removed
-            } else if (w != w2) {
+        if (currentState != null && newState.isFloating()) {
+            if (currentState.isFloating()) {
+                // this case is when dragging a floating dockable into another
+                // floating window
+                Window w = SwingUtilities.getWindowAncestor(dockable.getComponent());
+                if (w != null) {
+                    remove(dockable);
+                }
+            } else {
+                // from !floating to floating:
                 // when creating a floating tab, we have to manually remove the
                 // dockable
                 remove(dockable);
-            } else { // else same window : no need to remove it
-                remove(dockable);
             }
-        } else if (currentState != null && (!currentState.isFloating()) && newState.isFloating()) {
-            // from !floating to floating :
-            // when creating a floating tab, we have to manually remove the
-            // dockable
-            remove(dockable);
         }
 
         if (!newState.isFloating()) {
@@ -828,13 +793,8 @@ public class DockingDesktop extends JLayeredPane {
             baseTab.addDockable(base, 0);
             baseTab.addDockable(dockable, 1);
 
-            ((JTabbedPane) baseTab).addChangeListener(focusHandler); // our best
-            // way
-            // to
-            // track
-            // selection
-            // (focus)
-            // changes
+            // our best way to track selection (focus) changes
+            ((JTabbedPane) baseTab).addChangeListener(focusHandler);
 
             DockingUtilities.replaceChild(((Component) baseOldContainer).getParent(),
                     (Component) baseOldContainer, (Component) baseTab);
@@ -845,7 +805,7 @@ public class DockingDesktop extends JLayeredPane {
         // context.registerDockable(dockable); //2007/08/11
         context.setDockableState(dockable, newState);
 
-        if (newState.isFloating() && !currentState.isFloating()) {
+        if (newState.isFloating() && currentState != null && !currentState.isFloating()) {
             // we need to store the return information
             storePreviousFloatingState(dockable, currentState);
         }
@@ -862,13 +822,26 @@ public class DockingDesktop extends JLayeredPane {
         DockingUtilities.updateResizeWeights(dockingPanel);
     }
 
+    private DockableState getDockableState(Dockable base, Dockable dockable) {
+        DockableState newState;
+        // 2005/10/06 - support for float-able tabs:
+        // the future state can be docked or floating
+        if (base.getDockKey().getLocation() == DockableState.Location.FLOATING) {
+            RelativeDockablePosition position = new RelativeDockablePosition(dockingPanel, dockable);
+            newState = new DockableState(this, dockable, base.getDockKey().getLocation(), position);
+        } else {
+            newState = new DockableState(this, dockable, base.getDockKey().getLocation());
+        }
+        return newState;
+    }
+
     /**
      * Splits a Dockable in 2 parts, if possible.
      * <p>
      * The base dockable is the reference, the second newDockable will be added according to the position
      * parameter.
      * <p>
-     * If base is contained in a non splitable container (like a tab of DockTabbedPane) then, a splitable
+     * If the base is contained in a non-splitable container (like a tab of DockTabbedPane) then, a splittable
      * ancestor will be searched (until the root desktop pane is reached) to apply splitting.
      *
      * @param base
@@ -878,9 +851,9 @@ public class DockingDesktop extends JLayeredPane {
      * @param position
      *            position of newDockable relative to base
      * @param proportion
-     *            proportion of the initial dockable space taken by the new dockable a negative proportion,
-     *            like -1, will be ignored (and split will be based on component preferred sizes and weights).
-     *            This parameter is an alternative to DockingDesktop.setDockableHeight() and
+     *            the proportion of the initial dockable space taken by the new dockable a negative
+     *            proportion, like -1, will be ignored (and split will be based on component preferred sizes
+     *            and weights). This parameter is an alternative to DockingDesktop.setDockableHeight() and
      *            setDockableWidth() methods
      * @see DockingDesktop#setDockableHeight(com.vlsolutions.swing.docking.Dockable, double)
      * @see DockingDesktop#setDockableWidth(com.vlsolutions.swing.docking.Dockable, double)
@@ -920,16 +893,7 @@ public class DockingDesktop extends JLayeredPane {
                 newDockable, DockableContainerFactory.ParentType.PARENT_SPLIT_CONTAINER);
         dockableContainer.installDocking(this);
 
-        // create a new splitcontainer that will replace baseDockable's
-        // container
-        SplitContainer split;
-        if (position == DockingConstants.SPLIT_TOP || position == DockingConstants.SPLIT_BOTTOM) {
-            split = new SplitContainer(JSplitPane.VERTICAL_SPLIT);
-        } else /*
-                * if (position == DockingConstants.SPLIT_LEFT || position == DockingConstants.SPLIT_RIGHT)
-                */ {
-            split = new SplitContainer(JSplitPane.HORIZONTAL_SPLIT);
-        }
+        SplitContainer split = getSplitContainer(position);
 
         Component left, right;
 
@@ -983,6 +947,20 @@ public class DockingDesktop extends JLayeredPane {
         if (proportion >= 0) {
             SwingUtilities.invokeLater(new SplitResizer(split, proportion));
         }
+    }
+
+    // create a new splitcontainer that will replace baseDockable's
+    // container
+    private SplitContainer getSplitContainer(DockingConstants.Split position) {
+        SplitContainer split;
+        if (position == DockingConstants.SPLIT_TOP || position == DockingConstants.SPLIT_BOTTOM) {
+            split = new SplitContainer(JSplitPane.VERTICAL_SPLIT);
+        } else /*
+                * if (position == DockingConstants.SPLIT_LEFT || position == DockingConstants.SPLIT_RIGHT)
+                */ {
+            split = new SplitContainer(JSplitPane.HORIZONTAL_SPLIT);
+        }
+        return split;
     }
 
     /**
@@ -1047,13 +1025,7 @@ public class DockingDesktop extends JLayeredPane {
         DockableState currentState = getDockableState(dockable);
         DockableState.Location currentLocation = getLocation(currentState);
 
-        boolean stateChange = false;
-        if (currentState == null) {
-            stateChange = true;
-        } else if (currentState.getLocation() != futureLocation) {
-            stateChange = true;
-        }
-
+        boolean stateChange = currentState != null && currentState.getLocation() != futureLocation;
         DockableState newState = new DockableState(this, dockable, futureLocation);
         // DockableState.DOCKED);
         DockableStateWillChangeEvent dswe = new DockableStateWillChangeEvent(currentState, newState);
@@ -1071,8 +1043,8 @@ public class DockingDesktop extends JLayeredPane {
         }
 
         Container oldContainer = (Container) DockingUtilities.findSingleDockableContainer(dockable);
-        int oldWidth = 0;
-        int oldHeight = 0;
+        int oldWidth;
+        int oldHeight;
         if (oldContainer != null) {
             oldWidth = oldContainer.getWidth();
             oldHeight = oldContainer.getHeight();
@@ -1085,16 +1057,7 @@ public class DockingDesktop extends JLayeredPane {
                 dockable, DockableContainerFactory.ParentType.PARENT_SPLIT_CONTAINER);
         dockableContainer.installDocking(this);
 
-        // create a new splitcontainer that will replace baseDockable's
-        // container
-        SplitContainer split;
-        if (position == DockingConstants.SPLIT_TOP || position == DockingConstants.SPLIT_BOTTOM) {
-            split = new SplitContainer(JSplitPane.VERTICAL_SPLIT);
-        } else /*
-                * if (position == DockingConstants.SPLIT_LEFT || position == DockingConstants.SPLIT_RIGHT)
-                */ {
-            split = new SplitContainer(JSplitPane.HORIZONTAL_SPLIT);
-        }
+        SplitContainer split = getSplitContainer(position);
 
         if (base != dockingPanel) { // 2005/11/08 support for splitting from
             // dockingPanel
@@ -1143,12 +1106,10 @@ public class DockingDesktop extends JLayeredPane {
 
         context.setDockableState(dockable, newState);
 
-        if (stateChange) {
-            if (futureLocation == DockableState.Location.FLOATING) {
-                // splitting from ? (should be Docked) to floating
-                // we have to store a return state.
-                storePreviousFloatingState(dockable, currentState);
-            }
+        if (stateChange && futureLocation == DockableState.Location.FLOATING) {
+            // splitting from ? (should be Docked) to floating
+            // we have to store a return state.
+            storePreviousFloatingState(dockable, currentState);
         }
 
         dockable.getDockKey().setLocation(futureLocation);
@@ -1209,16 +1170,7 @@ public class DockingDesktop extends JLayeredPane {
             oldHeight = base.getHeight() / 2;
         }
 
-        // create a new splitcontainer that will replace baseDockable's
-        // container
-        SplitContainer split;
-        if (position == DockingConstants.SPLIT_TOP || position == DockingConstants.SPLIT_BOTTOM) {
-            split = new SplitContainer(JSplitPane.VERTICAL_SPLIT);
-        } else /*
-                * if (position == DockingConstants.SPLIT_LEFT || position == DockingConstants.SPLIT_RIGHT)
-                */ {
-            split = new SplitContainer(JSplitPane.HORIZONTAL_SPLIT);
-        }
+        SplitContainer split = getSplitContainer(position);
 
         if (base != dockingPanel) { // 2005/11/08 support for splitting from
             // dockingPanel
@@ -1381,7 +1333,7 @@ public class DockingDesktop extends JLayeredPane {
         // if (dockingPanel.isAncestorOf(dockable.getComponent())){ //2005/10/06
         // ...
         DockableState.Location dockLocation = dockable.getDockKey().getLocation();
-        SingleDockableContainer dockableContainer = null;
+        SingleDockableContainer dockableContainer;
         Container parentOfSdc = null;
 
         boolean isChildOfCompoundDockable = false; // v2.1
@@ -1401,14 +1353,8 @@ public class DockingDesktop extends JLayeredPane {
         if (dockLocation == DockableState.Location.FLOATING) {
             FloatingDockableContainer fdc = (FloatingDockableContainer) SwingUtilities
                     .getWindowAncestor(dockable.getComponent());
-            if (parentOfSdc instanceof TabbedDockableContainer) {
-                // dockable was contained in a tab on the floatable : we must
-                // not dispose the window
-            } else if (isChildOfCompoundDockable) {
-                // dockable was a child of a compound dockable : don't dispose
-            } else {
+            if (!(parentOfSdc instanceof TabbedDockableContainer) && !isChildOfCompoundDockable) {
                 DockingUtilities.dispose(fdc);
-                // ((JDialog)dlg).dispose();
             }
         } else if (dockLocation == DockableState.Location.HIDDEN) {
             // DockableState state = (DockableState)
@@ -1428,7 +1374,6 @@ public class DockingDesktop extends JLayeredPane {
 
                 // so we just use the standard removing pattern
                 dockableContainer = DockingUtilities.findSingleDockableContainer(dockable);
-                parentOfSdc = ((JComponent) dockableContainer).getParent();
                 removeContainer(dockableContainer);
             } else {
                 // single auto-hide dockable
@@ -1659,13 +1604,6 @@ public class DockingDesktop extends JLayeredPane {
         }
 
         DockableState currentState = getDockableState(dockable);
-        @SuppressWarnings("null")
-        boolean stateChange;
-        if (currentState == null) {
-            stateChange = false;
-        } else {
-            stateChange = currentState.isMaximized();
-        }
         DockableState newState = new DockableState(this, dockable, DockableState.Location.DOCKED);
         DockableState.Location currentLocation = getLocation(currentState);
 
@@ -1689,7 +1627,7 @@ public class DockingDesktop extends JLayeredPane {
         }
         ((SingleDockableContainer) maximizedComponent).uninstallDocking(this);
 
-        SingleDockableContainer sdc = null;
+        SingleDockableContainer sdc;
         if (dummyMaximedReplacer.getParent() instanceof TabbedDockableContainer) {
             sdc = DockableContainerFactory.getFactory().createDockableContainer(dockable,
                     DockableContainerFactory.ParentType.PARENT_TABBED_CONTAINER);
@@ -1705,12 +1643,7 @@ public class DockingDesktop extends JLayeredPane {
         dockable.getDockKey().setLocation(DockableState.Location.DOCKED);
         fireDockingAction(dae, new DockableStateChangeEvent(currentState, newState));
 
-        SwingUtilities.invokeLater(new Runnable() {
-
-            public void run() {
-                dockable.getComponent().requestFocus();
-            }
-        });
+        SwingUtilities.invokeLater(() -> dockable.getComponent().requestFocus());
 
         sdc.installDocking(this);
 
@@ -1770,9 +1703,7 @@ public class DockingDesktop extends JLayeredPane {
                 // from floating..to floating. It's still possible, if the
                 // component was previously tabbed (now it will have its
                 // own window
-                if (DockingUtilities.findTabbedDockableContainer(dockable) != null) {
-                    // ok, it was tabbed and floating
-                } else {
+                if (DockingUtilities.findTabbedDockableContainer(dockable) == null) {
                     throw new IllegalArgumentException("floating not tabbed");
                 }
                 break;
@@ -1905,17 +1836,15 @@ public class DockingDesktop extends JLayeredPane {
                 if (isDockingActionAccepted(dae, event)) {
                     removePreviousFloatingState(dockable);
 
-                    Container parentOfSdc = null; // 2005/10/07
+                    Container parentOfSdc; // 2005/10/07
                     parentOfSdc = ((JComponent) dockableContainer).getParent();
                     removeContainer(dockableContainer);
                     FloatingDockableContainer fdc = (FloatingDockableContainer) SwingUtilities
                             .getWindowAncestor(dockable.getComponent());
-                    if (parentOfSdc instanceof TabbedDockableContainer) {
-                        // dockable was contained in a tab on the floatable : we
-                        // must not dispose the window
-                    } else {
+                    // when dockable was contained in a tab on the floatable : we
+                    // must not dispose the window
+                    if (!(parentOfSdc instanceof TabbedDockableContainer)) {
                         DockingUtilities.dispose(fdc);
-                        // ((JDialog)fdc).dispose();
                     }
 
                     context.setDockableState(dockable, newState);
@@ -1964,7 +1893,7 @@ public class DockingDesktop extends JLayeredPane {
         if (!currentState.isDocked()) {
             throw new IllegalArgumentException("not docked");
         } else {
-            if (checkDockableStateWillChange(tdc, DockableState.Location.FLOATING)) {
+            if (checkDockableStateWillChangeToFloating(tdc)) {
                 RelativeDockablePosition position = new RelativeDockablePosition(dockingPanel, firstDockable);
                 // no veto has been raised by the compound dockables
                 Dimension previousSize = ((Component) tdc).getSize();
@@ -1986,7 +1915,7 @@ public class DockingDesktop extends JLayeredPane {
                 }
                 DockingUtilities.setVisible(fdc, true);
                 // dialog.setVisible(true);
-                fireStateChanged(tdc, DockableState.Location.FLOATING, position);
+                fireStateChanged(tdc, position);
                 DockingUtilities.updateResizeWeights(dockingPanel);
                 revalidate();
             }
@@ -2001,13 +1930,12 @@ public class DockingDesktop extends JLayeredPane {
         }
     }
 
-    private boolean checkDockableStateWillChange(TabbedDockableContainer tdc,
-            DockableState.Location futureLocation) {
+    private boolean checkDockableStateWillChangeToFloating(TabbedDockableContainer tdc) {
         for (int i = 0; i < tdc.getTabCount(); i++) {
             Dockable d = tdc.getDockableAt(i);
             DockableState currentState = getDockableState(d);
             DockableState.Location currentLocation = getLocation(currentState);
-            DockableState newState = new DockableState(this, d, futureLocation, null);
+            DockableState newState = new DockableState(this, d, DockableState.Location.FLOATING, null);
             DockableStateWillChangeEvent event = new DockableStateWillChangeEvent(currentState, newState);
             DockingActionEvent dae = new DockingActionSimpleStateChangeEvent(this, d, currentLocation,
                     newState.getLocation());
@@ -2018,13 +1946,12 @@ public class DockingDesktop extends JLayeredPane {
         return true;
     }
 
-    private void fireStateChanged(TabbedDockableContainer tdc, DockableState.Location futureLocation,
-            RelativeDockablePosition position) {
+    private void fireStateChanged(TabbedDockableContainer tdc, RelativeDockablePosition position) {
         for (int i = 0; i < tdc.getTabCount(); i++) {
             Dockable d = tdc.getDockableAt(i);
             DockableState currentState = getDockableState(d);
             DockableState.Location currentLocation = getLocation(currentState);
-            DockableState newState = new DockableState(this, d, futureLocation, position);
+            DockableState newState = new DockableState(this, d, DockableState.Location.FLOATING, position);
 
             context.setDockableState(d, newState);
             d.getDockKey().setLocation(DockableState.Location.FLOATING);
@@ -2034,13 +1961,12 @@ public class DockingDesktop extends JLayeredPane {
         }
     }
 
-    private DockableState removePreviousFloatingStates(TabbedDockableContainer tdc) {
+    private void removePreviousFloatingStates(TabbedDockableContainer tdc) {
         DockableState first = removePreviousFloatingState(tdc.getDockableAt(0));
         for (int i = 1; i < tdc.getTabCount(); i++) {
             Dockable d = tdc.getDockableAt(i);
             removePreviousFloatingState(d);
         }
-        return first;
     }
 
     /**
@@ -2059,8 +1985,9 @@ public class DockingDesktop extends JLayeredPane {
         if (dockable instanceof CompoundDockable) {
             // we also need to clear states of the compound children
             ArrayList children = DockingUtilities.findCompoundDockableChildren((CompoundDockable) dockable);
-            for (int i = 0; i < children.size(); i++) {
-                Dockable d = (Dockable) children.get(i);
+            for (int i = 0, childrenSize = children.size(); i < childrenSize; i++) {
+                Object child = children.get(i);
+                Dockable d = (Dockable) child;
                 previousFloatingDockableStates.remove(d);
             }
         }
@@ -2088,8 +2015,9 @@ public class DockingDesktop extends JLayeredPane {
             // share the
             // same return position
             ArrayList children = DockingUtilities.findCompoundDockableChildren((CompoundDockable) dockable);
-            for (int i = 0; i < children.size(); i++) {
-                Dockable d = (Dockable) children.get(i);
+            for (int i = 0, childrenSize = children.size(); i < childrenSize; i++) {
+                Object child = children.get(i);
+                Dockable d = (Dockable) child;
                 previousFloatingDockableStates.put(d,
                         new DockableState(this, d, state.getLocation(), state.getPosition()));
             }
@@ -2137,10 +2065,11 @@ public class DockingDesktop extends JLayeredPane {
             int dx = newLocation.x - lastWindowLocation.x;
             int dy = newLocation.y - lastWindowLocation.y;
             Window[] childWindow = w.getOwnedWindows();
-            for (int i = 0; i < childWindow.length; i++) {
-                if (childWindow[i] instanceof FloatingDockableContainer && childWindow[i].isVisible()) {
-                    Point p = childWindow[i].getLocation();
-                    childWindow[i].setLocation(p.x + dx, p.y + dy);
+            for (int i = 0, childWindowLength = childWindow.length; i < childWindowLength; i++) {
+                Window window = childWindow[i];
+                if (window instanceof FloatingDockableContainer && window.isVisible()) {
+                    Point p = window.getLocation();
+                    window.setLocation(p.x + dx, p.y + dy);
                 }
             }
         }
@@ -2228,7 +2157,7 @@ public class DockingDesktop extends JLayeredPane {
         boolean invalidateDesktop = true; // always, except for floating
         // dockables
 
-        Component parent = ((Component) dc).getParent();
+        Container parent = ((Component) dc).getParent();
         if (parent != null) {
             try {
                 if (parent instanceof SplitContainer) {
@@ -2257,7 +2186,7 @@ public class DockingDesktop extends JLayeredPane {
                         ((JTabbedPane) tparent).removeChangeListener(focusHandler);
 
                         boolean floating = last.getDockKey().getLocation() == DockableState.Location.FLOATING;
-                        DockableContainer lastContainer = null;
+                        DockableContainer lastContainer;
                         if (floating) {
                             lastContainer = DockableContainerFactory.getFactory().createDockableContainer(
                                     last, DockableContainerFactory.ParentType.PARENT_DETACHED_WINDOW);
@@ -2277,7 +2206,7 @@ public class DockingDesktop extends JLayeredPane {
                     // do
                     invalidateDesktop = false;
                 } else {
-                    ((Container) parent).remove((Component) dc);
+                    parent.remove((Component) dc);
                     // throw new
                     // IllegalStateException("View is not contained in desktop hierarchy "
                     // + parent);
@@ -2289,7 +2218,7 @@ public class DockingDesktop extends JLayeredPane {
                     dockingPanel.repaint();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                log.atError().setCause(e).log();
             }
         }
     }
@@ -2403,8 +2332,9 @@ public class DockingDesktop extends JLayeredPane {
      */
     private void updateCompoundChildrenState(CompoundDockable cDockable, DockableState.Location state) {
         ArrayList children = DockingUtilities.findCompoundDockableChildren(cDockable);
-        for (int i = 0; i < children.size(); i++) {
-            Dockable d = (Dockable) children.get(i);
+        for (int i = 0, childrenSize = children.size(); i < childrenSize; i++) {
+            Object child = children.get(i);
+            Dockable d = (Dockable) child;
             d.getDockKey().setLocation(state);
             DockableState childState = getDockableState(d);
             DockableState childNewState = new DockableState(this, d, state);
@@ -2430,8 +2360,9 @@ public class DockingDesktop extends JLayeredPane {
                     dockables.add(tabContainer.getDockableAt(i));
                 }
             }
-            for (int i = 0; i < dockables.size(); i++) {
-                Dockable d = (Dockable) dockables.get(i);
+            for (int i = 0, dockablesSize = dockables.size(); i < dockablesSize; i++) {
+                Object dockable = dockables.get(i);
+                Dockable d = (Dockable) dockable;
                 if (d.getDockKey().isCloseEnabled()) {
                     this.close(d);
                 }
@@ -2458,8 +2389,9 @@ public class DockingDesktop extends JLayeredPane {
             for (int i = 0; i < tabContainer.getTabCount(); i++) {
                 dockables.add(tabContainer.getDockableAt(i));
             }
-            for (int i = 0; i < dockables.size(); i++) {
-                Dockable d = (Dockable) dockables.get(i);
+            for (int i = 0, dockablesSize = dockables.size(); i < dockablesSize; i++) {
+                Object dockable = dockables.get(i);
+                Dockable d = (Dockable) dockable;
                 if (d.getDockKey().isCloseEnabled()) {
                     this.close(d);
                 }
@@ -2511,8 +2443,8 @@ public class DockingDesktop extends JLayeredPane {
                     }
                     btn.init(dockable, zone);
 
-                    borderPanes[zone].setVisible(true); // border may not be
-                    // visible
+                    // border may not be visible
+                    borderPanes[zone].setVisible(true);
                     borderPanes[zone].add(btn);
                     borderPanes[zone].revalidate();
                 } else { // btn already existing, show it again
@@ -2647,9 +2579,7 @@ public class DockingDesktop extends JLayeredPane {
      */
     public void installDockableDragSources(DockableDragSource[] sources) {
         if (sources != null) {
-            for (int i = 0; i < sources.length; i++) {
-                installDockableDragSource(sources[i]);
-            }
+            Arrays.stream(sources).forEach(this::installDockableDragSource);
         }
     }
 
@@ -2960,7 +2890,7 @@ public class DockingDesktop extends JLayeredPane {
 
     private void xmlWriteFloatingDockable(Dockable dockable, PrintWriter out) throws IOException {
         DockableState state = context.getDockableState(dockable);
-        RelativeDockablePosition position = (RelativeDockablePosition) state.getPosition();
+        RelativeDockablePosition position = state.getPosition();
         boolean isCompound = dockable instanceof CompoundDockable;
         if (isCompound) {
             out.println("<Dockable compound=\"true\">");
@@ -3009,21 +2939,19 @@ public class DockingDesktop extends JLayeredPane {
      * TabGroups are the memory of tabs (even for hidden or floating dockables) used to put them back on the
      * right tab when docked again
      */
-    private void xmlWriteTabGroups(PrintWriter out) throws IOException {
+    private void xmlWriteTabGroups(PrintWriter out) {
         // there is redundant information in the tabbedGroups Map... so we have
         // to simplify it
 
         ArrayList uniqueGroups = new ArrayList();
         ArrayList processedDockables = new ArrayList();
-        Iterator<Dockable> it = tabbedGroups.keySet().iterator();
-        while (it.hasNext()) {
-            Dockable d = it.next();
+        for (Dockable d : tabbedGroups.keySet()) {
             if (!processedDockables.contains(d)) {
                 processedDockables.add(d);
                 LinkedList tabList = tabbedGroups.get(d);
-                Iterator listIt = tabList.iterator();
-                while (listIt.hasNext()) {
-                    Dockable d2 = (Dockable) listIt.next();
+                for (int i = 0, tabListSize = tabList.size(); i < tabListSize; i++) {
+                    Object o = tabList.get(i);
+                    Dockable d2 = (Dockable) o;
                     if (!processedDockables.contains(d2)) {
                         processedDockables.add(d2);
                     }
@@ -3033,12 +2961,13 @@ public class DockingDesktop extends JLayeredPane {
         }
 
         out.println("<TabGroups>");
-        for (int i = 0; i < uniqueGroups.size(); i++) {
+        for (int i = 0, uniqueGroupsSize = uniqueGroups.size(); i < uniqueGroupsSize; i++) {
+            Object uniqueGroup = uniqueGroups.get(i);
             out.println("<TabGroup>");
-            LinkedList group = (LinkedList) uniqueGroups.get(i);
-            Iterator listIt = group.iterator();
-            while (listIt.hasNext()) {
-                Dockable d = (Dockable) listIt.next();
+            LinkedList group = (LinkedList) uniqueGroup;
+            for (int j = 0, groupSize = group.size(); j < groupSize; j++) {
+                Object o = group.get(j);
+                Dockable d = (Dockable) o;
                 xmlWriteDockableTab(d, out);
             }
             out.println("</TabGroup>");
@@ -3046,7 +2975,7 @@ public class DockingDesktop extends JLayeredPane {
         out.println("</TabGroups>");
     }
 
-    private void xmlWriteDockableTab(Dockable dockable, PrintWriter out) throws IOException {
+    private void xmlWriteDockableTab(Dockable dockable, PrintWriter out) {
         out.println("<Dockable>");
         DockKey key = dockable.getDockKey();
         out.println("<Key dockName=\"" + key.getKey() + "\"/>");
@@ -3084,14 +3013,12 @@ public class DockingDesktop extends JLayeredPane {
             borderPanes[i].setVisible(false);
         }
 
-        boolean wasHeavyMaximized = false;
         if (maximizedComponent != null) { // clean up maximization state
             if (DockingPreferences.isLightWeightUsageEnabled()) {
                 remove(maximizedComponent); // remove the single dockable
                 // container
             } else {
                 remove(maximizedComponent.getParent()); // remove the awt panel
-                wasHeavyMaximized = true;
             }
             maximizedComponent = null; // 2006/11/20 ooops !
         }
@@ -3108,10 +3035,7 @@ public class DockingDesktop extends JLayeredPane {
         // clear the floatables windows
         ArrayList<Dockable> floatingDockables = context.getDockablesByState(this,
                 DockableState.Location.FLOATING);
-        for (int i = 0; i < floatingDockables.size(); i++) {
-            Dockable d = floatingDockables.get(i);
-            remove(d);
-        }
+        floatingDockables.forEach(this::remove);
     }
 
     /* package protected */
@@ -3136,7 +3060,8 @@ public class DockingDesktop extends JLayeredPane {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
             Element elt = (Element) node;
             String name = elt.getNodeName();
-            if (name.equals("DockingPanel")) {
+            switch (name) {
+            case "DockingPanel": {
 
                 // only one child at most
                 NodeList children = elt.getChildNodes();
@@ -3174,49 +3099,55 @@ public class DockingDesktop extends JLayeredPane {
                 } catch (Exception e) {
                     log.debug("", e);
                 }
-            } else if (name.equals("Border")) {
+                break;
+            }
+            case "Border": {
                 int zone = Integer.parseInt(elt.getAttribute("zone"));
                 AutoHideButtonPanel borderPanel = borderPanes[zone];
                 borderPanel.setVisible(true); // border may not be visible
+
                 NodeList children = elt.getElementsByTagName("Dockable");
                 for (int i = 0, len = children.getLength(); i < len; i++) {
                     xmlBuildAutoHideNode(borderPanel, (Element) children.item(i));
                 }
                 borderPanel.revalidate();
-            } else if (name.equals("Floating")) {
+                break;
+            }
+            case "Floating": {
                 int x = Integer.parseInt(elt.getAttribute("x"));
                 int y = Integer.parseInt(elt.getAttribute("y"));
                 int width = Integer.parseInt(elt.getAttribute("width"));
                 int height = Integer.parseInt(elt.getAttribute("height"));
-                Rectangle r = new Rectangle(x, y, width, height);
-                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-                GraphicsDevice[] gs = ge.getScreenDevices();
-                for (int j = 0; j < gs.length; j++) {
-                    GraphicsDevice gd = gs[j];
-                    GraphicsConfiguration[] gc = gd.getConfigurations();
-                    for (int i = 0; i < gc.length; i++) {
 
-                        if (gc[i].getBounds().contains(r)) {
-                            // log.error(r + " is on screen[" + j + "] "
-                            // + gc[i].getBounds());
-                        } else {
-                            // log.error(r + " is NOT on screen[" + j + "] "
-                            // + gc[i].getBounds());
+                if (DEBUG) {
+                    Rectangle r = new Rectangle(x, y, width, height);
+                    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+                    GraphicsDevice[] gs = ge.getScreenDevices();
+                    for (GraphicsDevice gd : gs) {
+                        GraphicsConfiguration[] gc = gd.getConfigurations();
+                        for (int i = 0; i < gc.length; i++) {
+                            if (gc[i].getBounds().contains(r)) {
+                                log.atDebug().setMessage(r + " is on screen[" + i + "] " + gc[i].getBounds())
+                                        .log();
+                            } else {
+                                log.atDebug()
+                                        .setMessage(r + " is NOT on screen[" + i + "] " + gc[i].getBounds())
+                                        .log();
+                            }
                         }
                     }
                 }
 
                 NodeList children = elt.getElementsByTagName("Dockable");
                 xmlBuildFloatingNode(children, new Rectangle(x, y, width, height)); // 2005/10/10
-
-                /*
-                 * for (int i = 0, len = children.getLength(); i < len; i++) {
-                 * xmlBuildFloatingNode((Element)children.item(i), new Rectangle(x, y, width, height)); }
-                 */
-            } else if (name.equals("TabGroups")) {
+                break;
+            }
+            case "TabGroups": {
                 NodeList children = elt.getElementsByTagName("TabGroup");
                 xmlBuildTabGroup(children); // 2005/10/10
-            } else {
+                break;
+            }
+            default:
                 throw new SAXNotRecognizedException(name);
             }
         }
@@ -3302,16 +3233,18 @@ public class DockingDesktop extends JLayeredPane {
                 fdc = createFloatingDockableContainer(dockable);
             } else {
                 // add as a tab
-                if (tdc.getTabCount() == 0) {
-                    // first tab : replace the current DetachedDockView by the
-                    // tab container
-                    // not very efficient... @todo : sort this out
-                    DockableContainer base = DockingUtilities.findDockableContainer(baseDockable);
-                    DockingUtilities.replaceChild(((Component) base).getParent(), (Component) base,
-                            (Component) tdc);
-                    tdc.addDockable(baseDockable, 0);
+                if (tdc != null) {
+                    if (tdc.getTabCount() == 0) {
+                        // first tab : replace the current DetachedDockView by the
+                        // tab container
+                        // not very efficient... @todo : sort this out
+                        DockableContainer base = DockingUtilities.findDockableContainer(baseDockable);
+                        DockingUtilities.replaceChild(((Component) base).getParent(), (Component) base,
+                                (Component) tdc);
+                        tdc.addDockable(baseDockable, 0);
+                    }
+                    tdc.addDockable(dockable, tdc.getTabCount());
                 }
-                tdc.addDockable(dockable, tdc.getTabCount());
             }
 
             context.setDockableState(dockable,
@@ -3344,10 +3277,10 @@ public class DockingDesktop extends JLayeredPane {
 
     private Component xmlCreateComponent(Element elt, DockableState.Location dockableLocation)
             throws SAXException {
-        if (elt.getNodeName().equals("Split")) {
-            SplitContainer split = xmlBuildSplitContainer(elt, dockableLocation);
-            return split;
-        } else if (elt.getNodeName().equals("Dockable")) {
+        switch (elt.getNodeName()) {
+        case "Split":
+            return xmlBuildSplitContainer(elt, dockableLocation);
+        case "Dockable": {
             Dockable d = xmlGetDockable(elt);
             SingleDockableContainer sdc = DockableContainerFactory.getFactory().createDockableContainer(d,
                     DockableContainerFactory.ParentType.PARENT_SPLIT_CONTAINER);
@@ -3360,17 +3293,19 @@ public class DockingDesktop extends JLayeredPane {
                 xmlBuildCompoundDockable((CompoundDockable) d, elt, dockableLocation);
             }
             return (Component) sdc;
-        } else if (elt.getNodeName().equals("TabbedDockable")) {
+        }
+        case "TabbedDockable":
 
             TabbedDockableContainer tdc = xmlBuildTabbedDockableContainer(elt, dockableLocation);
             return (Component) tdc;
-        } else if (elt.getNodeName().equals("MaximizedDockable")) {
+        case "MaximizedDockable": {
 
             // this should be the last element from DockingPanel node
             Dockable d = xmlGetDockable(elt);
             maximize(d);
             return null;
-        } else {
+        }
+        default:
             throw new SAXNotRecognizedException(elt.getNodeName());
         }
     }
@@ -3386,13 +3321,12 @@ public class DockingDesktop extends JLayeredPane {
             Node node = children.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element elt = (Element) node;
-                if (elt.getNodeName().equals("Key")) {
-                    // ignore : it's the key of the compound dockable
-
-                } else {
+                if (!elt.getNodeName().equals("Key")) {
                     Component comp = xmlCreateComponent(elt, dockableLocation);
-                    compoundPanel.add(comp, BorderLayout.CENTER);
-                    return; // no more than a single child
+                    if (comp != null) {
+                        compoundPanel.add(comp, BorderLayout.CENTER);
+                        return; // no more than a single child
+                    }
                 }
             }
         }
@@ -3404,7 +3338,7 @@ public class DockingDesktop extends JLayeredPane {
         int orientation = Integer.parseInt(elt.getAttribute("orientation"));
         String loc = elt.getAttribute("location");
         double location = 0.5;
-        if (loc != null && !loc.equals("")) {
+        if (!loc.isEmpty()) {
             location = Double.parseDouble(loc);
         }
 
@@ -3830,19 +3764,13 @@ public class DockingDesktop extends JLayeredPane {
     public void addHiddenDockable(Dockable dockable, RelativeDockablePosition dockedPosition) {
         /* not used from inside the API : only for user applications */
 
-        DockableState currentState = getDockableState(dockable); // should be
-        // null
-        if (currentState == null || currentState.isClosed()) { // 2007/03/19
-            // reformulate
-            // tests
-            // ok, that's the normal use case
-        } else if (currentState.isHidden()) {
-            // already hidden... avoid !
-            return; // should I throw an exception ?
-        } else if (currentState.isDocked()) {
-            // if (currentState != null && !currentState.isHidden()){
-            // delegate autohide to the appropriate method
-            setAutoHide(dockable, true);
+        DockableState currentState = getDockableState(dockable);
+        if (currentState != null && !currentState.isClosed()) {
+            if (!currentState.isHidden() && currentState.isDocked()) {
+                // if (currentState != null && !currentState.isHidden()){
+                // delegate autohide to the appropriate method
+                setAutoHide(dockable, true);
+            }
             return;
         }
         registerDockable(dockable);
@@ -4057,7 +3985,7 @@ public class DockingDesktop extends JLayeredPane {
                 c = c.getParent();
             }
 
-            if (c instanceof SingleDockableContainer) {
+            if (c != null) {
                 SingleDockableContainer sdc = (SingleDockableContainer) c;
                 currentDockable = sdc.getDockable();
                 if (sdc.getDockable() != lastFocusedDockable) {
@@ -4081,10 +4009,7 @@ public class DockingDesktop extends JLayeredPane {
             JTabbedPane pane = (JTabbedPane) evt.getSource();
             TabbedDockableContainer tdc = ((TabbedDockableContainer) pane);
             Dockable selDockable = tdc.getSelectedDockable();
-            if (selDockable == null) { // this may happen when maximization
-                // occurs
-                // ignore
-            } else {
+            if (selDockable != null) {
                 currentDockable = selDockable;
                 if (selDockable != lastFocusedDockable) {
                     lastFocusedDockable = selDockable;
