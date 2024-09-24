@@ -581,6 +581,8 @@ public class DockingUISettings {
     /** Field for installing settings only once */
     protected boolean isSettingsInstalled = false;
 
+    private UIDefaults defaults;
+
     public DockingUISettings() {
     }
 
@@ -612,7 +614,20 @@ public class DockingUISettings {
      */
     public void installUI() {
         if (!isSettingsInstalled) {
-            installUI(getDefaults());
+            defaults = getDefaults(UIManager.getDefaults());
+            installColors();
+            installAutoHideSettings();
+            installBorderSettings();
+            installDockViewSettings();
+            installDockViewTitleBarSettings();
+            installSplitContainerSettings();
+            installCloseableTabs();
+            installTabbedContainerSettings();
+            installIcons();
+            installAccelerators();
+            installDesktopSettings();
+            installFloatingSettings();
+            installToolBarSettings();
             isSettingsInstalled = true;
         }
     }
@@ -634,23 +649,6 @@ public class DockingUISettings {
         return table;
     }
 
-    protected void installUI(UIDefaults table) {
-        installColors(table);
-        installAutoHideSettings(table);
-        installBorderSettings(table);
-        installDockViewSettings(table);
-        installDockViewTitleBarSettings(table);
-        installSplitContainerSettings(table);
-        installCloseableTabs(table);
-        installTabbedContainerSettings(table);
-        installIcons(table);
-        installAccelerators(table);
-        installDesktopSettings(table);
-        installFloatingSettings(table);
-        installToolBarSettings(table);
-        isSettingsInstalled = true;
-    }
-
     /**
      * Allows updating of the ui after a look and feel change.
      * <p>
@@ -662,85 +660,9 @@ public class DockingUISettings {
      * Calling this method after SwingUtilities.updateComponentTreeUI(topLevelComponent) is unspecified (some
      * things will be updated, others not).
      */
-    @Deprecated
     public void updateUI() {
         isSettingsInstalled = false;
         installUI();
-    }
-
-    /** installs the borders */
-    @Deprecated
-    public void installBorderSettings() {
-        installBorderSettings(getDefaults());
-    }
-
-    /** installs the autohide related properties */
-    @Deprecated
-    public void installAutoHideSettings() {
-        installAutoHideSettings(getDefaults());
-    }
-
-    @Deprecated
-    public void installDockViewSettings() {
-        installDockViewSettings(getDefaults());
-    }
-
-    @Deprecated
-    public void installDockViewTitleBarSettings() {
-        installDockViewTitleBarSettings(getDefaults());
-    }
-
-    /** installs the splitpanes related properties */
-    @Deprecated
-    public void installSplitContainerSettings() {
-        installSplitContainerSettings(getDefaults());
-    }
-
-    /** installs the tabbed pane related properties */
-    @Deprecated
-    public void installTabbedContainerSettings() {
-        installTabbedContainerSettings(getDefaults());
-    }
-
-    @Deprecated
-    public void installCloseableTabs() {
-        installCloseableTabs(getDefaults());
-    }
-
-    /** installs icons used by the framework */
-    @Deprecated
-    public void installIcons() {
-        installIcons(getDefaults());
-    }
-
-    /** installs the eyboard shortcuts */
-    @Deprecated
-    public void installAccelerators() {
-        installAccelerators(getDefaults());
-    }
-
-    /** installs the DockinDesktop related properties */
-    @Deprecated
-    public void installDesktopSettings() {
-        installDesktopSettings(getDefaults());
-    }
-
-    /** installs the FloatingDialog related properties */
-    @Deprecated
-    public void installFloatingSettings() {
-        installFloatingSettings(getDefaults());
-    }
-
-    /** installs the toolbar related properties */
-    @Deprecated
-    public void installToolBarSettings() {
-        installToolBarSettings(getDefaults());
-    }
-
-    // ==== Private methods
-
-    private UIDefaults getDefaults() {
-        return getDefaults(UIManager.getDefaults());
     }
 
     private void getBorderSettings(UIDefaults table) {
@@ -766,10 +688,11 @@ public class DockingUISettings {
         }
     }
 
-    private void installBorderSettings(UIDefaults table) {
-        putValue(table, "DockView.singleDockableBorder");
-        putValue(table, "DockView.tabbedDockableBorder");
-        putValue(table, "DockView.maximizedDockableBorder");
+    /** installs the borders */
+    public void installBorderSettings() {
+        putValue(defaults, "DockView.singleDockableBorder");
+        putValue(defaults, "DockView.tabbedDockableBorder");
+        putValue(defaults, "DockView.maximizedDockableBorder");
     }
 
     private void getAutoHideSettings(UIDefaults table) {
@@ -814,20 +737,21 @@ public class DockingUISettings {
         table.putIfAbsent("AutoHideButton.font", table.get("MenuItem.font")); // 2006/01/23
     }
 
-    private void installAutoHideSettings(UIDefaults table) {
-        putValue(table, "AutoHideButtonUI");
-        putValue(table, "AutoHideButtonPanelUI");
-        putValue(table, "AutoHideExpandPanelUI");
-        putValue(table, "AutoHideButton.expandBorderTop");
-        putValue(table, "AutoHideButton.expandBorderBottom");
+    /** installs the autohide related properties */
+    public void installAutoHideSettings() {
+        putValue(defaults, "AutoHideButtonUI");
+        putValue(defaults, "AutoHideButtonPanelUI");
+        putValue(defaults, "AutoHideExpandPanelUI");
+        putValue(defaults, "AutoHideButton.expandBorderTop");
+        putValue(defaults, "AutoHideButton.expandBorderBottom");
 
-        putValue(table, "AutoHideButton.expandBorderLeft");
-        putValue(table, "AutoHideButton.expandBorderRight");
-        putValue(table, "AutoHideButtonPanel.topBorder");
-        putValue(table, "AutoHideButtonPanel.bottomBorder");
-        putValue(table, "AutoHideButtonPanel.leftBorder");
-        putValue(table, "AutoHideButtonPanel.rightBorder");
-        putValue(table, "AutoHideButton.font");
+        putValue(defaults, "AutoHideButton.expandBorderLeft");
+        putValue(defaults, "AutoHideButton.expandBorderRight");
+        putValue(defaults, "AutoHideButtonPanel.topBorder");
+        putValue(defaults, "AutoHideButtonPanel.bottomBorder");
+        putValue(defaults, "AutoHideButtonPanel.leftBorder");
+        putValue(defaults, "AutoHideButtonPanel.rightBorder");
+        putValue(defaults, "AutoHideButton.font");
     }
 
     private void getDockViewSettings(UIDefaults table) {
@@ -836,9 +760,9 @@ public class DockingUISettings {
     }
 
     /** installs the DockView related properties */
-    private void installDockViewSettings(UIDefaults table) {
-        putValue(table, "DockViewUI");
-        putValue(table, "DetachedDockViewUI");
+    public void installDockViewSettings() {
+        putValue(defaults, "DockViewUI");
+        putValue(defaults, "DetachedDockViewUI");
     }
 
     /** installs the DockVieTitleBar related properties */
@@ -879,24 +803,24 @@ public class DockingUISettings {
         }
     }
 
-    private void installDockViewTitleBarSettings(UIDefaults table) {
-        putValue(table, "DockViewTitleBarUI");
-        putValue(table, "DockViewTitleBar.height");
-        putValue(table, "DockViewTitleBar.closeButtonText");
-        putValue(table, "DockViewTitleBar.minimizeButtonText");
-        putValue(table, "DockViewTitleBar.restoreButtonText");
-        putValue(table, "DockViewTitleBar.maximizeButtonText");
-        putValue(table, "DockViewTitleBar.floatButtonText");
-        putValue(table, "DockViewTitleBar.attachButtonText");
-        putValue(table, "DockViewTitleBar.titleFont");
-        putValue(table, "DockViewTitleBar.isCloseButtonDisplayed");
-        putValue(table, "DockViewTitleBar.isHideButtonDisplayed");
-        putValue(table, "DockViewTitleBar.isDockButtonDisplayed");
-        putValue(table, "DockViewTitleBar.isMaximizeButtonDisplayed");
-        putValue(table, "DockViewTitleBar.isRestoreButtonDisplayed");
-        putValue(table, "DockViewTitleBar.isFloatButtonDisplayed");
-        putValue(table, "DockViewTitleBar.isAttachButtonDisplayed");
-        putValue(table, "DockViewTitleBar.border");
+    public void installDockViewTitleBarSettings() {
+        putValue(defaults, "DockViewTitleBarUI");
+        putValue(defaults, "DockViewTitleBar.height");
+        putValue(defaults, "DockViewTitleBar.closeButtonText");
+        putValue(defaults, "DockViewTitleBar.minimizeButtonText");
+        putValue(defaults, "DockViewTitleBar.restoreButtonText");
+        putValue(defaults, "DockViewTitleBar.maximizeButtonText");
+        putValue(defaults, "DockViewTitleBar.floatButtonText");
+        putValue(defaults, "DockViewTitleBar.attachButtonText");
+        putValue(defaults, "DockViewTitleBar.titleFont");
+        putValue(defaults, "DockViewTitleBar.isCloseButtonDisplayed");
+        putValue(defaults, "DockViewTitleBar.isHideButtonDisplayed");
+        putValue(defaults, "DockViewTitleBar.isDockButtonDisplayed");
+        putValue(defaults, "DockViewTitleBar.isMaximizeButtonDisplayed");
+        putValue(defaults, "DockViewTitleBar.isRestoreButtonDisplayed");
+        putValue(defaults, "DockViewTitleBar.isFloatButtonDisplayed");
+        putValue(defaults, "DockViewTitleBar.isAttachButtonDisplayed");
+        putValue(defaults, "DockViewTitleBar.border");
     }
 
     private void getSplitContainerSettings(UIDefaults table) {
@@ -905,10 +829,11 @@ public class DockingUISettings {
         table.putIfAbsent("SplitContainer.isResizingEnabled", Boolean.TRUE); // 2007/08/11
     }
 
-    private void installSplitContainerSettings(UIDefaults table) {
-        putValue(table, "DockingSplitPaneUI");
-        putValue(table, "SplitContainer.dividerSize");
-        putValue(table, "SplitContainer.isResizingEnabled");
+    /** installs the splitpanes related properties */
+    public void installSplitContainerSettings() {
+        putValue(defaults, "DockingSplitPaneUI");
+        putValue(defaults, "SplitContainer.dividerSize");
+        putValue(defaults, "SplitContainer.isResizingEnabled");
     }
 
     private void getTabbedContainerSettings(UIDefaults table) {
@@ -933,16 +858,17 @@ public class DockingUISettings {
         table.putIfAbsent("TabbedContainer.requestFocusOnTabSelection", Boolean.FALSE);
     }
 
-    private void installTabbedContainerSettings(UIDefaults table) {
-        putValue(table, "TabbedDockableContainer.tabPlacement");
-        putValue(table, "DockTabbedPane.closeButtonText");
-        putValue(table, "DockTabbedPane.minimizeButtonText");
-        putValue(table, "DockTabbedPane.restoreButtonText");
-        putValue(table, "DockTabbedPane.maximizeButtonText");
-        putValue(table, "DockTabbedPane.floatButtonText");
-        putValue(table, "DockTabbedPane.attachButtonText");
-        putValue(table, "DockTabbedPane.titleFont");
-        putValue(table, "TabbedContainer.requestFocusOnTabSelection");
+    /** installs the tabbed pane related properties */
+    public void installTabbedContainerSettings() {
+        putValue(defaults, "TabbedDockableContainer.tabPlacement");
+        putValue(defaults, "DockTabbedPane.closeButtonText");
+        putValue(defaults, "DockTabbedPane.minimizeButtonText");
+        putValue(defaults, "DockTabbedPane.restoreButtonText");
+        putValue(defaults, "DockTabbedPane.maximizeButtonText");
+        putValue(defaults, "DockTabbedPane.floatButtonText");
+        putValue(defaults, "DockTabbedPane.attachButtonText");
+        putValue(defaults, "DockTabbedPane.titleFont");
+        putValue(defaults, "TabbedContainer.requestFocusOnTabSelection");
     }
 
     private void getCloseableTabs(UIDefaults table) {
@@ -954,10 +880,10 @@ public class DockingUISettings {
     }
 
     /** installs the closable tabs properties */
-    private void installCloseableTabs(UIDefaults table) {
-        putValue(table, "TabbedPane.otherIconsGap");
-        putValue(table, "TabbedPane.inBetweenOtherIconsGap");
-        putValue(table, "TabbedPane.alternateTabIcons");
+    public void installCloseableTabs() {
+        putValue(defaults, "TabbedPane.otherIconsGap");
+        putValue(defaults, "TabbedPane.inBetweenOtherIconsGap");
+        putValue(defaults, "TabbedPane.alternateTabIcons");
     }
 
     private void getIcons(UIDefaults table) {
@@ -1017,51 +943,52 @@ public class DockingUISettings {
         setIcon(table, "DockTabbedPane.menu.attach", "attach16v2rollover.png");
     }
 
-    private void installIcons(UIDefaults table) {
-        putValue(table, "DockViewTitleBar.close");
-        putValue(table, "DockViewTitleBar.close.rollover");
-        putValue(table, "DockViewTitleBar.close.pressed");
-        putValue(table, "DockViewTitleBar.closeTab");
-        putValue(table, "DockViewTitleBar.closeTab.rollover");
-        putValue(table, "DockViewTitleBar.closeTab.pressed");
-        putValue(table, "DockViewTitleBar.dock");
-        putValue(table, "DockViewTitleBar.dock.rollover");
-        putValue(table, "DockViewTitleBar.dock.pressed");
-        putValue(table, "DockViewTitleBar.hide");
-        putValue(table, "DockViewTitleBar.hide.rollover");
-        putValue(table, "DockViewTitleBar.hide.pressed");
-        putValue(table, "DockViewTitleBar.maximize");
-        putValue(table, "DockViewTitleBar.maximize.pressed");
-        putValue(table, "DockViewTitleBar.maximize.rollover");
-        putValue(table, "DockViewTitleBar.restore");
-        putValue(table, "DockViewTitleBar.restore.pressed");
-        putValue(table, "DockViewTitleBar.restore.rollover");
-        putValue(table, "DockViewTitleBar.float");
-        putValue(table, "DockViewTitleBar.float.rollover");
-        putValue(table, "DockViewTitleBar.float.pressed");
-        putValue(table, "DockViewTitleBar.attach");
-        putValue(table, "DockViewTitleBar.attach.rollover");
-        putValue(table, "DockViewTitleBar.attach.pressed");
-        putValue(table, "DockViewTitleBar.menu.close");
-        putValue(table, "DockViewTitleBar.menu.hide");
-        putValue(table, "DockViewTitleBar.menu.maximize");
-        putValue(table, "DockViewTitleBar.menu.restore");
-        putValue(table, "DockViewTitleBar.menu.dock");
-        putValue(table, "DockViewTitleBar.menu.float");
-        putValue(table, "DockViewTitleBar.menu.attach");
-        putValue(table, "DockTabbedPane.close");
-        putValue(table, "DockTabbedPane.close.rollover");
-        putValue(table, "DockTabbedPane.close.pressed");
-        putValue(table, "DockTabbedPane.unselected_close");
-        putValue(table, "DockTabbedPane.unselected_close.rollover");
-        putValue(table, "DockTabbedPane.unselected_close.pressed");
-        putValue(table, "DockTabbedPane.menu.close");
-        putValue(table, "DockTabbedPane.menu.hide");
-        putValue(table, "DockTabbedPane.menu.maximize");
-        putValue(table, "DockTabbedPane.menu.float");
-        putValue(table, "DockTabbedPane.closeAll");
-        putValue(table, "DockTabbedPane.closeAllOther");
-        putValue(table, "DockTabbedPane.menu.attach");
+    /** installs icons used by the framework */
+    public void installIcons() {
+        putValue(defaults, "DockViewTitleBar.close");
+        putValue(defaults, "DockViewTitleBar.close.rollover");
+        putValue(defaults, "DockViewTitleBar.close.pressed");
+        putValue(defaults, "DockViewTitleBar.closeTab");
+        putValue(defaults, "DockViewTitleBar.closeTab.rollover");
+        putValue(defaults, "DockViewTitleBar.closeTab.pressed");
+        putValue(defaults, "DockViewTitleBar.dock");
+        putValue(defaults, "DockViewTitleBar.dock.rollover");
+        putValue(defaults, "DockViewTitleBar.dock.pressed");
+        putValue(defaults, "DockViewTitleBar.hide");
+        putValue(defaults, "DockViewTitleBar.hide.rollover");
+        putValue(defaults, "DockViewTitleBar.hide.pressed");
+        putValue(defaults, "DockViewTitleBar.maximize");
+        putValue(defaults, "DockViewTitleBar.maximize.pressed");
+        putValue(defaults, "DockViewTitleBar.maximize.rollover");
+        putValue(defaults, "DockViewTitleBar.restore");
+        putValue(defaults, "DockViewTitleBar.restore.pressed");
+        putValue(defaults, "DockViewTitleBar.restore.rollover");
+        putValue(defaults, "DockViewTitleBar.float");
+        putValue(defaults, "DockViewTitleBar.float.rollover");
+        putValue(defaults, "DockViewTitleBar.float.pressed");
+        putValue(defaults, "DockViewTitleBar.attach");
+        putValue(defaults, "DockViewTitleBar.attach.rollover");
+        putValue(defaults, "DockViewTitleBar.attach.pressed");
+        putValue(defaults, "DockViewTitleBar.menu.close");
+        putValue(defaults, "DockViewTitleBar.menu.hide");
+        putValue(defaults, "DockViewTitleBar.menu.maximize");
+        putValue(defaults, "DockViewTitleBar.menu.restore");
+        putValue(defaults, "DockViewTitleBar.menu.dock");
+        putValue(defaults, "DockViewTitleBar.menu.float");
+        putValue(defaults, "DockViewTitleBar.menu.attach");
+        putValue(defaults, "DockTabbedPane.close");
+        putValue(defaults, "DockTabbedPane.close.rollover");
+        putValue(defaults, "DockTabbedPane.close.pressed");
+        putValue(defaults, "DockTabbedPane.unselected_close");
+        putValue(defaults, "DockTabbedPane.unselected_close.rollover");
+        putValue(defaults, "DockTabbedPane.unselected_close.pressed");
+        putValue(defaults, "DockTabbedPane.menu.close");
+        putValue(defaults, "DockTabbedPane.menu.hide");
+        putValue(defaults, "DockTabbedPane.menu.maximize");
+        putValue(defaults, "DockTabbedPane.menu.float");
+        putValue(defaults, "DockTabbedPane.closeAll");
+        putValue(defaults, "DockTabbedPane.closeAllOther");
+        putValue(defaults, "DockTabbedPane.menu.attach");
     }
 
     private void getAccelerators(UIDefaults table) {
@@ -1075,11 +1002,12 @@ public class DockingUISettings {
         setAccelerators(table, "DockingDesktop.floatActionAccelerator", KeyEvent.VK_F5, mask);
     }
 
-    private void installAccelerators(UIDefaults table) {
-        putValue(table, "DockingDesktop.closeActionAccelerator");
-        putValue(table, "DockingDesktop.maximizeActionAccelerator");
-        putValue(table, "DockingDesktop.dockActionAccelerator");
-        putValue(table, "DockingDesktop.floatActionAccelerator");
+    /** installs the eyboard shortcuts */
+    public void installAccelerators() {
+        putValue(defaults, "DockingDesktop.closeActionAccelerator");
+        putValue(defaults, "DockingDesktop.maximizeActionAccelerator");
+        putValue(defaults, "DockingDesktop.dockActionAccelerator");
+        putValue(defaults, "DockingDesktop.floatActionAccelerator");
     }
 
     private void getDesktopSettings(UIDefaults table) {
@@ -1093,15 +1021,16 @@ public class DockingUISettings {
         table.putIfAbsent("DragControler.paintBackgroundUnderDragRect", Boolean.FALSE);
     }
 
-    private void installDesktopSettings(UIDefaults table) {
-        putValue(table, "DockingDesktop.notificationColor");
-        putValue(table, "DockingDesktop.notificationBlinkCount");
-        putValue(table, "DragControler.stopDragCursor");
-        putValue(table, "DragControler.detachCursor");
-        putValue(table, "DragControler.dragCursor");
-        putValue(table, "DragControler.swapDragCursor");
-        putValue(table, "DragControler.isDragAndDropEnabled");
-        putValue(table, "DragControler.paintBackgroundUnderDragRect");
+    /** installs the DockinDesktop related properties */
+    public void installDesktopSettings() {
+        putValue(defaults, "DockingDesktop.notificationColor");
+        putValue(defaults, "DockingDesktop.notificationBlinkCount");
+        putValue(defaults, "DragControler.stopDragCursor");
+        putValue(defaults, "DragControler.detachCursor");
+        putValue(defaults, "DragControler.dragCursor");
+        putValue(defaults, "DragControler.swapDragCursor");
+        putValue(defaults, "DragControler.isDragAndDropEnabled");
+        putValue(defaults, "DragControler.paintBackgroundUnderDragRect");
     }
 
     private void getFloatingSettings(UIDefaults table) {
@@ -1112,11 +1041,12 @@ public class DockingUISettings {
         table.putIfAbsent("FloatingContainer.paintDragShape", Boolean.TRUE);
     }
 
-    private void installFloatingSettings(UIDefaults table) {
-        putValue(table, "FloatingDialog.dialogBorder");
-        putValue(table, "FloatingDialog.titleBorder");
-        putValue(table, "FloatingContainer.followParentWindow");
-        putValue(table, "FloatingContainer.paintDragShape");
+    /** installs the FloatingDialog related properties */
+    public void installFloatingSettings() {
+        putValue(defaults, "FloatingDialog.dialogBorder");
+        putValue(defaults, "FloatingDialog.titleBorder");
+        putValue(defaults, "FloatingContainer.followParentWindow");
+        putValue(defaults, "FloatingContainer.paintDragShape");
     }
 
     private void getToolBarSettings(UIDefaults table) {
@@ -1128,12 +1058,13 @@ public class DockingUISettings {
         setBorder(table, "ToolBarPanel.rightBorder", ToolBarPanelBorder.RIGHT_PANEL);
     }
 
-    private void installToolBarSettings(UIDefaults table) {
-        putValue(table, "ToolBarGripperUI");
-        putValue(table, "ToolBarPanel.topBorder");
-        putValue(table, "ToolBarPanel.leftBorder");
-        putValue(table, "ToolBarPanel.bottomBorder");
-        putValue(table, "ToolBarPanel.rightBorder");
+    /** installs the toolbar related properties */
+    public void installToolBarSettings() {
+        putValue(defaults, "ToolBarGripperUI");
+        putValue(defaults, "ToolBarPanel.topBorder");
+        putValue(defaults, "ToolBarPanel.leftBorder");
+        putValue(defaults, "ToolBarPanel.bottomBorder");
+        putValue(defaults, "ToolBarPanel.rightBorder");
     }
 
     private void getColors(UIDefaults table) {
@@ -1153,9 +1084,9 @@ public class DockingUISettings {
         }
     }
 
-    private void installColors(UIDefaults table) {
-        putValue(table, "VLDocking.shadow");
-        putValue(table, "VLDocking.highlight");
+    private void installColors() {
+        putValue(defaults, "VLDocking.shadow");
+        putValue(defaults, "VLDocking.highlight");
     }
 
     private void putValue(UIDefaults table, String key) {
