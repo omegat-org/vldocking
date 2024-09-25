@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## Added
+* Respect `UIDefauls` table configuration defined in `LookAndFeel` class.(#11)
+* Allow a customizion by inheriting `DockingUISettings` class and overide `getDefaults` method.(#11)
+
 ### Fixed
 * Avoid NPE when drag-n-drop with null hints (#9)
 

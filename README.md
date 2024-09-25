@@ -17,7 +17,8 @@ See https://code.google.com/p/vldocking/ for more information.
   * The background of `AutoHideButtonPanel` is now customizable via the `AutoHideButtonPanel.background` key for `UIManager` (`Color` value)
   * Disable the gradient on `DockViewTitleBar` via the `DockViewTitleBar.disableCustomPaint` key for `UIManager` (`Boolean` value)
   * The border of the main `DockingDesktop` component can be set via the `DockingDesktop.border` key for `UIManager` (`Border` value)
-* Released version 3.0.5 with the above changes
+* Allow customization with key-value in `UIDefaults defaults = UIManager.getDefaults()` table in `LookAndFeel#getDefaults`.
+* Released version 3.1.0 with the above changes
 * More changes in CHANGELOG.md
 
 Changes introduced by cmadsen/vldocking:
@@ -25,26 +26,25 @@ Changes introduced by cmadsen/vldocking:
 * Renamed package names to use old vlsolutions instead of vldocking
 * Fixed issues with read/wrilXML on multiple screens
 * Added new empty ctor to `FloatingDialog` to make floating windows appear in taskbar. Extend `DefaultDockableContainerFactory.createFloatingDockableContainer` and return `new FloatingDialog()`
-* Fixed LAF issues e.g., when switching Substance skin
+* Fixed LAF issues, e.g., when switching Substance skin
 * Fixed issue with borders not being set on single dock windows until an ancestor change events occurred
 
 ## How to get the released versions?
 
 ### Maven Central
 
-Just add this to your `build.gradle` file's `dependencies` block:
+Add this to your `build.gradle` file's `dependencies` block:
 
 ```
-compile 'org.omegat:vldocking:3.0.5-2'
+implementation 'org.omegat:vldocking:3.1.0'
 ```
 
 VLDocking, the swing docking framework
 
-The VLDocking framework is a commercial-grade Swing Framework providing rich docking features which can easily be integrated with existing applications (and of course new ones).
+The VLDocking framework is a commercial-grade Swing Framework providing rich docking features
+which can easily be integrated with existing applications (and of course, new ones).
 
 VLDocking was created in 2004, and is licensed under the LGPL-3.0.
-
-VLDocking is used by companies worldwide and open source projects.
 
 ![](https://vldocking.readthedocs.io/en/latest/vldocking3.jpg)
 
