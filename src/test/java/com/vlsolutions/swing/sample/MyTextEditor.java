@@ -14,7 +14,7 @@ public class MyTextEditor extends JPanel implements Dockable {
         setName("myTextEditorPanel");
         setLayout(new BorderLayout());
         textArea.setName("myTextEditorTextArea");
-        JScrollPane jsp = new JScrollPane(textArea);
+        DockableScrollPane jsp = new DockableScrollPane(textArea);
         jsp.setName("myTextEditorScrollPane");
         jsp.setPreferredSize(new Dimension(300, 400));
         add(jsp, BorderLayout.CENTER);
