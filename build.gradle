@@ -88,8 +88,8 @@ signing {
         useGpgCmd()
     }
 }
-def sonatypeUsername = project.hasProperty("sonatypeUsername")? project.property('sonatypeUsername') : System.getenv('SONATYPE_USER')
-def sonatypePassword = project.hasProperty("sonatypePassword")? project.property('sonatypePassword') : System.getenv('SONATYPE_PASS')
+def sonatypeUsername = project.hasProperty("ossrhUsername")? project.property('ossrhUsername') : System.getenv('SONATYPE_USER')
+def sonatypePassword = project.hasProperty("ossrhPassword")? project.property('ossrhPassword') : System.getenv('SONATYPE_PASS')
 if (sonatypeUsername != null && sonatypePassword != null) {
     nexusPublishing.repositories{
         sonatype {
