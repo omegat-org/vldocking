@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [v3.1.0]
+
 ## Added
 * Respect `UIDefauls` table configuration defined in `LookAndFeel` class.(#11)
 * Allow a customization by inheriting `DockingUISettings` class and overide `getDefaults` method.(#11)
@@ -62,7 +64,8 @@ All notable changes to this project will be documented in this file.
 ## v3.0.3
 * Carsten Madsen released v3.0.3
 
-[Unreleased]: https://github.com/omegat-org/vldocking/compare/v3.0.5-2...HEAD
+[Unreleased]: https://github.com/omegat-org/vldocking/compare/v3.1.0...HEAD
+[v3.1.0]: https://github.com/omegat-org/vldocking/compare/v3.0.5-2...v3.1.0
 [v3.0.5-2]: https://github.com/omegat-org/vldocking/compare/v3.0.5-1...v3.0.5-2
 [v3.0.5-1]: https://github.com/omegat-org/vldocking/compare/vldocking-3.0.5...v3.0.5-1
 [v3.0.5]: https://github.com/omegat-org/vldocking/compare/vldocking-3.0.4...vldocking-3.0.5
