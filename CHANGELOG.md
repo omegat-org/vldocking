@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ## Added
 * Respect `UIDefauls` table configuration defined in `LookAndFeel` class.(#11)
-* Allow a customizion by inheriting `DockingUISettings` class and overide `getDefaults` method.(#11)
+* Allow a customization by inheriting `DockingUISettings` class and overide `getDefaults` method.(#11)
 
 ### Fixed
 * Avoid NPE when drag-n-drop with null hints (#9)
@@ -36,7 +36,7 @@ All notable changes to this project will be documented in this file.
 * Allow setting border on main desktop area
 * Use all default rendering hints set by platform when rendering pane tabs
 * Original wiki files from https://code.google.com/archive/p/vldocking/
-* Add license file
+* Add a license file
 
 ### Changed
 * Require Java 11 Runtime
