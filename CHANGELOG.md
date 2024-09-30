@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## Changed
+- chore: bump logback@1.5.8
+- chore: bump assetj-swing-junit@4.0.0-beta-2
+
 ## [v3.1.0]
 
 ## Added
