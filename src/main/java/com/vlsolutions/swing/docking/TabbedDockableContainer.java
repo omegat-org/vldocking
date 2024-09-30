@@ -32,26 +32,26 @@ package com.vlsolutions.swing.docking;
 public interface TabbedDockableContainer extends DockableContainer {
 
     /** Returns the currently selected (front) dockable */
-    public Dockable getSelectedDockable();
+    Dockable getSelectedDockable();
 
     /** Change the tab selection to display this dockable */
-    public void setSelectedDockable(Dockable dockable);
+    void setSelectedDockable(Dockable dockable);
 
     /** Returs the current tab count (which is also the current dockable count) */
-    public int getTabCount();
+    int getTabCount();
 
     /** Returns the dockable at the index tab */
-    public Dockable getDockableAt(int index);
+    Dockable getDockableAt(int index);
 
     /** Adds a dockable to the given index tab. */
-    public void addDockable(Dockable dockable, int index);
+    void addDockable(Dockable dockable, int index);
 
     /** Removes a dockable from the tabs */
-    public void removeDockable(Dockable dockable);
+    void removeDockable(Dockable dockable);
 
     /** Remove the dockable at specified index tab */
-    public void removeDockable(int index);
+    void removeDockable(int index);
 
     /** Returns the index of the given dockable */
-    public int indexOfDockable(Dockable dockable);
+    int indexOfDockable(Dockable dockable);
 }

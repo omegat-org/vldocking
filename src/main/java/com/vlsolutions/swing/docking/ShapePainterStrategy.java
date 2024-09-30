@@ -27,20 +27,20 @@ package com.vlsolutions.swing.docking;
 interface ShapePainterStrategy {
 
     /** show the drag cursor */
-    public void showDragCursor();
+    void showDragCursor();
 
     /** show the stop-drag cursor (drag not enabled) */
-    public void showStopDragCursor();
+    void showStopDragCursor();
 
     /** show the stop-drag cursor (drag not enabled) */
-    public void showSwapDragCursor();
+    void showSwapDragCursor();
 
     /** show the float (detached) cursor */
-    public void showFloatCursor();
+    void showFloatCursor();
 
-    public void repaint();
+    void repaint();
 
-    public void startDrag(DockableDragSource source);
+    void startDrag(DockableDragSource source);
 
-    public void endDrag();
+    void endDrag();
 }

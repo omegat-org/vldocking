@@ -33,5 +33,5 @@ public interface DockableResolver {
     /**
      * Returns the dockable which should be associated to this DockKey identifier, or null if not found.
      */
-    public Dockable resolveDockable(String keyName);
+    Dockable resolveDockable(String keyName);
 }

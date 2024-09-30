@@ -30,13 +30,13 @@ import java.awt.event.MouseMotionListener;
  */
 public interface DragControler extends MouseListener, MouseMotionListener {
 
-    public void cancelDrag();
+    void cancelDrag();
 
-    public Dockable getDockable();
+    Dockable getDockable();
 
-    public DockDropReceiver getDropReceiver();
+    DockDropReceiver getDropReceiver();
 
-    public Shape getDropShape();
+    Shape getDropShape();
 
-    public boolean isFloatingShape();
+    boolean isFloatingShape();
 }

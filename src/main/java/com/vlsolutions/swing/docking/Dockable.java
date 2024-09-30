@@ -63,11 +63,11 @@ import java.awt.*;
 public interface Dockable {
 
     /** returns the unique key identifying the docked element */
-    public DockKey getDockKey();
+    DockKey getDockKey();
 
     /**
      * returns the component wrapped.
      *
      */
-    public Component getComponent();
+    Component getComponent();
 }

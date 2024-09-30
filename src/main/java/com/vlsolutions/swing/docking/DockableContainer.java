@@ -50,11 +50,11 @@ public interface DockableContainer {
      *
      *
      */
-    public void installDocking(DockingDesktop desktop);
+    void installDocking(DockingDesktop desktop);
 
     /**
      * Called once, when the dockablecontainer is no longer used by the desktop, in order to releases
      * resources and listeners taken on <code>installDocking()<code>.
      */
-    public void uninstallDocking(DockingDesktop desktop);
+    void uninstallDocking(DockingDesktop desktop);
 }

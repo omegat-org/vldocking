@@ -34,5 +34,5 @@ package com.vlsolutions.swing.docking;
 public interface SingleDockableContainer extends DockableContainer {
 
     /** Returns the dockable this container is displaying */
-    public Dockable getDockable();
+    Dockable getDockable();
 }
