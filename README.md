@@ -36,7 +36,7 @@ Changes introduced by cmadsen/vldocking:
 Add this to your `build.gradle` file's `dependencies` block:
 
 ```
-implementation 'org.omegat:vldocking:3.1.0'
+implementation 'org.omegat:vldocking:3.1.1'
 ```
 
 VLDocking, the swing docking framework

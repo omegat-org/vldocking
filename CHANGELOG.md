@@ -3,10 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [v3.1.1]
+
 ## Changed
 - chore: bump logback@1.5.8
 - chore: bump assetj-swing-junit@4.0.0-beta-2
 - style: remove redundant public modifier from interface methods
+- style: use individual imports instead of '*' imports
 
 ## [v3.1.0]
 
@@ -69,7 +72,8 @@ All notable changes to this project will be documented in this file.
 ## v3.0.3
 * Carsten Madsen released v3.0.3
 
-[Unreleased]: https://github.com/omegat-org/vldocking/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/omegat-org/vldocking/compare/v3.1.1...HEAD
+[v3.1.1]: https://github.com/omegat-org/vldocking/compare/v3.1.0...v3.1.1
 [v3.1.0]: https://github.com/omegat-org/vldocking/compare/v3.0.5-2...v3.1.0
 [v3.0.5-2]: https://github.com/omegat-org/vldocking/compare/v3.0.5-1...v3.0.5-2
 [v3.0.5-1]: https://github.com/omegat-org/vldocking/compare/vldocking-3.0.5...v3.0.5-1
