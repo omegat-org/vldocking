@@ -5,7 +5,7 @@ import com.vlsolutions.swing.sample.MySplitDockApp;
 import org.assertj.swing.fixture.FrameFixture;
 import org.junit.Test;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class AutoHideButtonTest extends TestBase {
 

@@ -2,7 +2,7 @@ package com.vlsolutions.swing.sample;
 
 import com.vlsolutions.swing.docking.DockingConstants;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class MySplitDockApp extends DockedApplication {
 

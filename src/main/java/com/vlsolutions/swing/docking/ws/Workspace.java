@@ -19,7 +19,14 @@ You can read the complete license here :
 package com.vlsolutions.swing.docking.ws;
 
 import com.vlsolutions.swing.docking.DockingContext;
-import java.io.*;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;

@@ -5,7 +5,7 @@ import com.vlsolutions.swing.sample.MyTabbedDockApp;
 import org.assertj.swing.fixture.FrameFixture;
 import org.junit.Test;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class DockViewAsTabTest extends TestBase {
 

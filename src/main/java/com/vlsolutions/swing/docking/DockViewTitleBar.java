@@ -18,13 +18,27 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import java.awt.*;
 import java.awt.Component;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.KeyboardFocusManager;
 import java.awt.Point;
-import java.awt.event.*;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 
 /**
  * A title bar, associated to a DockView (container of a single user component).

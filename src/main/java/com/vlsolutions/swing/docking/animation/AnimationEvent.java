@@ -18,7 +18,7 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking.animation;
 
-import java.awt.*;
+import java.awt.Component;
 
 /**
  * An Event describing the state of an animation

@@ -3,7 +3,8 @@ package com.vlsolutions.swing.docking.ui;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.*;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 import static org.junit.Assert.assertEquals;
 

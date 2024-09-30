@@ -23,8 +23,12 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.Icon;
+import javax.swing.JLabel;
+import javax.swing.Timer;
+import javax.swing.UIManager;
 
 /**
  * The button used to show Dockables in auto-hide borders.

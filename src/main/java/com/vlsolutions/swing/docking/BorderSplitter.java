@@ -18,8 +18,17 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import com.vlsolutions.swing.docking.event.*;
-import java.awt.*;
+import com.vlsolutions.swing.docking.event.DockDragEvent;
+import com.vlsolutions.swing.docking.event.DockDropEvent;
+import com.vlsolutions.swing.docking.event.DockEvent;
+import com.vlsolutions.swing.docking.event.DockingActionSplitComponentEvent;
+import com.vlsolutions.swing.docking.event.DockingActionSplitDockableEvent;
+
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 /**

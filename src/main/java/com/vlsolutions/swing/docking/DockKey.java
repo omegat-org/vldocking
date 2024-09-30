@@ -18,9 +18,10 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import java.beans.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
-import javax.swing.*;
+import javax.swing.Icon;
 
 /**
  * Provides a unique identification for a Dockable and runtime properties, like icon, name, tooltip, preferred

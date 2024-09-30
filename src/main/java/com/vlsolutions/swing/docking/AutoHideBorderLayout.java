@@ -18,8 +18,12 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager2;
+import java.util.ArrayList;
 
 /**
  * A Layout Manager for auto-hide borders.

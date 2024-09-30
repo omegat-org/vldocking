@@ -28,7 +28,11 @@ import java.awt.Window;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import javax.swing.*;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
+import javax.swing.JRootPane;
+import javax.swing.JTabbedPane;
 
 /**
  * Utility class implementing search/replace algorithms used by the framework.

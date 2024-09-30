@@ -31,7 +31,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * This class is responsible for the containment of a Dockable component.

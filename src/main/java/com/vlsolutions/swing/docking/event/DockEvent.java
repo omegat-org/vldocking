@@ -18,8 +18,10 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking.event;
 
-import com.vlsolutions.swing.docking.*;
-import java.awt.event.*;
+import com.vlsolutions.swing.docking.DockableDragSource;
+import com.vlsolutions.swing.docking.DockingDesktop;
+
+import java.awt.event.MouseEvent;
 
 /**
  * Abstract superclass of drag and drop docking events.

@@ -18,7 +18,8 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import java.beans.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 /**
  * This class holds preferences on default autohiding behaviour.

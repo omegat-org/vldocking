@@ -2,7 +2,7 @@ package com.vlsolutions.swing.sample;
 
 import com.vlsolutions.swing.docking.DockingDesktop;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public abstract class DockedApplication extends JFrame {
     DockingDesktop desk = new DockingDesktop();

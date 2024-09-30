@@ -17,7 +17,7 @@ You can read the complete license here :
 */
 package com.vlsolutions.swing.docking;
 
-import javax.swing.*;
+import javax.swing.JSplitPane;
 
 /* Utility class, resizes a splitcontainer after its size is known (needs an invokelater after
  * having added it).

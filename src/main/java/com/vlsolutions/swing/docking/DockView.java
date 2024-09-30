@@ -18,11 +18,22 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import com.vlsolutions.swing.docking.event.*;
-import java.awt.*;
-import java.awt.geom.*;
-import java.beans.*;
-import javax.swing.*;
+import com.vlsolutions.swing.docking.event.DockDragEvent;
+import com.vlsolutions.swing.docking.event.DockDropEvent;
+import com.vlsolutions.swing.docking.event.DockEvent;
+import com.vlsolutions.swing.docking.event.DockingActionCreateTabEvent;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 /**
  * DefaultImplementation of the SingleDockableContainer.

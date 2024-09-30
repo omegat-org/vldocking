@@ -18,7 +18,7 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking.event;
 
-import com.vlsolutions.swing.docking.*;
+import com.vlsolutions.swing.docking.DockableState;
 
 /**
  * An event triggered before a change of dockable state.

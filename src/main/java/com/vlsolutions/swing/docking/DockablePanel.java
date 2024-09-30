@@ -18,8 +18,9 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import javax.swing.JPanel;
 
 /**
  * A basic implementation of Dockable.

@@ -18,9 +18,10 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JPanel;
 
 /**
  * A Swing panel used as a toolbar for autohide buttons.

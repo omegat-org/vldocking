@@ -18,9 +18,14 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking.event;
 
-import com.vlsolutions.swing.docking.*;
-import java.awt.event.*;
-import javax.swing.*;
+import com.vlsolutions.swing.docking.Dockable;
+import com.vlsolutions.swing.docking.DockableDragSource;
+import com.vlsolutions.swing.docking.DockableState;
+import com.vlsolutions.swing.docking.DockingDesktop;
+import com.vlsolutions.swing.docking.TabbedDockableContainer;
+
+import java.awt.event.MouseEvent;
+import javax.swing.UIManager;
 
 /**
  * An event send to a dockDropReceiver to complete a drop operation

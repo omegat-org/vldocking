@@ -18,11 +18,19 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking.ui;
 
-import java.awt.*;
-import java.awt.image.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
+import java.awt.image.BufferedImage;
+import javax.swing.JComponent;
+import javax.swing.JSplitPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 /**
  * A specific UI for removing border effects of the JSplitPanes used for docking.

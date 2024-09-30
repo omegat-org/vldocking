@@ -18,10 +18,12 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking.animation;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.*;
+import javax.swing.Timer;
 
 /**
  * Utility class used to perform move/resize animation for awt/swing components.

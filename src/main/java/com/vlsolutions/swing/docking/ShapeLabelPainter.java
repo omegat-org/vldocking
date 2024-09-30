@@ -17,7 +17,12 @@ You can read the complete license here :
 */
 package com.vlsolutions.swing.docking;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 
 /**
  * the object responsible for painting the shape label

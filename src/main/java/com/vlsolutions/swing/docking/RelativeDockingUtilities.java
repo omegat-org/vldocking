@@ -21,8 +21,14 @@ package com.vlsolutions.swing.docking;
 import com.vlsolutions.swing.docking.event.DockingActionAddDockableEvent;
 import com.vlsolutions.swing.docking.event.DockingActionEvent;
 import com.vlsolutions.swing.docking.event.DockingActionSplitComponentEvent;
-import java.awt.*;
-import javax.swing.*;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Point;
+import java.awt.Rectangle;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
 /**
  * This class provides an algorithm for finding (and then inserting) the most suitable place to show a

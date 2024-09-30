@@ -18,8 +18,10 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Rectangle;
+import javax.swing.SwingUtilities;
 
 /**
  * This class is an immutable object used to remember the relative positionning of docked components.

@@ -18,10 +18,21 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import com.vlsolutions.swing.docking.event.*;
-import java.awt.*;
-import java.awt.geom.*;
-import javax.swing.*;
+import com.vlsolutions.swing.docking.event.DockDragEvent;
+import com.vlsolutions.swing.docking.event.DockDropEvent;
+import com.vlsolutions.swing.docking.event.DockEvent;
+import com.vlsolutions.swing.docking.event.DockingActionSplitComponentEvent;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.Window;
+import java.awt.geom.Rectangle2D;
+import javax.swing.BorderFactory;
+import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 
 /**
  * A Specialized JSplitPane which accepts drag and drop of DockableContainer.

@@ -18,14 +18,37 @@ You can read the complete license here :
 
 package com.vlsolutions.swing.docking;
 
-import com.vlsolutions.swing.docking.animation.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
+import com.vlsolutions.swing.docking.animation.AnimationEvent;
+import com.vlsolutions.swing.docking.animation.AnimationListener;
+import com.vlsolutions.swing.docking.animation.ComponentAnimator;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
+import java.awt.Panel;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 

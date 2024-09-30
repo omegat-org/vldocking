@@ -3,8 +3,12 @@ package com.vlsolutions.swing.sample;
 import com.vlsolutions.swing.docking.DockKey;
 import com.vlsolutions.swing.docking.Dockable;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 
 public class MyTextEditor extends JPanel implements Dockable {
     DockKey key = new DockKey("textEditor");

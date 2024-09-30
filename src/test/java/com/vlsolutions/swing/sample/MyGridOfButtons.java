@@ -3,8 +3,11 @@ package com.vlsolutions.swing.sample;
 import com.vlsolutions.swing.docking.DockKey;
 import com.vlsolutions.swing.docking.Dockable;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 public class MyGridOfButtons extends JPanel implements Dockable {
 
