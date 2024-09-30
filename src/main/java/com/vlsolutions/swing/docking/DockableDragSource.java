@@ -48,18 +48,18 @@ public interface DockableDragSource {
      * @return true if drag operation is accepted (i.e the zone pointed by <code>p</code> refers to a
      *         draggable component), false otherwise.
      */
-    public boolean startDragComponent(Point p);
+    boolean startDragComponent(Point p);
 
     /** Returns the <code>Dockable</code> component this source is for */
-    public Dockable getDockable();
+    Dockable getDockable();
 
     /** returns the DockableContainer responsible for displaying the associated dockable */
-    public Container getDockableContainer();
+    Container getDockableContainer();
 
     /**
      * notifies the source when the drag operation has ended (by a drop or cancelled)
      * 
      * @since 2.1.3
      */
-    public void endDragComponent(boolean dropped);
+    void endDragComponent(boolean dropped);
 }

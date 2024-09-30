@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ## Changed
 - chore: bump logback@1.5.8
 - chore: bump assetj-swing-junit@4.0.0-beta-2
+- style: remove redundant public modifier from interface methods
 
 ## [v3.1.0]
 

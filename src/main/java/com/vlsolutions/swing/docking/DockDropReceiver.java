@@ -56,7 +56,7 @@ public interface DockDropReceiver {
      * @see DockDropEvent
      *
      */
-    public void processDockableDrag(DockDragEvent event);
+    void processDockableDrag(DockDragEvent event);
 
     /**
      * The component is requested to perform a docking drop action.
@@ -70,5 +70,5 @@ public interface DockDropReceiver {
      * its container, so the DropReceiver <b>must</b> add the component to its own hierarchy otherwise the
      * component would be lost (from a user's point of view).
      */
-    public void processDockableDrop(DockDropEvent event);
+    void processDockableDrop(DockDropEvent event);
 }

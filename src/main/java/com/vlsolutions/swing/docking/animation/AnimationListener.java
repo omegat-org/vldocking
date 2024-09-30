@@ -37,5 +37,5 @@ public interface AnimationListener {
      * <P>
      * Changes are relative to animation start, sequence(frame) and end.
      */
-    public void animation(AnimationEvent e);
+    void animation(AnimationEvent e);
 }

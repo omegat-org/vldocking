@@ -30,5 +30,5 @@ import javax.swing.JComponent;
  */
 public interface BackgroundPainter {
 
-    public void paintBackground(JComponent component, Graphics g);
+    void paintBackground(JComponent component, Graphics g);
 }

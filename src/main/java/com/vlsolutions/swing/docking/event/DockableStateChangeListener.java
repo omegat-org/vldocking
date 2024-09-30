@@ -44,5 +44,5 @@ public interface DockableStateChangeListener {
     /**
      * this method will be called after a dockable component has changed of state (closed, hidden, docked)
      */
-    public void dockableStateChanged(DockableStateChangeEvent event);
+    void dockableStateChanged(DockableStateChangeEvent event);
 }

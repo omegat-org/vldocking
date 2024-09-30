@@ -47,5 +47,5 @@ public interface DockableStateWillChangeListener {
      *            a vetoable state change event.
      *
      */
-    public void dockableStateWillChange(DockableStateWillChangeEvent event);
+    void dockableStateWillChange(DockableStateWillChangeEvent event);
 }

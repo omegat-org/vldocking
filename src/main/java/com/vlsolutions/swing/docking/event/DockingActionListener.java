@@ -35,7 +35,7 @@ public interface DockingActionListener {
      * @return true if action can be processed, false if it should be cancelled
      *
      */
-    public boolean acceptDockingAction(DockingActionEvent event);
+    boolean acceptDockingAction(DockingActionEvent event);
 
     /**
      * Invoked once a docking action has been performed.
@@ -45,5 +45,5 @@ public interface DockingActionListener {
      *            reflect different types of action (DockingActionCloseEvent when a dockable is closed,
      *            DockingActionSplitDockableEvent when a dockable is moved ...).
      */
-    public void dockingActionPerformed(DockingActionEvent event);
+    void dockingActionPerformed(DockingActionEvent event);
 }

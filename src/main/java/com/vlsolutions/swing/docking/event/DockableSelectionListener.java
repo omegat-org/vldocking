@@ -33,5 +33,5 @@ package com.vlsolutions.swing.docking.event;
 public interface DockableSelectionListener {
 
     /** This method is invoked when a new dockable is selected. */
-    public void selectionChanged(DockableSelectionEvent e);
+    void selectionChanged(DockableSelectionEvent e);
 }
